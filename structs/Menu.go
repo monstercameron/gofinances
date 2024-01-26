@@ -25,7 +25,7 @@ func (m *MenuList) SetActive(id int) {
 
 func PopulateMenu() MenuList {
 	var menu MenuList
-	menu.Menus = append(menu.Menus, MenuItem{Id: 1, Menu: "recurring bills", Url: "/recurring-debts", IsActive: true})
+	menu.Menus = append(menu.Menus, MenuItem{Id: 0, Menu: "recurring bills", Url: "/recurring-debts", IsActive: true})
 	menu.Menus = append(menu.Menus, MenuItem{Id: 1, Menu: "recurring debts", Url: "/recurring-debts", IsActive: false})
 	menu.Menus = append(menu.Menus, MenuItem{Id: 2, Menu: "long term debts", Url: "/long-term-debts", IsActive: false})
 	menu.Menus = append(menu.Menus, MenuItem{Id: 3, Menu: "assets", Url: "/assets", IsActive: false})

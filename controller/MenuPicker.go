@@ -2,12 +2,12 @@ package controller
 
 import (
 	"fmt"
-	"net/http"
-	"strconv"
-
 	"github.com/monstercameron/gofinances/helpers"
 	"github.com/monstercameron/gofinances/structs"
-	"github.com/monstercameron/gofinances/views/pages"
+	"github.com/monstercameron/gofinances/views/components"
+	"net/http"
+	"strconv"
+	// "github.com/monstercameron/gofinances/views/pages"
 )
 
 func init() {
@@ -38,7 +38,7 @@ func MenuPicker(w http.ResponseWriter, r *http.Request) {
 
 	structs.Menu.SetActive(id)
 
-	component := pages.IndexPage("My Todo List", structs.Menu)
+	component := components.MainMenuComponent(structs.Menu.Menus)
 	// serve text/html
 	w.Header().Set("Content-Type", "text/html")
 	// render the component to the response writer

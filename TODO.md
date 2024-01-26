@@ -5,7 +5,7 @@
 * [ ] list all metrics to capture
     * [ ] assets
     * [ ] recurring bills
-    * [ ] short term debts
+    * [x] short term debts
     * [ ] long term debts
     * [ ] card utilizations
     * [ ] goals
@@ -15,11 +15,12 @@
     * [ ] drip calculator
 * [ ] create structs
     * [ ] create associated methods
+        * [x] Menu
     * [ ] create maths helper
 * [x] design ui for metric import
     * [ ] landing page
     * [ ] account creation page
-    * [ ] view/edit recurring bills
+    * [x] view/edit recurring bills
     * [ ] view/edit short term debts
     * [ ] view/edit long term debts
     * [ ] view/edit card utilization
@@ -35,3 +36,5 @@
     * [ ] send SQLite db to client for long term persistence
     * [ ] wipe values after an hour
 * [ ] research aggressiveness/risk for recommendations
+* [ ] multi-tenancy
+    * [ ] session storage

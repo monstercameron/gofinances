@@ -1,6 +1,7 @@
 package components
 
-import "github.com/monstercameron/gofinances/structs"
+import ("github.com/monstercameron/gofinances/structs"
+		"strconv")
 
 
 templ MainMenuComponent(menuItems []structs.MenuItem) {
@@ -11,7 +12,7 @@ templ MainMenuComponent(menuItems []structs.MenuItem) {
 					{ menuItem.Menu }
 				</div>
 			} else {
-				<div class="tab text-center capitalize">
+				<div class="tab text-center capitalize" hx-trigger="click"  hx-get={"/menu/" + strconv.Itoa(menuItem.Id)} hx-swap="outerHTML" hx-target="#menu">
 					{ menuItem.Menu }
 				</div>
 			}
