@@ -16,7 +16,7 @@
 * [ ] create structs
     * [ ] create associated methods
     * [ ] create maths helper
-* [ ] design ui for metric import
+* [x] design ui for metric import
     * [ ] landing page
     * [ ] account creation page
     * [ ] view/edit recurring bills

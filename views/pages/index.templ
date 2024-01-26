@@ -1,0 +1,237 @@
+package pages
+
+import (
+// "github.com/monstercameron/go-in-one-month/objects"
+// "github.com/monstercameron/go-in-one-month/views/components"
+)
+
+templ IndexPage() {
+	<!DOCTYPE html />
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<meta name="description" content="A simple todo list app written in Go"/>
+			<link rel="stylesheet" href="/static/css/style.css"/>
+			<link rel="stylesheet" href="/static/css/custom.css"/>
+			<link rel="stylesheet" href="/static/css/animations.css"/>
+			<script rel="script" src="/static/script/script.js"></script>
+			<script rel="script" src="/static/script/htmx.min.js"></script>
+			<title>goFinances</title>
+		</head>
+		<body>
+			<div id="container" class="px-10 pt-1">
+				<div class="my-10 pt-10">
+					<h1 class="text-center text-5xl">
+						goFinancial Planner V 0.1
+					</h1>
+				</div>
+				<div id="menu" class="w-full grid grid-cols-11">
+					<div class="tab text-center capitalize">short term debts</div>
+					<div class="tab text-center capitalize activeTab">recurring debts</div>
+					<div class="tab text-center capitalize">long term debts</div>
+					<div class="tab text-center capitalize">assets</div>
+					<div class="tab text-center capitalize">credit utilization</div>
+					<div class="tab text-center capitalize">goals</div>
+					<div class="tab text-center capitalize">recomendations</div>
+					<div class="tab text-center capitalize">calendar</div>
+					<div class="tab text-center capitalize">drip calculator</div>
+					<div class="tab text-center capitalize">time tables</div>
+					<div class="tab text-center capitalize">Settings</div>
+				</div>
+				<div class="pane p-5">
+					<div id="form" class="grid grid-cols-1">
+						<div id="recurringBillColumns" class="grid grid-cols-12 capitalize">
+							<div id="idColumns" class="col-span-1 column">controls</div>
+							<div id="idColumns" class="col-span-1 column">id</div>
+							<div id="billDateColumn" class="col-span-1 column sortable sorted">
+								Bill Date
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke-width="1.5"
+									stroke="currentColor"
+									class="w-8 h-5 inline"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18"
+									></path>
+								</svg>
+							</div>
+							<div id="billNameColumn" class="col-span-2 column sortable">Bill name</div>
+							<div id="billOwnerColumn" class="col-span-1 column sortable">Bill Owner</div>
+							<div id="billCostColumn" class="col-span-1 column sortable">Bill Cost</div>
+							<div id="billNotesColumn" class="col-span-5 column column-last">Notes</div>
+						</div>
+						<div id="recurringBillId-1" class="grid grid-cols-12 capitalize py-4 px-1 bg-slate-300">
+							<div id="billControls" class="grid grid-cols-2 ">
+								<div class="inline  text-center">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke-width="1.5"
+										stroke="currentColor"
+										class="w-6 h-6 inline"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+										></path>
+									</svg>
+								</div>
+								<div class="inline  text-center">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke-width="1.5"
+										stroke="currentColor"
+										class="w-6 h-6 inline"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+										></path>
+									</svg>
+								</div>
+							</div>
+							<div id="idColumns" class="pl-5 col-span-1 text-center">1</div>
+							<div id="billDateColumn" class="pl-5 col-span-1 text-center">Bill Date</div>
+							<div id="billNameColumn" class="pl-5 col-span-2">Bill name</div>
+							<div id="billOwnerColumn" class="pl-5 col-span-1">Bill Owner</div>
+							<div id="billCostColumn" class="pl-5 col-span-1 text-right grid grid-cols-2">
+								<div class="inline text-left">$</div>
+								<div class="inline text-right">bill cost</div>
+							</div>
+							<div id="billNotesColumn" class="pl-5 col-span-5">Notes</div>
+						</div>
+						<div id="recurringBillId-2" class="grid grid-cols-12 capitalize py-4 px-1 bg-slate-100">
+							<div id="billControls" class="grid grid-cols-2">
+								<div class="inline  text-center">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke-width="1.5"
+										stroke="currentColor"
+										class="w-6 h-6 inline"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+										></path>
+									</svg>
+								</div>
+								<div class="inline  text-center">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke-width="1.5"
+										stroke="currentColor"
+										class="w-6 h-6 inline"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+										></path>
+									</svg>
+								</div>
+							</div>
+							<div id="idColumns" class="pl-5 col-span-1 text-center">2</div>
+							<div id="billDateColumn" class="pl-5 col-span-1 text-center">2nd</div>
+							<div id="billNameColumn" class="pl-5 col-span-2">Light bill</div>
+							<div id="billOwnerColumn" class="pl-5 col-span-1">Cam</div>
+							<div id="billCostColumn" class="pl-5 col-span-1 text-right grid grid-cols-2">
+								<div class="inline text-left">$</div>
+								<div class="inline text-right">850.99</div>
+							</div>
+							<div id="billNotesColumn" class="pl-5 col-span-5 bill-notes-column">
+								Lorem ipsum, dolor sit amet
+								consectetur
+								adipisicing elit. Quos recusandae corporis animi illo deserunt? Veritatis iste ut consequatur
+								illum ullam, molestias quod quibusdam repellendus recusandae quas minus. Obcaecati, quo nobis.
+							</div>
+						</div>
+						<div id="recurringBillId-3" class="grid grid-cols-12 capitalize py-4 px-1 bg-slate-400  gap-x-1">
+							<div id="billControls" class="flex items-center justify-center gap-x-1 px-1">
+								<div class="w-1/2">
+									<button class="bg-blue-600 text-white capitalize rounded-lg py-1 px-3 w-full">
+										save
+									</button>
+								</div>
+								<div class="w-1/2">
+									<button class="bg-red-700 text-white capitalize rounded-lg py-1 px-3 w-full">
+										cancel
+									</button>
+								</div>
+							</div>
+							<div id="billid" class="col-span-1">
+								<input type="text" name="billid" id="" value="3" disabled class="h-20 w-full text-center"/>
+							</div>
+							<div id="billDateColumn" class="col-span-1">
+								<input type="date" name="billdate" id="" value="3" class="border-2 h-20"/>
+							</div>
+							<div id="billNameColumn" class="col-span-2">
+								<input
+									type="text"
+									value="Light bill"
+									name="billname"
+									class="w-full border-2 active:border-4 h-20 pl-2"
+								/>
+							</div>
+							<div id="billOwnerColumn" class="col-span-1">
+								<select name="" id="" name="billowner" class="w-full border-2 active:border-4 h-20 pl-2">
+									<option value="cam">cam</option>
+								</select>
+							</div>
+							<div id="billCostColumn" class="col-span-1 text-right grid grid-cols-1">
+								<input
+									type="number"
+									name="billvalue"
+									id=""
+									value="850.99"
+									class="w-full border-2 active:border-4 h-20 pl-2"
+								/>
+							</div>
+							<div id="billNotesColumn" class="col-span-5 bill-notes-column w-full border-2 active:border-4 h-20">
+								<textarea name="billnotes" id="" cols="100" rows="50" width="100%" class=" p-3">
+									Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid quis obcaecati, nobis sed mollitia, quibusdam a dolores eum odio ab enim dolorum quas officia, commodi alias delectus? Atque, quidem soluta.
+								</textarea>
+							</div>
+						</div>
+						<div id="recurringBillId-3" class="grid grid-cols-12 capitalize bg-slate-800  gap-x-1">
+							<div class="col-span-4 text-white text-3xl capitalize p-10">
+								<button class="text-center ml-10 hover:border-2 rounded-full">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke-width="1.5"
+										stroke="currentColor"
+										class="w-10 h-15 text-white inline"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+										></path>
+									</svg>
+								</button>
+								add recurring bill
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>
+}
