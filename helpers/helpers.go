@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 )
@@ -37,4 +38,14 @@ func SetupSignalHandling(mux *http.ServeMux) (*http.Server, <-chan struct{}) {
 	}()
 
 	return server, done
+}
+
+// ExtractSegmentFromPath extracts a segment from the URL path at a given index.
+func ExtractSegmentFromPath(path string, index int) (string, error) {
+	pathSegments := strings.Split(path, "/")
+	// Check if the requested index is within the range of available segments.
+	if index > 0 && index < len(pathSegments) {
+		return pathSegments[index], nil
+	}
+	return "", fmt.Errorf("segment not found at index %d", index)
 }

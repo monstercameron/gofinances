@@ -1,9 +1,9 @@
 package controller
 
 import (
+	"net/http"
 	"github.com/monstercameron/gofinances/structs"
 	"github.com/monstercameron/gofinances/views/pages"
-	"net/http"
 	// "github.com/monstercameron/gofinances/views/components"
 )
 
@@ -12,6 +12,7 @@ func CreateRoutes(server *http.ServeMux) {
 	server.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("views/static"))))
 
 	server.HandleFunc("/", GetIndexPage)
+	server.HandleFunc("/menu/", MenuPicker)
 }
 
 func GetIndexPage(w http.ResponseWriter, r *http.Request) {

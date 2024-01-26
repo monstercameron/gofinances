@@ -4,5 +4,5 @@ import "fmt"
 
 func init() {
 
-	fmt.Println("RecurringDebts.go.init(): Populating RecurringDebts...(not implemented)")
+	fmt.Println("RecurringDebts.init(): Populating RecurringDebts...(not implemented)")
 }

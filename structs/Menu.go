@@ -13,6 +13,16 @@ type MenuList struct {
 	Menus []MenuItem
 }
 
+func (m *MenuList) SetActive(id int) {
+	for i := range m.Menus {
+		if m.Menus[i].Id == id {
+			m.Menus[i].IsActive = true
+		} else {
+			m.Menus[i].IsActive = false
+		}
+	}
+}
+
 func PopulateMenu() MenuList {
 	var menu MenuList
 	menu.Menus = append(menu.Menus, MenuItem{Id: 1, Menu: "recurring bills", Url: "/recurring-debts", IsActive: true})
@@ -32,6 +42,6 @@ func PopulateMenu() MenuList {
 var Menu MenuList
 
 func init() {
-	fmt.Println("Menu.go.init(): Populating Menu...")
+	fmt.Println("Menu.init(): Populating Menu...")
 	Menu = PopulateMenu()
 }
