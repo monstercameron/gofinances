@@ -1,23 +1,23 @@
 package pages
 
 import (
-// "github.com/monstercameron/go-in-one-month/objects"
-// "github.com/monstercameron/go-in-one-month/views/components"
+"github.com/monstercameron/gofinances/views/components"
+"github.com/monstercameron/gofinances/structs"
 )
 
-templ IndexPage() {
+templ IndexPage(title string, menuList structs.MenuList) {
 	<!DOCTYPE html />
 	<html lang="en">
 		<head>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<meta name="description" content="A simple todo list app written in Go"/>
-			<link rel="stylesheet" href="/static/css/style.css"/>
-			<link rel="stylesheet" href="/static/css/custom.css"/>
-			<link rel="stylesheet" href="/static/css/animations.css"/>
+			<link rel="stylesheet" href="/static/style/style.css"/>
+			<link rel="stylesheet" href="/static/style/custom.css"/>
+			<link rel="stylesheet" href="/static/style/animations.css"/>
 			<script rel="script" src="/static/script/script.js"></script>
 			<script rel="script" src="/static/script/htmx.min.js"></script>
-			<title>goFinances</title>
+			<title>{ title }</title>
 		</head>
 		<body>
 			<div id="container" class="px-10 pt-1">
@@ -26,19 +26,7 @@ templ IndexPage() {
 						goFinancial Planner V 0.1
 					</h1>
 				</div>
-				<div id="menu" class="w-full grid grid-cols-11">
-					<div class="tab text-center capitalize">short term debts</div>
-					<div class="tab text-center capitalize activeTab">recurring debts</div>
-					<div class="tab text-center capitalize">long term debts</div>
-					<div class="tab text-center capitalize">assets</div>
-					<div class="tab text-center capitalize">credit utilization</div>
-					<div class="tab text-center capitalize">goals</div>
-					<div class="tab text-center capitalize">recomendations</div>
-					<div class="tab text-center capitalize">calendar</div>
-					<div class="tab text-center capitalize">drip calculator</div>
-					<div class="tab text-center capitalize">time tables</div>
-					<div class="tab text-center capitalize">Settings</div>
-				</div>
+				@components.MainMenuComponent(menuList.Menus)
 				<div class="pane p-5">
 					<div id="form" class="grid grid-cols-1">
 						<div id="recurringBillColumns" class="grid grid-cols-12 capitalize">

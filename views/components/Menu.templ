@@ -1,0 +1,20 @@
+package components
+
+import "github.com/monstercameron/gofinances/structs"
+
+
+templ MainMenuComponent(menuItems []structs.MenuItem) {
+	<div id="menu" class="w-full grid grid-cols-11">
+		for _, menuItem := range menuItems {
+			if menuItem.IsActive {
+				<div class="tab text-center capitalize activeTab">
+					{ menuItem.Menu }
+				</div>
+			} else {
+				<div class="tab text-center capitalize">
+					{ menuItem.Menu }
+				</div>
+			}
+		}
+	</div>
+}
