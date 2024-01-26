@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "tailwinds": "npx tailwindcss -i ./views/static/css/template.css -o ./views/static/css/style.css --watch",
+    "dev": "nodemon -e go --signal SIGTERM --exec go run .",
+    "templ": "nodemon -V -e templ --exec './sh/templgenerate.sh $FILENAME'"
   },
   "author": "",
   "license": "ISC",
