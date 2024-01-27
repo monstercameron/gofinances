@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     svg.setAttribute("viewBox", "0 0 24 24");
     svg.setAttribute("stroke-width", "1.5");
     svg.setAttribute("stroke", "currentColor");
-    svg.classList.add("w-8", "h-5", "inline");
+    svg.classList.add("inline");
 
     var path = document.createElementNS(svgNS, "path");
     path.setAttribute("stroke-linecap", "round");
@@ -19,6 +19,14 @@ document.addEventListener("DOMContentLoaded", function () {
     svg.appendChild(path);
 
     return svg;
+  }
+
+  // Function to adjust SVG size
+  function adjustSvgSize(svgElement, column) {
+    var style = window.getComputedStyle(column, null).getPropertyValue('font-size');
+    var fontSize = parseFloat(style); 
+    svgElement.style.width = fontSize + 'px';
+    svgElement.style.height = fontSize + 'px';
   }
 
   // Select all sortable columns
@@ -38,6 +46,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // Add 'sorted' class to clicked column and append the SVG to it
     event.currentTarget.classList.add("sorted");
     event.currentTarget.appendChild(svgElement);
+
+    // Adjust SVG size based on column font size
+    adjustSvgSize(svgElement, event.currentTarget);
   }
 
   // Add click event listener to each sortable column
@@ -45,3 +56,4 @@ document.addEventListener("DOMContentLoaded", function () {
     column.addEventListener("click", handleColumnClick);
   });
 });
+
