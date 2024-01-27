@@ -203,7 +203,7 @@ func AddBills(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("HX-Trigger", "newBill")
 	w.WriteHeader(http.StatusOK)
 	// Optional: Write a confirmation message to the response
-	fmt.Fprintln(w, "Bill added successfully")
+	fmt.Fprintln(w, "")
 }
 
 // DeleteBills handles the HTTP DELETE request to remove a specific bill.
