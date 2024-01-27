@@ -1,10 +1,10 @@
 package controller
 
 import (
+	"net/http"
+
 	"github.com/monstercameron/gofinances/structs"
 	"github.com/monstercameron/gofinances/views/pages"
-	"net/http"
-	// "github.com/monstercameron/gofinances/views/components"
 )
 
 func CreateRoutes(server *http.ServeMux) {
@@ -16,6 +16,7 @@ func CreateRoutes(server *http.ServeMux) {
 	server.HandleFunc("/pane", TestPage)
 	server.HandleFunc("/debts", GetBills)
 	server.HandleFunc("/debts/update", UpdateBills)
+	server.HandleFunc("/debts/new", AddBills)
 }
 
 func GetIndexPage(w http.ResponseWriter, r *http.Request) {
@@ -25,8 +26,7 @@ func GetIndexPage(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-
-	component := pages.IndexPage("My Todo List", structs.Menu)
+	component := pages.IndexPage("goFinances", structs.Menu)
 	// serve text/html
 	w.Header().Set("Content-Type", "text/html")
 	// render the component to the response writer

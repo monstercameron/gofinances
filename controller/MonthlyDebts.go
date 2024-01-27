@@ -26,7 +26,7 @@ func GetBills(w http.ResponseWriter, r *http.Request) {
 
 		// Get bill by ID
 		bill := structs.RecurringBills.GetByID(intID)
-		if bill != nil {
+		if bill == nil {
 			// Handle error if bill not found
 			http.Error(w, "Bill not found", http.StatusNotFound)
 			return
@@ -54,12 +54,47 @@ func GetBills(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateBills(w http.ResponseWriter, r *http.Request) {
+	// Check if the request method is GET and an ID is provided
+	if r.Method == "GET" {
+		fmt.Println("GET")
+		id := r.URL.Query().Get("id")
+		if id != "" {
+			// Convert id to integer
+			intID, err := strconv.Atoi(id)
+			if err != nil {
+				// Handle error if id is not a valid integer
+				http.Error(w, "Invalid ID format", http.StatusBadRequest)
+			}
+			bill := structs.RecurringBills.GetByID(intID)
+			if err != nil {
+				// Handle error if bill not found
+				http.Error(w, "Bill not found", http.StatusNotFound)
+			}
+			w.Header().Set("Content-Type", "text/html")
+			components.EditRecurringBillsComponent(*bill, true).Render(r.Context(), w)
+		} else {
+			newId := structs.RecurringBills.GetLastID()
+			bill := structs.RecurrinBill{
+				Id:         newId + 1,
+				Name:       "",
+				Amount:     0,
+				DayOfMonth: 0,
+				Owner:      "",
+				Notes:      "",
+			}
+			w.Header().Set("Content-Type", "text/html")
+			components.EditRecurringBillsComponent(bill, false).Render(r.Context(), w)
+		}
+		return
+	}
+
 	// 1. Parse URL Parameters
 	billID := r.URL.Query().Get("id")
 	if billID == "" {
 		http.Error(w, "No bill ID provided", http.StatusBadRequest)
 		return
 	}
+
 	id, err := strconv.Atoi(billID)
 	if err != nil {
 		http.Error(w, "Invalid bill ID", http.StatusBadRequest)
@@ -89,11 +124,12 @@ func UpdateBills(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// 3. Find and Update Bill
-	bill, err := findBillByID(id) // Assuming this function exists
+	bill := structs.RecurringBills.GetByID(id) // Assuming this function exists
 	if err != nil {
 		http.Error(w, "Bill not found", http.StatusNotFound)
 		return
 	}
+
 	bill.Name = name
 	bill.Amount = amount
 	bill.DayOfMonth = dayOfMonth
@@ -107,6 +143,60 @@ func UpdateBills(w http.ResponseWriter, r *http.Request) {
 	components.RecurringBillsComponent(bills).Render(r.Context(), w)
 }
 
+func AddBills(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// 2. Parse Form Data
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "Error parsing form", http.StatusInternalServerError)
+		return
+	}
+
+	name := r.FormValue("name")
+	if name == "" {
+		http.Error(w, "No name provided", http.StatusBadRequest)
+		return
+	}
+
+	amount, err := strconv.ParseFloat(r.FormValue("amount"), 64)
+	if err != nil {
+		http.Error(w, "Invalid amount", http.StatusBadRequest)
+		return
+	}
+	date := r.FormValue("date")
+	notes := r.FormValue("notes")
+
+	// Convert date to day of month
+	dayOfMonth, err := getDayOfMonth(date)
+	if err != nil {
+		http.Error(w, "Invalid date", http.StatusBadRequest)
+		return
+	}
+
+	id := structs.RecurringBills.GetLastID() + 1
+
+	bill := structs.RecurrinBill{
+		Id:         id,
+		Name:       name,
+		Amount:     amount,
+		DayOfMonth: dayOfMonth,
+		Owner:      "cameron",
+		Notes:      notes,
+	}
+
+	structs.RecurringBills.Bills = append(structs.RecurringBills.Bills, bill)
+
+	// send headers
+	w.Header().Set("HX-Trigger", "newBill")
+	// reurn a 200 OK response
+	w.WriteHeader(http.StatusOK)
+	// write a message to the response writer
+	fmt.Fprintf(w, "")
+}
+
 // Helper function to convert date string to day of month
 func getDayOfMonth(dateStr string) (int, error) {
 	date, err := time.Parse("2006-01-02", dateStr)
@@ -114,10 +204,4 @@ func getDayOfMonth(dateStr string) (int, error) {
 		return 0, err
 	}
 	return date.Day(), nil
-}
-
-// Mock function to find a bill by ID (replace with actual implementation)
-func findBillByID(id int) (*structs.RecurrinBill, error) {
-	// Implement logic to find and return a bill by its ID
-	return nil, nil // replace with actual bill and error
 }

@@ -27,9 +27,9 @@ templ IndexPage(title string, menuList structs.MenuList) {
 					</h1>
 				</div>
 				@components.MainMenuComponent(menuList.Menus)
-				<div class="pane p-5" hx-get={"/pane"} hx-trigger="menuSwitch from:body">
+				<div class="pane p-5 shadow-lg mb-10" hx-get={"/pane"} hx-trigger="menuSwitch from:body">
 					<div id="form" class="grid grid-cols-1">
-						<div id="recurringBillColumns" class="grid grid-cols-12 capitalize">
+						<div id="recurringBillColumns" class="grid grid-cols-12 capitalize" >
 							<div id="idColumns" class="col-span-1 column">controls</div>
 							<div id="idColumns" class="col-span-1 column">id</div>
 							<div id="billDateColumn" class="col-span-1 column sortable" hx-trigger="click" hx-swap="innerHTML" hx-target="#recurringBillRows" hx-get="/debts?sort=day">
@@ -40,30 +40,17 @@ templ IndexPage(title string, menuList structs.MenuList) {
 							<div id="billCostColumn" class="col-span-1 column sortable"  hx-trigger="click" hx-swap="innerHTML" hx-target="#recurringBillRows" hx-get="/debts?sort=amount">Bill Cost</div>
 							<div id="billNotesColumn" class="col-span-5 column column-last">Notes</div>
 						</div>
-						<div id="recurringBillRows" class="grid grid-cols-1">
+						<div
+							id="recurringBillRows" 
+							class="grid grid-cols-1"
+							hx-get={"/debts"} 
+							hx-trigger="newBill from:body"
+							hx-target="#recurringBillRows"
+							hx-swap="innerHTML"
+						>
 							@components.RecurringBillsComponent(structs.RecurringBills)
 						</div>
-						<div id="recurringBillFooter" class="grid grid-cols-12 capitalize bg-slate-800  gap-x-1">
-							<div class="col-span-4 text-white text-3xl capitalize p-10">
-								<button class="text-center ml-10 hover:border-2 rounded-full">
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke-width="1.5"
-										stroke="currentColor"
-										class="w-10 h-15 text-white inline"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-										></path>
-									</svg>
-								</button>
-								add recurring bill
-							</div>
-						</div>
+						@components.AddRecurringBillsComponent()
 					</div>
 				</div>
 			</div>

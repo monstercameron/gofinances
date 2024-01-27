@@ -79,6 +79,10 @@ func PopulateRecurringBills() RecurringBillList {
 	return bills
 }
 
+func (m *RecurringBillList) GetLastID() int {
+	return m.Bills[len(m.Bills)-1].Id
+}
+
 var RecurringBills RecurringBillList
 
 func init() {

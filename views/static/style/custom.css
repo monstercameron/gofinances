@@ -46,3 +46,13 @@
   overflow: scroll;
   height: 50px;
 }
+
+/* Selects odd children of elements with the .rowColor class */
+.rowColor:nth-child(odd) {
+  background-color: #f2f2f2; /* Light gray for odd rows */
+}
+
+/* Selects even children of elements with the .rowColor class */
+.rowColor:nth-child(even) {
+  background-color: #ffffff; /* White for even rows */
+}

@@ -5,13 +5,17 @@ import (
     "strconv"
 )
 
-templ EditRecurringBillsComponent(bill structs.RecurrinBill) {
+templ EditRecurringBillsComponent(bill structs.RecurrinBill, update bool) {
     <div id={"EditRecurringBill" + strconv.Itoa(bill.Id)}
         class="grid grid-cols-12 capitalize py-4 px-1 bg-slate-400  gap-x-1">
     <div id="billControls" class="flex items-center justify-center gap-x-1 px-1">
         <div class="w-1/2">
-            <button class="bg-blue-600 text-white uppercase rounded-lg py-1 px-3 w-full"
+            <button class="bg-blue-600 text-white uppercase rounded-lg py-1 px-3 w-full text-xs"
+            if update == true {
                 hx-post={"/debts/update?id=" + strconv.Itoa(bill.Id)}
+            }else{
+                hx-post={"/debts/new"}
+            }
                 hx-include={"#EditRecurringBill" + strconv.Itoa(bill.Id)}
                 hx-swap="outerHTML"
                 hx-target={"#EditRecurringBill" + strconv.Itoa(bill.Id)}
@@ -20,11 +24,16 @@ templ EditRecurringBillsComponent(bill structs.RecurrinBill) {
             </button>
         </div>
         <div class="w-1/2">
-            <button class="bg-red-700 text-white uppercase rounded-lg py-1 px-3 w-full"
-                hx-get={"/debts?id=" + strconv.Itoa(bill.Id)}
-                hx-include={"#EditRecurringBill" + strconv.Itoa(bill.Id)}
-                hx-swap="outerHTML"
-                hx-target={"#EditRecurringBill" + strconv.Itoa(bill.Id)}
+            <button class="bg-red-700 text-white uppercase rounded-lg py-1 px-3 w-full text-xs"
+                if update == true {
+                    hx-get={"/debts?id=" + strconv.Itoa(bill.Id)}
+                    hx-swap="outerHTML"
+                    hx-target={"#EditRecurringBill" + strconv.Itoa(bill.Id)}
+                }else{
+                    hx-get="/debts?id=0"
+                    hx-swap="delete"
+                    hx-target={"#EditRecurringBill" + strconv.Itoa(bill.Id)}
+                }
             >
                 cancel
             </button>
@@ -34,7 +43,7 @@ templ EditRecurringBillsComponent(bill structs.RecurrinBill) {
         <input type="text" name="id" id="" value={strconv.Itoa(bill.Id)} disabled class="h-20 w-full text-center" />
     </div>
     <div id="billDateColumn" class="col-span-1">
-        <input type="date" name="date" id="" value={strconv.Itoa(bill.DayOfMonth)} class="border-2 h-20" />
+        <input type="date" name="date" id="" value={"2024-01-" + strconv.Itoa(bill.DayOfMonth)} class="border-2 h-20" />
     </div>
     <div id="billNameColumn" class="col-span-2">
         <input type="text" value={bill.Name} name="name" class="w-full border-2 active:border-4 h-20 pl-2" />
