@@ -32,29 +32,17 @@ templ IndexPage(title string, menuList structs.MenuList) {
 						<div id="recurringBillColumns" class="grid grid-cols-12 capitalize">
 							<div id="idColumns" class="col-span-1 column">controls</div>
 							<div id="idColumns" class="col-span-1 column">id</div>
-							<div id="billDateColumn" class="col-span-1 column sortable sorted" hx-trigger="click" hx-swap="afterend" hx-target="#recurringBillColumns" hx-get="/debts?sort=day">
+							<div id="billDateColumn" class="col-span-1 column sortable" hx-trigger="click" hx-swap="innerHTML" hx-target="#recurringBillRows" hx-get="/debts?sort=day">
 								Bill Date
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke-width="1.5"
-									stroke="currentColor"
-									class="w-8 h-5 inline"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18"
-									></path>
-								</svg>
 							</div>
-							<div id="billNameColumn" class="col-span-2 column sortable" hx-trigger="click" hx-swap="afterend" hx-target="#recurringBillColumns" hx-get="/debts?sort=name">Bill name</div>
-							<div id="billOwnerColumn" class="col-span-1 column sortable" hx-trigger="click" hx-swap="afterend" hx-target="#recurringBillColumns" hx-get="/debts?sort=owner">Bill Owner</div>
-							<div id="billCostColumn" class="col-span-1 column sortable"  hx-trigger="click" hx-swap="afterend" hx-target="#recurringBillColumns" hx-get="/debts?sort=amount">Bill Cost</div>
+							<div id="billNameColumn" class="col-span-2 column sortable" hx-trigger="click" hx-swap="innerHTML" hx-target="#recurringBillRows" hx-get="/debts?sort=name">Bill name</div>
+							<div id="billOwnerColumn" class="col-span-1 column sortable" hx-trigger="click" hx-swap="innerHTML" hx-target="#recurringBillRows" hx-get="/debts?sort=owner">Bill Owner</div>
+							<div id="billCostColumn" class="col-span-1 column sortable"  hx-trigger="click" hx-swap="innerHTML" hx-target="#recurringBillRows" hx-get="/debts?sort=amount">Bill Cost</div>
 							<div id="billNotesColumn" class="col-span-5 column column-last">Notes</div>
 						</div>
-						@components.RecurringBillsComponent(structs.RecurringBills)
+						<div id="recurringBillRows" class="grid grid-cols-1">
+							@components.RecurringBillsComponent(structs.RecurringBills)
+						</div>
 						<div id="recurringBillId-3" class="grid grid-cols-12 capitalize py-4 px-1 bg-slate-400  gap-x-1">
 							<div id="billControls" class="flex items-center justify-center gap-x-1 px-1">
 								<div class="w-1/2">

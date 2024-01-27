@@ -66,11 +66,16 @@ func (m *RecurringBillList) SortBy(sortBy string) {
 
 func PopulateRecurringBills() RecurringBillList {
 	var bills RecurringBillList
-	bills.Bills = append(bills.Bills, RecurrinBill{Id: 0, Name: "Rent", DayOfMonth: 17, Amount: 1000, Owner: "Cameron", Notes: "This is a note"})
-	bills.Bills = append(bills.Bills, RecurrinBill{Id: 1, Name: "Car Payment", DayOfMonth: 2, Amount: 300, Owner: "Cameron", Notes: "This is a note"})
-	bills.Bills = append(bills.Bills, RecurrinBill{Id: 2, Name: "Car Insurance", DayOfMonth: 3, Amount: 100, Owner: "Cameron", Notes: "This is a note"})
-	bills.Bills = append(bills.Bills, RecurrinBill{Id: 3, Name: "Car Payment", Amount: 300, Owner: "Cameron", Notes: "This is a note"})
-	bills.Bills = append(bills.Bills, RecurrinBill{Id: 4, Name: "Car Insurance", DayOfMonth: 20, Amount: 100, Owner: "Cameron", Notes: "This is a note"})
+	bills.Bills = append(bills.Bills, RecurrinBill{Id: 0, Name: "Rent", DayOfMonth: 17, Amount: 1000, Owner: "Cameron", Notes: "Monthly rent for apartment"})
+	bills.Bills = append(bills.Bills, RecurrinBill{Id: 1, Name: "Car Payment", DayOfMonth: 2, Amount: 300, Owner: "Cameron", Notes: "Car loan payment"})
+	bills.Bills = append(bills.Bills, RecurrinBill{Id: 2, Name: "Car Insurance", DayOfMonth: 3, Amount: 100, Owner: "Cameron", Notes: "Quarterly car insurance"})
+	bills.Bills = append(bills.Bills, RecurrinBill{Id: 3, Name: "Internet Bill", DayOfMonth: 12, Amount: 60, Owner: "Alex", Notes: "Monthly internet service fee"})
+	bills.Bills = append(bills.Bills, RecurrinBill{Id: 4, Name: "Electricity Bill", DayOfMonth: 20, Amount: 75, Owner: "Taylor", Notes: "Monthly electricity usage"})
+	bills.Bills = append(bills.Bills, RecurrinBill{Id: 5, Name: "Gym Membership", DayOfMonth: 5, Amount: 40, Owner: "Jordan", Notes: "Annual gym subscription"})
+	bills.Bills = append(bills.Bills, RecurrinBill{Id: 6, Name: "Streaming Service", DayOfMonth: 25, Amount: 15, Owner: "Morgan", Notes: "Monthly Netflix subscription"})
+	bills.Bills = append(bills.Bills, RecurrinBill{Id: 7, Name: "Water Bill", DayOfMonth: 18, Amount: 50, Owner: "Casey", Notes: "Monthly water usage charge"})
+	bills.Bills = append(bills.Bills, RecurrinBill{Id: 8, Name: "Grocery Delivery", DayOfMonth: 1, Amount: 120, Owner: "Jamie", Notes: "Monthly grocery delivery service"})
+	bills.Bills = append(bills.Bills, RecurrinBill{Id: 9, Name: "Cell Phone", DayOfMonth: 11, Amount: 85, Owner: "Pat", Notes: "Monthly cell phone plan fee"})
 	return bills
 }
 
