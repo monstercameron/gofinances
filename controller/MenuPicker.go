@@ -41,6 +41,23 @@ func MenuPicker(w http.ResponseWriter, r *http.Request) {
 	component := components.MainMenuComponent(structs.Menu.Menus)
 	// serve text/html
 	w.Header().Set("Content-Type", "text/html")
+	w.Header().Set("HX-Trigger", "menuSwitch")
 	// render the component to the response writer
 	component.Render(r.Context(), w)
+}
+
+func TestPage(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// helpers.Slogger.Info("Received request", "method", r.Method, "url", r.URL.String(), "protocol", r.Proto)
+
+	// component := pages.IndexPage("My Todo List", structs.Menu)
+	// serve text/html
+	w.Header().Set("Content-Type", "text/html")
+	// render the component to the response writer
+	// component.Render(r.Context(), w)
+	w.Write([]byte("Hello World"))
 }

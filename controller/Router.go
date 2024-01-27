@@ -13,6 +13,8 @@ func CreateRoutes(server *http.ServeMux) {
 
 	server.HandleFunc("/", GetIndexPage)
 	server.HandleFunc("/menu/", MenuPicker)
+	server.HandleFunc("/pane", TestPage)
+	server.HandleFunc("/debts", SortRecurringBills)
 }
 
 func GetIndexPage(w http.ResponseWriter, r *http.Request) {

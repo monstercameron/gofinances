@@ -23,6 +23,16 @@ func (m *MenuList) SetActive(id int) {
 	}
 }
 
+// return the id number of the first active menu item
+func (m *MenuList) GetActive() int {
+	for i := range m.Menus {
+		if m.Menus[i].IsActive {
+			return m.Menus[i].Id
+		}
+	}
+	return -1
+}
+
 func PopulateMenu() MenuList {
 	var menu MenuList
 	menu.Menus = append(menu.Menus, MenuItem{Id: 0, Menu: "recurring bills", Url: "/recurring-debts", IsActive: true})
