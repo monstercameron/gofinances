@@ -36,6 +36,16 @@ func (m *RecurringBillList) GetTotalCost() float64 {
 	return total
 }
 
+// remove bill by id
+func (m *RecurringBillList) RemoveByID(id int) {
+	for i := range m.Bills {
+		if m.Bills[i].Id == id {
+			m.Bills = append(m.Bills[:i], m.Bills[i+1:]...)
+			return
+		}
+	}
+}
+
 // / SortBy sorts bills by name, amount, owner, or recurring date
 func (m *RecurringBillList) SortBy(sortBy string) {
 	switch sortBy {

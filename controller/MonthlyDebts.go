@@ -197,6 +197,43 @@ func AddBills(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "")
 }
 
+func DeleteBills(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method != http.MethodDelete {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// 1. Parse URL Parameters
+	billID := r.URL.Query().Get("id")
+	if billID == "" {
+		http.Error(w, "No bill ID provided", http.StatusBadRequest)
+		return
+	}
+
+	id, err := strconv.Atoi(billID)
+	if err != nil {
+		http.Error(w, "Invalid bill ID", http.StatusBadRequest)
+		return
+	}
+
+	// 2. Find and Delete Bill
+	bill := structs.RecurringBills.GetByID(id) // Assuming this function exists
+	if bill == nil {
+		http.Error(w, "Bill not found", http.StatusNotFound)
+		return
+	}
+
+	// 3. Remove from Bill List
+	structs.RecurringBills.RemoveByID(id)
+
+	// 5. Render Component
+	// reurn a 200 OK response
+	w.WriteHeader(http.StatusOK)
+	// write a message to the response writer
+	fmt.Fprintf(w, "")
+}
+
 // Helper function to convert date string to day of month
 func getDayOfMonth(dateStr string) (int, error) {
 	date, err := time.Parse("2006-01-02", dateStr)
