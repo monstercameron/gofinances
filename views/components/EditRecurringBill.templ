@@ -5,7 +5,7 @@ import (
     "strconv"
 )
 
-templ EditRecurringBillsComponent(bill structs.RecurrinBill, update bool) {
+templ EditRecurringBillsComponent(bill structs.RecurringBill, update bool) {
     <div id={"EditRecurringBill" + strconv.Itoa(bill.Id)}
         class="grid grid-cols-12 capitalize py-4 px-1 bg-slate-400  gap-x-1">
     <div id="billControls" class="flex items-center justify-center gap-x-1 px-1">

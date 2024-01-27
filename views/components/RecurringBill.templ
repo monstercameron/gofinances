@@ -2,6 +2,7 @@ package components
 
 import (
 	"github.com/monstercameron/gofinances/structs"
+	"github.com/monstercameron/gofinances/helpers"
     "strconv"
 )
 
@@ -43,12 +44,12 @@ templ RecurringBillsComponent(bills structs.RecurringBillList) {
                 </div>
             </div>
             <div id="idColumns" class="pl-5 col-span-1 text-center">{strconv.Itoa(bill.Id)}</div>
-            <div id="billDateColumn" class="pl-5 col-span-1 text-center">{strconv.Itoa(bill.DayOfMonth)}</div>
+            <div id="billDateColumn" class="pl-5 col-span-1 text-center">{helpers.ThDate(bill.DayOfMonth)}</div>
             <div id="billNameColumn" class="pl-5 col-span-2">{bill.Name}</div>
             <div id="billOwnerColumn" class="pl-5 col-span-1">{bill.Owner}</div>
             <div id="billCostColumn" class="pl-5 col-span-1 text-right grid grid-cols-2">
                 <div class="inline text-left">$</div>
-                <div class="inline text-right">{strconv.FormatFloat(bill.Amount, 'f', -1, 64)}</div>
+                <div class="inline text-right">{strconv.FormatFloat(bill.Amount, 'f', 2, 64)}</div>
             </div>
             <div id="billNotesColumn" class="pl-5 col-span-5">{bill.Notes}</div>
         </div>

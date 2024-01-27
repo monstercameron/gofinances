@@ -34,7 +34,7 @@ func GetBills(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Prepare a list containing the found bill
-		bills := structs.RecurringBillList{Bills: []structs.RecurrinBill{*bill}}
+		bills := structs.RecurringBillList{Bills: []structs.RecurringBill{*bill}}
 
 		// Set the Content-Type of the response to text/html
 		w.Header().Set("Content-Type", "text/html")
@@ -79,7 +79,7 @@ func UpdateBills(w http.ResponseWriter, r *http.Request) {
 		} else {
 			// Set up a new bill
 			newID := structs.RecurringBills.GetLastID() + 1
-			bill := structs.RecurrinBill{
+			bill := structs.RecurringBill{
 				Id:         newID,
 				Name:       "",
 				Amount:     0,
@@ -140,7 +140,7 @@ func UpdateBills(w http.ResponseWriter, r *http.Request) {
 
 	// Render updated bill information
 	w.Header().Set("Content-Type", "text/html")
-	components.RecurringBillsComponent(structs.RecurringBillList{Bills: []structs.RecurrinBill{*bill}}).Render(r.Context(), w)
+	components.RecurringBillsComponent(structs.RecurringBillList{Bills: []structs.RecurringBill{*bill}}).Render(r.Context(), w)
 }
 
 // AddBills handles the HTTP POST request to add a new bill
@@ -187,7 +187,7 @@ func AddBills(w http.ResponseWriter, r *http.Request) {
 	id := structs.RecurringBills.GetLastID() + 1
 
 	// Create a new bill instance
-	bill := structs.RecurrinBill{
+	bill := structs.RecurringBill{
 		Id:         id,
 		Name:       name,
 		Amount:     amount,
