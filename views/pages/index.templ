@@ -43,53 +43,6 @@ templ IndexPage(title string, menuList structs.MenuList) {
 						<div id="recurringBillRows" class="grid grid-cols-1">
 							@components.RecurringBillsComponent(structs.RecurringBills)
 						</div>
-						<div id="recurringBillId-3" class="grid grid-cols-12 capitalize py-4 px-1 bg-slate-400  gap-x-1">
-							<div id="billControls" class="flex items-center justify-center gap-x-1 px-1">
-								<div class="w-1/2">
-									<button class="bg-blue-600 text-white capitalize rounded-lg py-1 px-3 w-full">
-										save
-									</button>
-								</div>
-								<div class="w-1/2">
-									<button class="bg-red-700 text-white capitalize rounded-lg py-1 px-3 w-full">
-										cancel
-									</button>
-								</div>
-							</div>
-							<div id="billid" class="col-span-1">
-								<input type="text" name="billid" id="" value="3" disabled class="h-20 w-full text-center"/>
-							</div>
-							<div id="billDateColumn" class="col-span-1">
-								<input type="date" name="billdate" id="" value="3" class="border-2 h-20"/>
-							</div>
-							<div id="billNameColumn" class="col-span-2">
-								<input
-									type="text"
-									value="Light bill"
-									name="billname"
-									class="w-full border-2 active:border-4 h-20 pl-2"
-								/>
-							</div>
-							<div id="billOwnerColumn" class="col-span-1">
-								<select name="" id="" name="billowner" class="w-full border-2 active:border-4 h-20 pl-2">
-									<option value="cam">cam</option>
-								</select>
-							</div>
-							<div id="billCostColumn" class="col-span-1 text-right grid grid-cols-1">
-								<input
-									type="number"
-									name="billvalue"
-									id=""
-									value="850.99"
-									class="w-full border-2 active:border-4 h-20 pl-2"
-								/>
-							</div>
-							<div id="billNotesColumn" class="col-span-5 bill-notes-column w-full border-2 active:border-4 h-20">
-								<textarea name="billnotes" id="" cols="100" rows="50" width="100%" class=" p-3">
-									Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid quis obcaecati, nobis sed mollitia, quibusdam a dolores eum odio ab enim dolorum quas officia, commodi alias delectus? Atque, quidem soluta.
-								</textarea>
-							</div>
-						</div>
 						<div id="recurringBillFooter" class="grid grid-cols-12 capitalize bg-slate-800  gap-x-1">
 							<div class="col-span-4 text-white text-3xl capitalize p-10">
 								<button class="text-center ml-10 hover:border-2 rounded-full">

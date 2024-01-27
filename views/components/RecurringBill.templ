@@ -41,5 +41,6 @@ templ RecurringBillsComponent(bills structs.RecurringBillList) {
             <div id="billNotesColumn" class="pl-5 col-span-5">{bill.Notes}</div>
         </div>
     }
+    @EditRecurringBillsComponent(bills.Bills[0])
 }
 

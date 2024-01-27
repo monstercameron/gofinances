@@ -1,0 +1,59 @@
+package components
+
+import (
+	"github.com/monstercameron/gofinances/structs"
+    "strconv"
+)
+
+templ EditRecurringBillsComponent(bill structs.RecurrinBill) {
+    <div id={"EditRecurringBill" + strconv.Itoa(bill.Id)}
+        class="grid grid-cols-12 capitalize py-4 px-1 bg-slate-400  gap-x-1">
+    <div id="billControls" class="flex items-center justify-center gap-x-1 px-1">
+        <div class="w-1/2">
+            <button class="bg-blue-600 text-white uppercase rounded-lg py-1 px-3 w-full"
+                hx-post={"/debts/update?id=" + strconv.Itoa(bill.Id)}
+                hx-include={"#EditRecurringBill" + strconv.Itoa(bill.Id)}
+                hx-swap="outerHTML"
+                hx-target={"#EditRecurringBill" + strconv.Itoa(bill.Id)}
+            >
+                save
+            </button>
+        </div>
+        <div class="w-1/2">
+            <button class="bg-red-700 text-white uppercase rounded-lg py-1 px-3 w-full"
+                hx-get={"/debts?id=" + strconv.Itoa(bill.Id)}
+                hx-include={"#EditRecurringBill" + strconv.Itoa(bill.Id)}
+                hx-swap="outerHTML"
+                hx-target={"#EditRecurringBill" + strconv.Itoa(bill.Id)}
+            >
+                cancel
+            </button>
+        </div>
+    </div>
+    <div id="billid" class="col-span-1">
+        <input type="text" name="id" id="" value={strconv.Itoa(bill.Id)} disabled class="h-20 w-full text-center" />
+    </div>
+    <div id="billDateColumn" class="col-span-1">
+        <input type="date" name="date" id="" value={strconv.Itoa(bill.DayOfMonth)} class="border-2 h-20" />
+    </div>
+    <div id="billNameColumn" class="col-span-2">
+        <input type="text" value={bill.Name} name="name" class="w-full border-2 active:border-4 h-20 pl-2" />
+    </div>
+    <div id="billOwnerColumn" class="col-span-1">
+        <select name="" id="" name="owner" class="w-full border-2 active:border-4 h-20 pl-2">
+            <option value="cam">{bill.Owner}</option>
+        </select>
+    </div>
+    <div id="billCostColumn" class="col-span-1 text-right grid grid-cols-1">
+        <input type="number" name="amount" id="" value={strconv.FormatFloat(bill.Amount, 'f' , 2, 64)}
+            class="w-full border-2 active:border-4 h-20 pl-2" />
+    </div>
+    <div id="billNotesColumn" class="col-span-5 bill-notes-column w-full border-2 active:border-4 h-24"
+        style="height:81px;">
+        <textarea name="notes" id="" cols="90" rows="3" width="100%" class="p-3">
+            {bill.Notes}
+            </textarea>
+    </div>
+</div>
+}
+
