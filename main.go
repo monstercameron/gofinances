@@ -9,7 +9,6 @@ import (
 )
 
 func main() {
-	fmt.Println("main()")
 	// Initialize database
 	database.SimpleTest(database.DB)
 	
@@ -25,15 +24,19 @@ func main() {
 	// Start the server in a goroutine
 	go func() {
 		// Start the server and check for errors
-		fmt.Println("Starting server on :3000")
+		fmt.Println("\nMain: \t\t\t\tStarting server...")
 		err := httpServer.ListenAndServe()
 		if err != nil && err != http.ErrServerClosed {
 			fmt.Printf("HTTP server ListenAndServe: %v\n", err)
 		}
 	}()
-	fmt.Println("Server started on port 3000")
+	fmt.Println("Main: \t\t\t\tServer started.")
 
 	// Block until a shutdown signal is received
 	<-done
-	fmt.Println("Server gracefully stopped")
+	fmt.Println("Main: \t\t\t\t\tShutting down server...")
+}
+
+func init() {
+	fmt.Println("main.init(): \t\t\tInitializing main...")
 }

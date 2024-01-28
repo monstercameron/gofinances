@@ -52,6 +52,6 @@ func PopulateMenu() MenuList {
 var Menu MenuList
 
 func init() {
-	fmt.Println("Menu.init(): Populating Menu...")
+	fmt.Println("Menu.init(): \t\t\tPopulating Menu...")
 	Menu = PopulateMenu()
 }

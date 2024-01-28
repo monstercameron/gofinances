@@ -204,76 +204,76 @@ func InsertRecurringBillSamplesIntoDB() {
 // GetTotalCost calculates and returns the total cost of all bills.
 // It returns 0 if there are no bills or in case of an error, logging the error internally.
 func GetTotalCost() float64 {
-    var totalCost sql.NullFloat64
-    query := `SELECT SUM(amount) FROM recurring_bills;`
-    err := database.DB.QueryRow(query).Scan(&totalCost)
-    
-    if err != nil {
-        // Log the error for internal tracking
-        log.Printf("error querying total cost: %v", err)
-        return 0
-    }
+	var totalCost sql.NullFloat64
+	query := `SELECT SUM(amount) FROM recurring_bills;`
+	err := database.DB.QueryRow(query).Scan(&totalCost)
 
-    // Check if totalCost is valid; if not, it means there are no rows/bills
-    if !totalCost.Valid {
-        return 0
-    }
+	if err != nil {
+		// Log the error for internal tracking
+		log.Printf("error querying total cost: %v", err)
+		return 0
+	}
 
-    return totalCost.Float64
+	// Check if totalCost is valid; if not, it means there are no rows/bills
+	if !totalCost.Valid {
+		return 0
+	}
+
+	return totalCost.Float64
 }
 
 // GetBills returns a RecurringBillList with all bills.
 // It is used to populate the RecurringBillList with all bills.
 func GetBills() RecurringBillList {
-    // query recurring_bills table for all bills
-    var bills RecurringBillList
-    query := `SELECT * FROM recurring_bills;`
-    rows, err := database.DB.Query(query)
-    if err != nil {
-        // Log the error and return an empty list
-        log.Printf("error querying database: %v", err)
-        return RecurringBillList{}
-    }
-    defer rows.Close()
-    
-    for rows.Next() {
-        var bill RecurringBill
-        err := rows.Scan(&bill.Id, &bill.Name, &bill.Amount, &bill.DayOfMonth, &bill.Owner, &bill.Notes)
-        if err != nil {
-            // Log the error and return an empty list
-            log.Printf("error scanning row: %v", err)
-            return RecurringBillList{}
-        }
-        bills.Bills = append(bills.Bills, bill)
-    }
-    
-    err = rows.Err()
-    if err != nil {
-        // Log the error and return an empty list
-        log.Printf("error after scanning rows: %v", err)
-        return RecurringBillList{}
-    }
-    return bills
+	// query recurring_bills table for all bills
+	var bills RecurringBillList
+	query := `SELECT * FROM recurring_bills;`
+	rows, err := database.DB.Query(query)
+	if err != nil {
+		// Log the error and return an empty list
+		log.Printf("error querying database: %v", err)
+		return RecurringBillList{}
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var bill RecurringBill
+		err := rows.Scan(&bill.Id, &bill.Name, &bill.Amount, &bill.DayOfMonth, &bill.Owner, &bill.Notes)
+		if err != nil {
+			// Log the error and return an empty list
+			log.Printf("error scanning row: %v", err)
+			return RecurringBillList{}
+		}
+		bills.Bills = append(bills.Bills, bill)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		// Log the error and return an empty list
+		log.Printf("error after scanning rows: %v", err)
+		return RecurringBillList{}
+	}
+	return bills
 }
 
 // init is executed when the package is imported.
 // It checks if the 'recurring_bills' table is empty and populates it with initial data if needed.
 func init() {
-	fmt.Println("Populating RecurringBills...")
+	fmt.Println("RecuringBills.init(): \t\tchecking if 'recurring_bills' table is empty...")
 
 	// Count the number of records in the 'recurring_bills' table
 	var count int
 	query := `SELECT count(*) FROM recurring_bills;`
 	err := database.DB.QueryRow(query).Scan(&count)
 	if err != nil {
-		log.Fatalf("Failed to query the count from recurring_bills: %v", err)
+		fmt.Printf("RecurringBills.init(): \t\tFailed to count records in 'recurring_bills' table: %v", err)
 	}
 
 	// If the table is empty (count = 0), populate it with initial data
 	if count == 0 {
-		fmt.Println("RecurringBills is empty. Populating...")
+		fmt.Println("RecurringBills.init(): \t\ttable is empty. Populating with initial data...")
 		InsertRecurringBillSamplesIntoDB()
 	} else {
-		fmt.Println("RecurringBills is not empty. Skipping population.")
+		fmt.Println("RecurringBills.init(): \t\ttable is not empty. Skipping population with initial data...")
 	}
 }

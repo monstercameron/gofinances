@@ -8,7 +8,7 @@ import (
 )
 
 func init() {
-	fmt.Println("MenuPicker.init(): starting MenuPicker route...")
+	fmt.Println("MenuPicker.init(): \t\tInitializing MenuPicker...")
 }
 
 func MenuPicker(w http.ResponseWriter, r *http.Request) {
