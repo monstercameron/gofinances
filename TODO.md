@@ -4,8 +4,8 @@
     * [x] set up nodemon
 * [ ] list all metrics to capture
     * [ ] assets
-    * [ ] recurring bills
-    * [x] short term debts
+    * [x] recurring bills
+    * [ ] short term debts
     * [ ] long term debts
     * [ ] card utilizations
     * [ ] goals
@@ -31,7 +31,7 @@
     * [ ] view/edit drip calculator
     * [ ] view/edit assets
 * [ ] create templates for the ui, see designs
-* [ ] Use SQLite to store inputs
+* [x] Use SQLite to store inputs
     * [ ] import values from client
     * [ ] send SQLite db to client for long term persistence
     * [ ] wipe values after an hour
