@@ -1,10 +1,11 @@
-package components
+package menus
 
-import ("github.com/monstercameron/gofinances/structs"
-		"strconv")
+import (
+	"strconv"
+)
 
 
-templ MainMenuComponent(menuItems []structs.MenuItem) {
+templ MainMenuComponent(menuItems []MenuItem) {
 	<div id="menu" class="w-full grid grid-cols-11">
 		for _, menuItem := range menuItems {
 			if menuItem.IsActive {

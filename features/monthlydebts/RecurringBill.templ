@@ -1,12 +1,11 @@
-package components
+package monthlydebts
 
 import (
-	"github.com/monstercameron/gofinances/structs"
 	"github.com/monstercameron/gofinances/helpers"
     "strconv"
 )
 
-templ RecurringBillsComponent(bills structs.RecurringBillList) {
+templ RecurringBillsComponent(bills RecurringBillList) {
     for _, bill := range bills.Bills {
             <div id={"recurringBillId-" + strconv.Itoa(bill.Id)} 
                 class="grid grid-cols-12 capitalize py-4 px-1 rowColor">

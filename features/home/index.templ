@@ -1,11 +1,11 @@
-package pages
+package home
 
 import (
-"github.com/monstercameron/gofinances/views/components"
-"github.com/monstercameron/gofinances/structs"
+"github.com/monstercameron/gofinances/features/menus"
+"github.com/monstercameron/gofinances/features/monthlydebts"
 )
 
-templ IndexPage(title string, menuList structs.MenuList) {
+templ IndexPage(title string) {
 	<!DOCTYPE html />
 	<html lang="en">
 		<head>
@@ -26,7 +26,7 @@ templ IndexPage(title string, menuList structs.MenuList) {
 						goFinancial Planner V 0.1
 					</h1>
 				</div>
-				@components.MainMenuComponent(menuList.Menus)
+				@menus.MainMenuComponent(menus.Menu.Menus)
 				<div class="pane p-5 shadow-lg mb-10" hx-get={"/pane"} hx-trigger="menuSwitch from:body">
 					<div id="form" class="grid grid-cols-1">
 						<div id="recurringBillColumns" class="grid grid-cols-12 capitalize" >
@@ -48,9 +48,9 @@ templ IndexPage(title string, menuList structs.MenuList) {
 							hx-target="#recurringBillRows"
 							hx-swap="innerHTML"
 						>
-							@components.RecurringBillsComponent(structs.GetBills())
+							@monthlydebts.RecurringBillsComponent(monthlydebts.GetBills())
 						</div>
-						@components.AddRecurringBillsComponent()
+						@monthlydebts.AddRecurringBillsComponent()
 					</div>
 				</div>
 			</div>

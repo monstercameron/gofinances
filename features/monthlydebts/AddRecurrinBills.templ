@@ -1,7 +1,6 @@
-package components
+package monthlydebts
 
 import (
-	"github.com/monstercameron/gofinances/structs"
     "strconv"
 )
 
@@ -22,7 +21,7 @@ templ AddRecurringBillsComponent() {
             add recurring bill | 
             <span class="text-2xl">Total Recurring Bills: $
                 <span id="recurringBillTotal" hx-get="/debts/total" hx-trigger="billsAction from:body" hx-swap="innerHTML">
-                    {strconv.FormatFloat(structs.GetTotalCost(), 'f', 2, 64)}
+                    {strconv.FormatFloat(GetTotalCost(), 'f', 2, 64)}
                 </span>
             </span>
         </div>

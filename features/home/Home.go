@@ -1,8 +1,6 @@
-package controller
+package home
 
 import (
-	"github.com/monstercameron/gofinances/structs"
-	"github.com/monstercameron/gofinances/views/pages"
 	"net/http"
 )
 
@@ -18,7 +16,7 @@ func GetIndexPage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create the index page component
-	component := pages.IndexPage("goFinances", structs.Menu)
+	component := IndexPage("goFinances")
 
 	// Set the Content-Type of the response to text/html
 	w.Header().Set("Content-Type", "text/html")

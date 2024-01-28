@@ -1,13 +1,10 @@
-package controller
+package menus
 
 import (
 	"fmt"
 	"github.com/monstercameron/gofinances/helpers"
-	"github.com/monstercameron/gofinances/structs"
-	"github.com/monstercameron/gofinances/views/components"
 	"net/http"
 	"strconv"
-	// "github.com/monstercameron/gofinances/views/pages"
 )
 
 func init() {
@@ -36,9 +33,9 @@ func MenuPicker(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	structs.Menu.SetActive(id)
+	Menu.SetActive(id)
 
-	component := components.MainMenuComponent(structs.Menu.Menus)
+	component := MainMenuComponent(Menu.Menus)
 	// serve text/html
 	w.Header().Set("Content-Type", "text/html")
 	w.Header().Set("HX-Trigger", "menuSwitch")

@@ -1,18 +1,15 @@
-package controller
+package monthlydebts
 
 import (
 	"fmt"
 	"net/http"
 	"strconv"
 	"time"
-
-	"github.com/monstercameron/gofinances/structs"
-	"github.com/monstercameron/gofinances/views/components"
 )
 
 // GetBills handles the HTTP request to retrieve bill information.
 // It can return a specific bill if an ID is provided, or all bills otherwise.
-func GetBills(w http.ResponseWriter, r *http.Request) {
+func GetBillList(w http.ResponseWriter, r *http.Request) {
 	// Extract the 'id' query parameter
 	id := r.URL.Query().Get("id")
 
@@ -27,7 +24,7 @@ func GetBills(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Retrieve the bill by its ID
-		bills := structs.RecurringBillList{Bills: []structs.RecurringBill{}}
+		bills := RecurringBillList{Bills: []RecurringBill{}}
 		bills.Bills = append(bills.Bills, *bills.GetByID(intID))
 		bill := bills.GetByID(intID)
 		if bill == nil {
@@ -37,16 +34,16 @@ func GetBills(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Prepare a list containing the found bill
-		bills.Bills = []structs.RecurringBill{*bill}
+		bills.Bills = []RecurringBill{*bill}
 
 		// Set the Content-Type of the response to text/html
 		w.Header().Set("Content-Type", "text/html")
 		// Render the bill information as HTML to the response writer
-		components.RecurringBillsComponent(bills).Render(r.Context(), w)
+		RecurringBillsComponent(bills).Render(r.Context(), w)
 	} else {
 
 		// Respond with all bills when no 'id' is provided
-		bills := structs.RecurringBillList{Bills: []structs.RecurringBill{}}
+		bills := RecurringBillList{Bills: []RecurringBill{}}
 
 		// Extract the 'sort' query parameter
 		column := r.URL.Query().Get("column")
@@ -68,7 +65,7 @@ func GetBills(w http.ResponseWriter, r *http.Request) {
 			bills.SortBy("name", "asc")
 		}
 
-		component := components.RecurringBillsComponent(bills)
+		component := RecurringBillsComponent(bills)
 		w.Header().Set("Content-Type", "text/html")
 		component.Render(r.Context(), w)
 	}
@@ -89,7 +86,7 @@ func UpdateBills(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			// Retrieve the bill by its ID
-			bills := structs.RecurringBillList{Bills: []structs.RecurringBill{}}
+			bills := RecurringBillList{Bills: []RecurringBill{}}
 			bills.Bills = append(bills.Bills, *bills.GetByID(intID))
 			bill := bills.GetByID(intID)
 			if bill == nil {
@@ -99,13 +96,13 @@ func UpdateBills(w http.ResponseWriter, r *http.Request) {
 			// trigger on page updates
 			w.Header().Set("Hx-Trigger", "billsAction")
 			w.Header().Set("Content-Type", "text/html")
-			components.EditRecurringBillsComponent(*bill, true).Render(r.Context(), w)
+			EditRecurringBillsComponent(*bill, true).Render(r.Context(), w)
 		} else {
 			// Set up a new bill
 			// Retrieve the bill by its ID
-			bills := structs.RecurringBillList{Bills: []structs.RecurringBill{}}
+			bills := RecurringBillList{Bills: []RecurringBill{}}
 			newID := bills.GetLastID() + 1
-			bill := structs.RecurringBill{
+			bill := RecurringBill{
 				Id:         newID,
 				Name:       "",
 				Amount:     0,
@@ -116,7 +113,7 @@ func UpdateBills(w http.ResponseWriter, r *http.Request) {
 			// trigger on page updates
 			w.Header().Set("Hx-Trigger", "billsAction")
 			w.Header().Set("Content-Type", "text/html")
-			components.EditRecurringBillsComponent(bill, false).Render(r.Context(), w)
+			EditRecurringBillsComponent(bill, false).Render(r.Context(), w)
 		}
 		return
 	}
@@ -157,7 +154,7 @@ func UpdateBills(w http.ResponseWriter, r *http.Request) {
 
 	// Find and update the bill
 	// Retrieve the bill by its ID
-	bills := structs.RecurringBillList{Bills: []structs.RecurringBill{}}
+	bills := RecurringBillList{Bills: []RecurringBill{}}
 	bills.Bills = append(bills.Bills, *bills.GetByID(id))
 	bill := bills.GetByID(id)
 	if bill == nil {
@@ -174,7 +171,7 @@ func UpdateBills(w http.ResponseWriter, r *http.Request) {
 
 	// Render updated bill information
 	w.Header().Set("Content-Type", "text/html")
-	components.RecurringBillsComponent(structs.RecurringBillList{Bills: []structs.RecurringBill{*bill}}).Render(r.Context(), w)
+	RecurringBillsComponent(RecurringBillList{Bills: []RecurringBill{*bill}}).Render(r.Context(), w)
 }
 
 // AddBills handles the HTTP POST request to add a new bill
@@ -218,11 +215,11 @@ func AddBills(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Generate a new ID for the bill
-	bills := structs.RecurringBillList{Bills: []structs.RecurringBill{}}
+	bills := RecurringBillList{Bills: []RecurringBill{}}
 	newID := bills.GetLastID() + 1
 
 	// Create a new bill instance
-	bill := structs.RecurringBill{
+	bill := RecurringBill{
 		Id:         newID,
 		Name:       name,
 		Amount:     amount,
@@ -264,7 +261,7 @@ func DeleteBills(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Find the bill by ID and handle if not found
-	bills := structs.RecurringBillList{Bills: []structs.RecurringBill{}}
+	bills := RecurringBillList{Bills: []RecurringBill{}}
 	bills.Bills = append(bills.Bills, *bills.GetByID(id))
 	bill := bills.GetByID(id)
 	if bill == nil {
@@ -294,8 +291,8 @@ func getDayOfMonth(dateStr string) (int, error) {
 }
 
 // returns total debts
-func GetTotalDebts(w http.ResponseWriter, r *http.Request) {
-	total := structs.GetTotalCost()
+func GetBillsTotalDebts(w http.ResponseWriter, r *http.Request) {
+	total := GetTotalCost()
 	// Set the Content-Type of the response to text/html
 	w.Header().Set("Content-Type", "text/html")
 	// Render the bill information as HTML to the response writer
