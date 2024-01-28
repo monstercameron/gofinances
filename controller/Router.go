@@ -17,4 +17,5 @@ func CreateRoutes(server *http.ServeMux) {
     server.HandleFunc("/debts/new", AddBills)   		// Handler for adding new bills
     server.HandleFunc("/debts/update", UpdateBills) 	// Handler for updating bills
     server.HandleFunc("/debts/delete", DeleteBills) 	// Handler for deleting bills
+    server.HandleFunc("/debts/total", GetTotalDebts) 	// Handler for deleting bills
 }

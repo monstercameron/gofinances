@@ -2,11 +2,12 @@ package controller
 
 import (
 	"fmt"
-	"github.com/monstercameron/gofinances/structs"
-	"github.com/monstercameron/gofinances/views/components"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/monstercameron/gofinances/structs"
+	"github.com/monstercameron/gofinances/views/components"
 )
 
 // GetBills handles the HTTP request to retrieve bill information.
@@ -26,7 +27,9 @@ func GetBills(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Retrieve the bill by its ID
-		bill := structs.RecurringBills.GetByID(intID)
+		bills := structs.RecurringBillList{Bills: []structs.RecurringBill{}}
+		bills.Bills = append(bills.Bills, *bills.GetByID(intID))
+		bill := bills.GetByID(intID)
 		if bill == nil {
 			// Respond with error if the bill is not found
 			http.Error(w, "Bill not found", http.StatusNotFound)
@@ -34,22 +37,38 @@ func GetBills(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Prepare a list containing the found bill
-		bills := structs.RecurringBillList{Bills: []structs.RecurringBill{*bill}}
+		bills.Bills = []structs.RecurringBill{*bill}
 
 		// Set the Content-Type of the response to text/html
 		w.Header().Set("Content-Type", "text/html")
 		// Render the bill information as HTML to the response writer
 		components.RecurringBillsComponent(bills).Render(r.Context(), w)
 	} else {
-		// Extract the 'sort' query parameter
-		sort := r.URL.Query().Get("sort")
-		// Sort bills if 'sort' parameter is provided
-		if sort != "" {
-			structs.RecurringBills.SortBy(sort)
-		}
 
 		// Respond with all bills when no 'id' is provided
-		component := components.RecurringBillsComponent(structs.RecurringBills)
+		bills := structs.RecurringBillList{Bills: []structs.RecurringBill{}}
+
+		// Extract the 'sort' query parameter
+		column := r.URL.Query().Get("column")
+		order := r.URL.Query().Get("order")
+		// Sort bills if 'sort' parameter is provided
+		if order != "" {
+			if order != "asc" && order != "desc" {
+				http.Error(w, "Invalid sort order", http.StatusBadRequest)
+				return
+			}
+		} else {
+			// Default to ascending order if no order is provided
+			order = "asc"
+		}
+		if column != "" {
+			bills.SortBy(column, order)
+		} else {
+			// Default to sorting by name in ascending order
+			bills.SortBy("name", "asc")
+		}
+
+		component := components.RecurringBillsComponent(bills)
 		w.Header().Set("Content-Type", "text/html")
 		component.Render(r.Context(), w)
 	}
@@ -69,16 +88,23 @@ func UpdateBills(w http.ResponseWriter, r *http.Request) {
 				http.Error(w, "Invalid ID format", http.StatusBadRequest)
 				return
 			}
-			bill := structs.RecurringBills.GetByID(intID)
+			// Retrieve the bill by its ID
+			bills := structs.RecurringBillList{Bills: []structs.RecurringBill{}}
+			bills.Bills = append(bills.Bills, *bills.GetByID(intID))
+			bill := bills.GetByID(intID)
 			if bill == nil {
 				http.Error(w, "Bill not found", http.StatusNotFound)
 				return
 			}
+			// trigger on page updates
+			w.Header().Set("Hx-Trigger", "billsAction")
 			w.Header().Set("Content-Type", "text/html")
 			components.EditRecurringBillsComponent(*bill, true).Render(r.Context(), w)
 		} else {
 			// Set up a new bill
-			newID := structs.RecurringBills.GetLastID() + 1
+			// Retrieve the bill by its ID
+			bills := structs.RecurringBillList{Bills: []structs.RecurringBill{}}
+			newID := bills.GetLastID() + 1
 			bill := structs.RecurringBill{
 				Id:         newID,
 				Name:       "",
@@ -87,6 +113,8 @@ func UpdateBills(w http.ResponseWriter, r *http.Request) {
 				Owner:      "",
 				Notes:      "",
 			}
+			// trigger on page updates
+			w.Header().Set("Hx-Trigger", "billsAction")
 			w.Header().Set("Content-Type", "text/html")
 			components.EditRecurringBillsComponent(bill, false).Render(r.Context(), w)
 		}
@@ -128,7 +156,10 @@ func UpdateBills(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Find and update the bill
-	bill := structs.RecurringBills.GetByID(id)
+	// Retrieve the bill by its ID
+	bills := structs.RecurringBillList{Bills: []structs.RecurringBill{}}
+	bills.Bills = append(bills.Bills, *bills.GetByID(id))
+	bill := bills.GetByID(id)
 	if bill == nil {
 		http.Error(w, "Bill not found", http.StatusNotFound)
 		return
@@ -137,6 +168,9 @@ func UpdateBills(w http.ResponseWriter, r *http.Request) {
 	bill.Amount = amount
 	bill.DayOfMonth = dayOfMonth
 	bill.Notes = notes
+
+	// Save the updated bill to the database
+	bill.Save()
 
 	// Render updated bill information
 	w.Header().Set("Content-Type", "text/html")
@@ -184,11 +218,12 @@ func AddBills(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Generate a new ID for the bill
-	id := structs.RecurringBills.GetLastID() + 1
+	bills := structs.RecurringBillList{Bills: []structs.RecurringBill{}}
+	newID := bills.GetLastID() + 1
 
 	// Create a new bill instance
 	bill := structs.RecurringBill{
-		Id:         id,
+		Id:         newID,
 		Name:       name,
 		Amount:     amount,
 		DayOfMonth: dayOfMonth,
@@ -196,11 +231,11 @@ func AddBills(w http.ResponseWriter, r *http.Request) {
 		Notes:      notes,
 	}
 
-	// Append the new bill to the list
-	structs.RecurringBills.Bills = append(structs.RecurringBills.Bills, bill)
+	// save new bill to database
+	bill.Save()
 
 	// Set response headers and status
-	w.Header().Set("HX-Trigger", "newBill")
+	w.Header().Set("HX-Trigger", "newBill, billsAction")
 	w.WriteHeader(http.StatusOK)
 	// Optional: Write a confirmation message to the response
 	fmt.Fprintln(w, "")
@@ -229,19 +264,24 @@ func DeleteBills(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Find the bill by ID and handle if not found
-	bill := structs.RecurringBills.GetByID(id)
+	bills := structs.RecurringBillList{Bills: []structs.RecurringBill{}}
+	bills.Bills = append(bills.Bills, *bills.GetByID(id))
+	bill := bills.GetByID(id)
 	if bill == nil {
 		http.Error(w, "Bill not found", http.StatusNotFound)
 		return
 	}
 
 	// Remove the bill from the list
-	structs.RecurringBills.RemoveByID(id)
+	bills.RemoveByID(id)
 
-	// Set the response status to 200 OK
+	// trigger on page updates
+	w.Header().Set("Hx-Trigger", "billsAction")
+
+	// Set the response status to show a resource was deleted
 	w.WriteHeader(http.StatusOK)
 	// Optional: Write a confirmation message to the response
-	fmt.Fprintln(w, "Bill deleted successfully")
+	fmt.Fprintln(w, "")
 }
 
 // Helper function to convert date string to day of month
@@ -251,4 +291,14 @@ func getDayOfMonth(dateStr string) (int, error) {
 		return 0, err
 	}
 	return date.Day(), nil
+}
+
+// returns total debts
+func GetTotalDebts(w http.ResponseWriter, r *http.Request) {
+	total := structs.GetTotalCost()
+	// Set the Content-Type of the response to text/html
+	w.Header().Set("Content-Type", "text/html")
+	// Render the bill information as HTML to the response writer
+	// set to 2 decimal places
+	fmt.Fprintf(w, "%.2f", total)
 }
