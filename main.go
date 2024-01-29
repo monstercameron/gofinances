@@ -34,7 +34,7 @@ func main() {
 
 	// Block until a shutdown signal is received
 	<-done
-	fmt.Println("Main: \t\t\t\t\tShutting down server...")
+	fmt.Println("Main: \t\t\t\tShutting down server...")
 }
 
 func init() {

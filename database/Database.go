@@ -3,35 +3,27 @@ package database
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/mattn/go-sqlite3"
 	"log"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 // DB is a global variable for the database connection
 var DB *sql.DB
 
 func init() {
-    fmt.Println("Database.init(): \t\tInitializing database...")
+	fmt.Println("Database.init(): \t\tInitializing database...")
 
-    var err error
-    DB, err = sql.Open("sqlite3", "./database/Database.db")
-    if err != nil {
-        log.Fatalf("Failed to open database: %v", err)
-    } else {
-        fmt.Println("Database.Init(): \t\tDatabase connection established.")
-    }
+	var err error
+	DB, err = sql.Open("sqlite3", "./database/Database.db")
+	if err != nil {
+		log.Fatalf("Failed to open database: %v", err)
+	} else {
+		fmt.Println("Database.Init(): \t\tDatabase connection established.")
+	}
 
-    // Create table for recurring bills
-    _, err = DB.Exec("CREATE TABLE IF NOT EXISTS recurring_bills (id INTEGER PRIMARY KEY, name TEXT, amount REAL, day_of_month INTEGER, owner TEXT, notes TEXT)")
-    if err != nil {
-        log.Fatalf("Failed to create 'recurring_bills' table: %v", err)
-    } else {
-        fmt.Println("Database.Init(): \t\t'recurring_bills' table created.")
-    }
-
-    fmt.Println("Database.Init(): \t\tDatabase initialized.")
+	fmt.Println("Database.Init(): \t\tDatabase initialized.")
 }
-
 
 func SimpleTest(DB *sql.DB) {
 	fmt.Println("Database.SimpleTest(): \t\tTesting database connection...")

@@ -17,7 +17,7 @@ func CreateRoutes(server *http.ServeMux) {
 	// Set up routes and associate them with handler functions
 	server.HandleFunc("/", home.GetIndexPage)                          // Handler for the root route
 	server.HandleFunc("/menu/", menus.MenuPicker)                      // Handler for the '/menu/' route
-	server.HandleFunc("/pane", menus.TestPage)                         // Handler for the '/pane' route
+	server.HandleFunc("/pane", menus.GetTab)                         // Handler for the '/pane' route
 	server.HandleFunc("/debts", monthlydebts.GetBillList)              // Handler for retrieving bills
 	server.HandleFunc("/debts/new", monthlydebts.AddBills)             // Handler for adding new bills
 	server.HandleFunc("/debts/update", monthlydebts.UpdateBills)       // Handler for updating bills

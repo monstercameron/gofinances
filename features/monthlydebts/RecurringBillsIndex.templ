@@ -1,0 +1,26 @@
+package monthlydebts
+
+templ RecurringBillsIndex() {
+	<div id="form" class="grid grid-cols-1">
+		<div id="recurringBillColumns" class="grid grid-cols-12 capitalize">
+			<div id="idColumns" class="col-span-1 column">controls</div>
+			<div id="idColumns" class="col-span-1 column">id</div>
+			<div id="billDateColumn" class="col-span-1 column sortable" hx-trigger="click" hx-swap="innerHTML"
+				hx-target="#recurringBillRows" hx-get="/debts?column=day_of_month">
+				Bill Date
+			</div>
+			<div id="billNameColumn" class="col-span-2 column sortable" hx-trigger="click" hx-swap="innerHTML"
+				hx-target="#recurringBillRows" hx-get="/debts?column=name">Bill name</div>
+			<div id="billOwnerColumn" class="col-span-1 column sortable" hx-trigger="click" hx-swap="innerHTML"
+				hx-target="#recurringBillRows" hx-get="/debts?column=owner">Bill Owner</div>
+			<div id="billCostColumn" class="col-span-1 column sortable" hx-trigger="click" hx-swap="innerHTML"
+				hx-target="#recurringBillRows" hx-get="/debts?column=amount">Bill Cost</div>
+			<div id="billNotesColumn" class="col-span-5 column column-last">Notes</div>
+		</div>
+		<div id="recurringBillRows" class="grid grid-cols-1" hx-get={"/debts"} hx-trigger="newBill from:body"
+			hx-target="#recurringBillRows" hx-swap="innerHTML">
+			@RecurringBillsComponent(GetBills())
+		</div>
+		@AddRecurringBillsComponent()
+	</div>
+}

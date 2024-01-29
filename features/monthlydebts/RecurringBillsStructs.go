@@ -261,10 +261,19 @@ func GetBills() RecurringBillList {
 func init() {
 	fmt.Println("RecuringBills.init(): \t\tchecking if 'recurring_bills' table is empty...")
 
+	// Create table for recurring bills
+	var err error
+    _, err = database.DB.Exec("CREATE TABLE IF NOT EXISTS recurring_bills (id INTEGER PRIMARY KEY, name TEXT, amount REAL, day_of_month INTEGER, owner TEXT, notes TEXT)")
+    if err != nil {
+        log.Fatalf("Failed to create 'recurring_bills' table: %v", err)
+    } else {
+        fmt.Println("Database.Init(): \t\t'recurring_bills' table created.")
+    }
+
 	// Count the number of records in the 'recurring_bills' table
 	var count int
 	query := `SELECT count(*) FROM recurring_bills;`
-	err := database.DB.QueryRow(query).Scan(&count)
+	err = database.DB.QueryRow(query).Scan(&count)
 	if err != nil {
 		fmt.Printf("RecurringBills.init(): \t\tFailed to count records in 'recurring_bills' table: %v", err)
 	}
