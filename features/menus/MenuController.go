@@ -3,6 +3,7 @@ package menus
 import (
 	"fmt"
 	"github.com/monstercameron/gofinances/features/monthlydebts"
+	"github.com/monstercameron/gofinances/features/settings"
 	"github.com/monstercameron/gofinances/helpers"
 	"net/http"
 	"strconv"
@@ -111,14 +112,14 @@ func GetTab(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("time tables"))
 		return
 	case 10:
-		// send string response
+		component := settings.SettingsPageIndex()
 		w.Header().Set("Content-Type", "text/plain")
-		w.Write([]byte("settings"))
+		component.Render(r.Context(), w)
 		return
 	default:
 		// send string response
 		w.Header().Set("Content-Type", "text/plain")
-		w.Write([]byte("This is the default tab"))
+		w.Write([]byte("Default"))
 		return
 	}
 }

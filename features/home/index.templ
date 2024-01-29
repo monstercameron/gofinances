@@ -2,7 +2,6 @@ package home
 
 import (
 "github.com/monstercameron/gofinances/features/menus"
-"github.com/monstercameron/gofinances/features/monthlydebts"
 )
 
 templ IndexPage(title string) {
@@ -28,7 +27,7 @@ templ IndexPage(title string) {
 				</div>
 				@menus.MainMenuComponent(menus.GetMenus())
 				<div class="pane p-5 shadow-lg mb-10" hx-get={"/pane"} hx-trigger="menuSwitch from:body">
-					@monthlydebts.RecurringBillsIndex()
+					@GetStartingPage()
 				</div>
 			</div>
 		</body>
