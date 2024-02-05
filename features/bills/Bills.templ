@@ -3,6 +3,7 @@ package bills
 import (
     "strconv"
 	"github.com/monstercameron/gofinances/helpers"
+	"github.com/monstercameron/gofinances/features/settings"
 )
 
 templ AddRecurringBillsComponent() {
@@ -81,7 +82,7 @@ templ RecurringBillsComponent(bills RecurringBillList) {
 
 templ EditRecurringBillsComponent(bill RecurringBill, update bool) {
     <div id={"EditRecurringBill" + strconv.Itoa(bill.Id)}
-        class="grid grid-cols-12 capitalize py-4 px-1 bg-slate-400  gap-x-1">
+        class="grid grid-cols-12 capitalize py-4 px-1 bg-slate-400 gap-x-1">
         <div id="billControls" class="flex items-center justify-center gap-x-1 px-1">
             <div class="w-1/2">
                 <button class="bg-blue-600 text-white uppercase rounded-lg py-1 px-3 w-full text-xs"
@@ -123,9 +124,17 @@ templ EditRecurringBillsComponent(bill RecurringBill, update bool) {
             <input type="text" value={bill.Name} name="name" class="w-full border-2 active:border-4 h-20 pl-2" />
         </div>
         <div id="billOwnerColumn" class="col-span-1">
-            <select name="" id="" name="owner" class="w-full border-2 active:border-4 h-20 pl-2">
-                <option value="cam">{bill.Owner}</option>
-            </select>
+            if update {
+                <select name="owner" id="" name="owner" class="w-full border-2 active:border-4 h-20 pl-2">
+                    <option value="cam">{bill.Owner}</option>
+                </select>
+            } else {
+                <select name="owner" id="" name="owner" class="w-full border-2 active:border-4 h-20 pl-2">
+                    for _, item := range settings.GetAllSettingsUsersItems(){
+                        <option value={item.Name}>{item.Name}</option>
+                    }
+                </select>
+            }
         </div>
         <div id="billCostColumn" class="col-span-1 text-right grid grid-cols-1">
             <input type="number" name="amount" id="" value={strconv.FormatFloat(bill.Amount, 'f' , 2, 64)}

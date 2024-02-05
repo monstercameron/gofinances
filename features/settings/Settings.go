@@ -119,6 +119,14 @@ func GetAllSettingsUsers() ([]SettingsPageUser, error) {
 	return users, nil
 }
 
+func GetAllSettingsUsersItems() ([]SettingsPageUser){
+	users, err := GetAllSettingsUsers()
+	if err != nil {
+		return []SettingsPageUser{}
+	}
+	return users
+}
+
 func GetSettingsUsers(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("GetSettingsUsers()")
 	// Ensure the request method is GET

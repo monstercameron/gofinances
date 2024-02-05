@@ -489,6 +489,7 @@ func AddBills(w http.ResponseWriter, r *http.Request) {
 	// Retrieve other form fields
 	date := r.FormValue("date")
 	notes := r.FormValue("notes")
+	owner := r.FormValue("owner")
 
 	// Convert the date to a day of the month
 	dayOfMonth, err := getDayOfMonth(date)
@@ -507,7 +508,7 @@ func AddBills(w http.ResponseWriter, r *http.Request) {
 		Name:       name,
 		Amount:     amount,
 		DayOfMonth: dayOfMonth,
-		Owner:      "cameron", // This could be dynamic based on context
+		Owner:      owner, // This could be dynamic based on context
 		Notes:      notes,
 	}
 
