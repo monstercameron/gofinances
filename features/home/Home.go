@@ -6,7 +6,7 @@ import (
 
 	"github.com/a-h/templ"
 	"github.com/monstercameron/gofinances/features/menus"
-	"github.com/monstercameron/gofinances/features/monthlydebts"
+	"github.com/monstercameron/gofinances/features/bills"
 	"github.com/monstercameron/gofinances/features/settings"
 )
 
@@ -36,16 +36,16 @@ func GetStartingPage() templ.Component {
 	id := menus.GetActiveMenu()
 	if id == -1 {
 		fmt.Println("home.GetStartingPage(): id == -1")
-		return monthlydebts.RecurringBillsIndex()
+		return bills.RecurringBillsIndex()
 	}
 
 	switch id {
 	case 0:
-		return monthlydebts.RecurringBillsIndex()
+		return bills.RecurringBillsIndex()
 	case 10:
 		return settings.SettingsPageIndex(settings.GetAllSettingsUsers())
 	default:
 		fmt.Println("home.GetStartingPage(): id == -1")
-		return monthlydebts.RecurringBillsIndex()
+		return bills.RecurringBillsIndex()
 	}
 }

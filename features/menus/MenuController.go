@@ -2,11 +2,12 @@ package menus
 
 import (
 	"fmt"
-	"github.com/monstercameron/gofinances/features/monthlydebts"
-	"github.com/monstercameron/gofinances/features/settings"
-	"github.com/monstercameron/gofinances/helpers"
 	"net/http"
 	"strconv"
+
+	"github.com/monstercameron/gofinances/features/bills"
+	"github.com/monstercameron/gofinances/features/settings"
+	"github.com/monstercameron/gofinances/helpers"
 )
 
 func init() {
@@ -61,7 +62,7 @@ func GetTab(w http.ResponseWriter, r *http.Request) {
 
 	switch id {
 	case 0:
-		component := monthlydebts.RecurringBillsIndex()
+		component := bills.RecurringBillsIndex()
 		// serve text/html
 		w.Header().Set("Content-Type", "text/html")
 		component.Render(r.Context(), w)
