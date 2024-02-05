@@ -112,7 +112,7 @@ func GetTab(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("time tables"))
 		return
 	case 10:
-		component := settings.SettingsPageIndex()
+		component := settings.SettingsPageIndex(settings.GetAllSettingsUsers())
 		w.Header().Set("Content-Type", "text/plain")
 		component.Render(r.Context(), w)
 		return

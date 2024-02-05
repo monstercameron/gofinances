@@ -43,7 +43,7 @@ func GetStartingPage() templ.Component {
 	case 0:
 		return monthlydebts.RecurringBillsIndex()
 	case 10:
-		return settings.SettingsPageIndex()
+		return settings.SettingsPageIndex(settings.GetAllSettingsUsers())
 	default:
 		fmt.Println("home.GetStartingPage(): id == -1")
 		return monthlydebts.RecurringBillsIndex()

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "tailwinds": "npx tailwindcss -i ./views/static/style/template.css -o ./views/static/style/style.css --watch",
+    "tailwinds": "npx tailwindcss -i ./static/style/template.css -o ./static/style/style.css --watch",
     "dev": "nodemon -e go --signal SIGTERM --exec go run .",
     "templ": "nodemon -V -e templ --exec './shell/templgenerate.sh $FILENAME'"
   },
