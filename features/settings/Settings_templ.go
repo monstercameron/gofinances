@@ -44,7 +44,7 @@ func SettingsPageIndex(users []SettingsPageUser) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</ol></div><div id=\"userlistcontrols\" class=\"grid grid-cols-12 p-5 pl-10\"><button hx-get=\"/settings/user\" hx-target=\"#settings-user-list\" hx-swap=\"innerHTML\" class=\"col-span-12 text-center shadow-lg p-2 text-1xl capitalize bg-blue-500 hover:bg-blue-800 hover:text-white border-2 rounded\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</ol></div><div id=\"userlistcontrols\" class=\"grid grid-cols-12 p-5 pl-10\"><button hx-get=\"/settings/user\" hx-target=\"#settings-user-list\" hx-swap=\"beforeend\" class=\"col-span-12 text-center shadow-lg p-2 text-1xl capitalize bg-blue-500 hover:bg-blue-800 hover:text-white border-2 rounded\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -238,7 +238,15 @@ func SettingsPageUserInputFieldUpdate(user *SettingsPageUser) templ.Component {
 			templ_7745c5c3_Var11 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"userlistinput\" class=\"grid grid-cols-12 p-2 pl-10\"><input name=\"settingsusername\" type=\"text\" value=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("userlistinput" + strconv.Itoa(user.Id)))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"grid grid-cols-12 p-2 pl-10\"><input name=\"settingsusername\" type=\"text\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -246,11 +254,19 @@ func SettingsPageUserInputFieldUpdate(user *SettingsPageUser) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"col-span-12 text-center p-2 cursor:pointer border-2 rounded-lg\" hx-put=\"/settings/user\" hx-target=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"col-span-12 text-center p-2 cursor:pointer border-2 rounded-lg\" hx-put=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("#settings-user-" + strconv.Itoa(user.Id)))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/settings/user?id=" + strconv.Itoa(user.Id)))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("#userlistinput" + strconv.Itoa(user.Id)))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

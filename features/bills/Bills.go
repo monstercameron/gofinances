@@ -453,6 +453,7 @@ func UpdateBills(w http.ResponseWriter, r *http.Request) {
 	bill.Save()
 
 	// Render updated bill information
+	w.Header().Set("HX-Trigger", "billsAction")
 	w.Header().Set("Content-Type", "text/html")
 	RecurringBillsComponent(RecurringBillList{Bills: []RecurringBill{*bill}}).Render(r.Context(), w)
 }
