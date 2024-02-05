@@ -29,7 +29,7 @@ func AddRecurringBillsComponent() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"recurringBillFooter\" class=\"grid grid-cols-12 capitalize bg-slate-600  gap-x-1\"><div class=\"col-span-12 text-white text-2xl capitalize p-5\"><button class=\"text-center ml-10 scale-75 hover:scale-105 hover:border rounded-full\" hx-get=\"/debts/update\" hx-target=\"#recurringBillRows\" hx-swap=\"afterend\"><svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-10 h-15 text-white inline\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z\"></path></svg></button> ")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"recurringBillFooter\" class=\"grid grid-cols-12 capitalize bg-slate-600  gap-x-1\"><div class=\"col-span-12 text-white text-2xl capitalize p-5\"><button class=\"text-center ml-10 scale-75 hover:scale-105 hover:border rounded-full\" hx-get=\"/bills/update\" hx-target=\"#recurringBillRows\" hx-swap=\"afterend\"><svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-10 h-15 text-white inline\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z\"></path></svg></button> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -47,7 +47,7 @@ func AddRecurringBillsComponent() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" <span id=\"recurringBillTotal\" hx-get=\"/debts/total\" hx-trigger=\"billsAction from:body\" hx-swap=\"innerHTML\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" <span id=\"recurringBillTotal\" hx-get=\"/bills/total\" hx-trigger=\"billsAction from:body\" hx-swap=\"innerHTML\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -97,7 +97,7 @@ func RecurringBillsComponent(bills RecurringBillList) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/debts/update?id=" + strconv.Itoa(bill.Id)))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/bills/update?id=" + strconv.Itoa(bill.Id)))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -113,7 +113,7 @@ func RecurringBillsComponent(bills RecurringBillList) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/debts/delete?id=" + strconv.Itoa(bill.Id)))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/bills/delete?id=" + strconv.Itoa(bill.Id)))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -245,7 +245,7 @@ func EditRecurringBillsComponent(bill RecurringBill, update bool) templ.Componen
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"grid grid-cols-12 capitalize py-4 px-1 bg-slate-400  gap-x-1\"><div id=\"billControls\" class=\"flex items-center justify-center gap-x-1 px-1\"><div class=\"w-1/2\"><button class=\"bg-blue-600 text-white uppercase rounded-lg py-1 px-3 w-full text-xs\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"grid grid-cols-12 capitalize py-4 px-1 bg-slate-400 gap-x-1\"><div id=\"billControls\" class=\"flex items-center justify-center gap-x-1 px-1\"><div class=\"w-1/2\"><button class=\"bg-blue-600 text-white uppercase rounded-lg py-1 px-3 w-full text-xs\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -254,7 +254,7 @@ func EditRecurringBillsComponent(bill RecurringBill, update bool) templ.Componen
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/debts/update?id=" + strconv.Itoa(bill.Id)))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/bills/update?id=" + strconv.Itoa(bill.Id)))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -267,7 +267,7 @@ func EditRecurringBillsComponent(bill RecurringBill, update bool) templ.Componen
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/debts/new"))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/bills/new"))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -310,7 +310,7 @@ func EditRecurringBillsComponent(bill RecurringBill, update bool) templ.Componen
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/debts?id=" + strconv.Itoa(bill.Id)))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/bills?id=" + strconv.Itoa(bill.Id)))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -327,7 +327,7 @@ func EditRecurringBillsComponent(bill RecurringBill, update bool) templ.Componen
 				return templ_7745c5c3_Err
 			}
 		} else {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" hx-get=\"/debts?id=0\" hx-swap=\"delete\" hx-target=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" hx-get=\"/bills?id=0\" hx-swap=\"delete\" hx-target=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -495,7 +495,7 @@ func RecurringBillsIndex() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div id=\"billDateColumn\" class=\"col-span-1 column sortable\" hx-trigger=\"click\" hx-swap=\"innerHTML\" hx-target=\"#recurringBillRows\" hx-get=\"/debts?column=day_of_month\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div id=\"billDateColumn\" class=\"col-span-1 column sortable\" hx-trigger=\"click\" hx-swap=\"innerHTML\" hx-target=\"#recurringBillRows\" hx-get=\"/bills/bills?column=day_of_month\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -504,7 +504,7 @@ func RecurringBillsIndex() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div id=\"billNameColumn\" class=\"col-span-2 column sortable\" hx-trigger=\"click\" hx-swap=\"innerHTML\" hx-target=\"#recurringBillRows\" hx-get=\"/debts?column=name\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div id=\"billNameColumn\" class=\"col-span-2 column sortable\" hx-trigger=\"click\" hx-swap=\"innerHTML\" hx-target=\"#recurringBillRows\" hx-get=\"/bills/bills?column=name\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -513,7 +513,7 @@ func RecurringBillsIndex() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div id=\"billOwnerColumn\" class=\"col-span-1 column sortable\" hx-trigger=\"click\" hx-swap=\"innerHTML\" hx-target=\"#recurringBillRows\" hx-get=\"/debts?column=owner\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div id=\"billOwnerColumn\" class=\"col-span-1 column sortable\" hx-trigger=\"click\" hx-swap=\"innerHTML\" hx-target=\"#recurringBillRows\" hx-get=\"/bills/bills?column=owner\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -522,7 +522,7 @@ func RecurringBillsIndex() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div id=\"billCostColumn\" class=\"col-span-1 column sortable\" hx-trigger=\"click\" hx-swap=\"innerHTML\" hx-target=\"#recurringBillRows\" hx-get=\"/debts?column=amount\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div id=\"billCostColumn\" class=\"col-span-1 column sortable\" hx-trigger=\"click\" hx-swap=\"innerHTML\" hx-target=\"#recurringBillRows\" hx-get=\"/bills/bills?column=amount\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -544,7 +544,7 @@ func RecurringBillsIndex() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/debts"))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/bills/bills"))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/monstercameron/gofinances/database"
 	"github.com/monstercameron/gofinances/features/bills"
+	"github.com/monstercameron/gofinances/features/debts"
 	"github.com/monstercameron/gofinances/features/settings"
 	"github.com/monstercameron/gofinances/helpers"
 	"log"
@@ -207,9 +208,10 @@ func GetTab(w http.ResponseWriter, r *http.Request) {
 		component.Render(r.Context(), w)
 		return
 	case 2:
+		component := debts.DebtsIndex()
 		// send string response
-		w.Header().Set("Content-Type", "text/plain")
-		w.Write([]byte("Short term debts"))
+		w.Header().Set("Content-Type", "text/html")
+		component.Render(r.Context(), w)
 		return
 	case 3:
 		// send string response

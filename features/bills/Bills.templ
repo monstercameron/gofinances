@@ -10,7 +10,7 @@ templ AddRecurringBillsComponent() {
     <div id="recurringBillFooter" class="grid grid-cols-12 capitalize bg-slate-600  gap-x-1">
         <div class="col-span-12 text-white text-2xl capitalize p-5">
             <button class="text-center ml-10 scale-75 hover:scale-105 hover:border rounded-full"
-                hx-get="/debts/update"
+                hx-get="/bills/update"
                 hx-target="#recurringBillRows"
                 hx-swap="afterend"
                 >
@@ -22,7 +22,7 @@ templ AddRecurringBillsComponent() {
             </button> 
             add recurring bill | 
             <span class="text-2xl">Total Recurring Bills: $
-                <span id="recurringBillTotal" hx-get="/debts/total" hx-trigger="billsAction from:body" hx-swap="innerHTML">
+                <span id="recurringBillTotal" hx-get="/bills/total" hx-trigger="billsAction from:body" hx-swap="innerHTML">
                     {strconv.FormatFloat(GetTotalCost(), 'f', 2, 64)}
                 </span>
             </span>
@@ -41,7 +41,7 @@ templ RecurringBillsComponent(bills RecurringBillList) {
                     viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" 
                     class="w-6 h-6 inline hover:border border-black shadow cursor-pointer"
-                    hx-get={"/debts/update?id=" + strconv.Itoa(bill.Id)}
+                    hx-get={"/bills/update?id=" + strconv.Itoa(bill.Id)}
                     hx-trigger="click"
                     hx-target={"#recurringBillId-" + strconv.Itoa(bill.Id)}
                     hx-swap="outerHTML"
@@ -57,7 +57,7 @@ templ RecurringBillsComponent(bills RecurringBillList) {
                     stroke-width="1.5"
                     stroke="currentColor" 
                     class="w-6 h-6 inline hover:border border-black shadow cursor-pointer"
-                    hx-delete={"/debts/delete?id=" + strconv.Itoa(bill.Id)}
+                    hx-delete={"/bills/delete?id=" + strconv.Itoa(bill.Id)}
                     hx-trigger="click"
                     hx-swap="delete"
                     hx-target={"#recurringBillId-" + strconv.Itoa(bill.Id)}
@@ -87,9 +87,9 @@ templ EditRecurringBillsComponent(bill RecurringBill, update bool) {
             <div class="w-1/2">
                 <button class="bg-blue-600 text-white uppercase rounded-lg py-1 px-3 w-full text-xs"
                 if update == true {
-                    hx-post={"/debts/update?id=" + strconv.Itoa(bill.Id)}
+                    hx-post={"/bills/update?id=" + strconv.Itoa(bill.Id)}
                 }else{
-                    hx-post={"/debts/new"}
+                    hx-post={"/bills/new"}
                 }
                     hx-include={"#EditRecurringBill" + strconv.Itoa(bill.Id)}
                     hx-swap="outerHTML"
@@ -101,11 +101,11 @@ templ EditRecurringBillsComponent(bill RecurringBill, update bool) {
             <div class="w-1/2">
                 <button class="bg-red-700 text-white uppercase rounded-lg py-1 px-3 w-full text-xs"
                     if update == true {
-                        hx-get={"/debts?id=" + strconv.Itoa(bill.Id)}
+                        hx-get={"/bills?id=" + strconv.Itoa(bill.Id)}
                         hx-swap="outerHTML"
                         hx-target={"#EditRecurringBill" + strconv.Itoa(bill.Id)}
                     }else{
-                        hx-get="/debts?id=0"
+                        hx-get="/bills?id=0"
                         hx-swap="delete"
                         hx-target={"#EditRecurringBill" + strconv.Itoa(bill.Id)}
                     }
@@ -155,18 +155,18 @@ templ RecurringBillsIndex() {
 			<div id="idColumns" class="col-span-1 column">controls</div>
 			<div id="idColumns" class="col-span-1 column">id</div>
 			<div id="billDateColumn" class="col-span-1 column sortable" hx-trigger="click" hx-swap="innerHTML"
-				hx-target="#recurringBillRows" hx-get="/debts?column=day_of_month">
+				hx-target="#recurringBillRows" hx-get="/bills/bills?column=day_of_month">
 				Bill Date
 			</div>
 			<div id="billNameColumn" class="col-span-2 column sortable" hx-trigger="click" hx-swap="innerHTML"
-				hx-target="#recurringBillRows" hx-get="/debts?column=name">Bill name</div>
+				hx-target="#recurringBillRows" hx-get="/bills/bills?column=name">Bill name</div>
 			<div id="billOwnerColumn" class="col-span-1 column sortable" hx-trigger="click" hx-swap="innerHTML"
-				hx-target="#recurringBillRows" hx-get="/debts?column=owner">Bill Owner</div>
+				hx-target="#recurringBillRows" hx-get="/bills/bills?column=owner">Bill Owner</div>
 			<div id="billCostColumn" class="col-span-1 column sortable" hx-trigger="click" hx-swap="innerHTML"
-				hx-target="#recurringBillRows" hx-get="/debts?column=amount">Bill Cost</div>
+				hx-target="#recurringBillRows" hx-get="/bills/bills?column=amount">Bill Cost</div>
 			<div id="billNotesColumn" class="col-span-5 column column-last">Notes</div>
 		</div>
-		<div id="recurringBillRows" class="grid grid-cols-1" hx-get={"/debts"} hx-trigger="newBill from:body"
+		<div id="recurringBillRows" class="grid grid-cols-1" hx-get={"/bills/bills"} hx-trigger="newBill from:body"
 			hx-target="#recurringBillRows" hx-swap="innerHTML">
 			@RecurringBillsComponent(GetBills())
 		</div>
