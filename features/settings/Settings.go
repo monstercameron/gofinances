@@ -3,10 +3,9 @@ package settings
 import (
 	"database/sql"
 	"fmt"
+	"github.com/monstercameron/gofinances/database"
 	"net/http"
 	"strconv"
-
-	"github.com/monstercameron/gofinances/database"
 )
 
 func init() {
@@ -72,63 +71,52 @@ func (m *SettingsPageUser) Save() {
 	}
 }
 
-func (m *SettingsPageUser) Delete() {
-	fmt.Println("SettingsPageUser.Delete()")
+func (u *SettingsPageUser) Delete() error {
 	tx, err := database.DB.Begin()
 	if err != nil {
-		fmt.Println(err)
+		return fmt.Errorf("error starting transaction: %w", err)
 	}
+	defer tx.Rollback()
 
 	query := `DELETE FROM users WHERE id=?;`
-	_, err = tx.Exec(query, m.Id)
-	if err != nil {
-		tx.Rollback()
-		fmt.Println(err)
+	if _, err := tx.Exec(query, u.Id); err != nil {
+		return fmt.Errorf("error deleting user: %w", err)
 	}
 
-	err = tx.Commit()
-	if err != nil {
-		tx.Rollback()
-		fmt.Println(err)
-	}
+	return tx.Commit()
 }
 
-func GetSettingsPageUserById(id int) *SettingsPageUser {
+func GetSettingsPageUserById(id int) (*SettingsPageUser, error) {
 	fmt.Println("SettingsPageUser.Get()")
 	query := `SELECT id, name FROM users WHERE id=?;`
 	row := database.DB.QueryRow(query, id)
-	row.Scan(&id)
+
 	var user SettingsPageUser
 	err := row.Scan(&user.Id, &user.Name)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Error fetching user:", err)
+		return nil, err
 	}
-	return &user
+	return &user, nil
 }
 
-func GetAllSettingsUsers() []SettingsPageUser {
-	fmt.Println("GetAllUsers()")
-	// Get all users from the database
-	rows, err := database.DB.Query("SELECT id, name FROM users;")
+func GetAllSettingsUsers() ([]SettingsPageUser, error) {
+	query := `SELECT id, name FROM users;`
+	rows, err := database.DB.Query(query)
 	if err != nil {
-		fmt.Println(err)
+		return nil, fmt.Errorf("error fetching users: %w", err)
 	}
 	defer rows.Close()
 
-	// Create a slice to hold the users
-	users := []SettingsPageUser{}
-
-	// Iterate over the rows, adding each user to the slice
+	var users []SettingsPageUser
 	for rows.Next() {
 		var user SettingsPageUser
-		err := rows.Scan(&user.Id, &user.Name)
-		if err != nil {
-			fmt.Println(err)
+		if err := rows.Scan(&user.Id, &user.Name); err != nil {
+			return nil, fmt.Errorf("error scanning user: %w", err)
 		}
 		users = append(users, user)
 	}
-
-	return users
+	return users, nil
 }
 
 func GetSettingsUsers(w http.ResponseWriter, r *http.Request) {
@@ -165,66 +153,45 @@ func GetSettingsUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 	w.WriteHeader(http.StatusOK)
 
+	users, err = GetAllSettingsUsers()
+	if err != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
 	// Marshal the users to JSON and write to the response
-	component := SettingsPageIndex(GetAllSettingsUsers())
+	component := SettingsPageIndex(users)
 	component.Render(r.Context(), w)
 }
 
-func GetSettingsUserInput(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("GetSettingsUserInput()")
-	// Ensure the request method is GET
-	if r.Method == http.MethodGet {
-		id := r.URL.Query().Get("id")
-		if id == "" {
+func GetSettingsUserActions(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("GetSettingsUser()")
+	switch r.Method {
+	case http.MethodGet:
+		HandleGetSettingsUser(w, r)
+	case http.MethodPost:
+		HandlePostSettingsUser(w, r)
+	case http.MethodPut:
+		HandlePutSettingsUser(w, r)
+	case http.MethodDelete:
+		HandleDeleteSettingsUser(w, r)
+	default:
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	}
+}
 
-			// Set response headers and status
-			w.Header().Set("Content-Type", "text/html")
-			w.WriteHeader(http.StatusOK)
-
-			// Render the user input form
-			component := SettingsPageUserInputField()
-			component.Render(r.Context(), w)
-		} else {
-			intID, err := strconv.Atoi(id)
-			if err != nil {
-				// Respond with error if 'id' is not a valid integer
-				http.Error(w, "Invalid ID format", http.StatusBadRequest)
-				return
-			}
-			// Get the user from the database
-			user := GetSettingsPageUserById(intID)
-
-			// Set response headers and status
-			w.Header().Set("Content-Type", "text/html")
-			w.WriteHeader(http.StatusOK)
-
-			// Render the user input form
-			component := SettingsPageUserInputFieldUpdate(user)
-			component.Render(r.Context(), w)
-		}
-	} else if r.Method == http.MethodPost {
-		name := r.FormValue("settingsusername")
-		if name == "" {
-			http.Error(w, "Name is required", http.StatusBadRequest)
-			return
-		}
-		user := SettingsPageUser{}
-		user.Name = name
-		user.Save()
+func HandleGetSettingsUser(w http.ResponseWriter, r *http.Request) {
+	// Implementation of GET method
+	id := r.URL.Query().Get("id")
+	if id == "" {
 
 		// Set response headers and status
 		w.Header().Set("Content-Type", "text/html")
 		w.WriteHeader(http.StatusOK)
 
 		// Render the user input form
-		component := SettingsPageListItem(&user)
+		component := SettingsPageUserInputField()
 		component.Render(r.Context(), w)
-	} else if r.Method == http.MethodPut {
-		id := r.URL.Query().Get("id")
-		if id == "" {
-			http.Error(w, "ID is required", http.StatusBadRequest)
-			return
-		}
+	} else {
 		intID, err := strconv.Atoi(id)
 		if err != nil {
 			// Respond with error if 'id' is not a valid integer
@@ -232,15 +199,11 @@ func GetSettingsUserInput(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		// Get the user from the database
-		user := GetSettingsPageUserById(intID)
-
-		name := r.FormValue("settingsusername")
-		if name == "" {
-			http.Error(w, "Name is required", http.StatusBadRequest)
+		user, err := GetSettingsPageUserById(intID)
+		if err != nil {
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
-		user.Name = name
-		user.Save()
 
 		// Set response headers and status
 		w.Header().Set("Content-Type", "text/html")
@@ -249,32 +212,95 @@ func GetSettingsUserInput(w http.ResponseWriter, r *http.Request) {
 		// Render the user input form
 		component := SettingsPageUserInputFieldUpdate(user)
 		component.Render(r.Context(), w)
-	} else if r.Method == http.MethodDelete {
-		fmt.Println("delete")
-		id := r.URL.Query().Get("id")
-		if id == "" {
-			http.Error(w, "ID is required", http.StatusBadRequest)
-			return
-		}
-		intID, err := strconv.Atoi(id)
-		if err != nil {
-			// Respond with error if 'id' is not a valid integer
-			http.Error(w, "Invalid ID format", http.StatusBadRequest)
-			return
-		}
-		// Get the user from the database
-		user := GetSettingsPageUserById(intID)
-		user.Delete()
+	}
+}
 
-		// Set response headers and status
-		w.Header().Set("Content-Type", "text/html")
-		w.Header().Set("hx-trigger", "fetchSettingsUsers")
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(""))
-	} else {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+func HandlePostSettingsUser(w http.ResponseWriter, r *http.Request) {
+	// Implementation of POST method
+	name := r.FormValue("settingsusername")
+	if name == "" {
+		http.Error(w, "Name is required", http.StatusBadRequest)
 		return
 	}
+	user := SettingsPageUser{}
+	user.Name = name
+	user.Save()
+
+	// Set response headers and status
+	w.Header().Set("hx-trigger", "fetchSettingsUsers")
+	w.Header().Set("Content-Type", "text/html")
+	w.WriteHeader(http.StatusOK)
+
+	// Render the user input form
+	component := SettingsPageListItem(&user)
+	component.Render(r.Context(), w)
+}
+
+func HandlePutSettingsUser(w http.ResponseWriter, r *http.Request) {
+	// Implementation of PUT method
+	id := r.URL.Query().Get("id")
+	if id == "" {
+		http.Error(w, "ID is required", http.StatusBadRequest)
+		return
+	}
+	intID, err := strconv.Atoi(id)
+	if err != nil {
+		// Respond with error if 'id' is not a valid integer
+		http.Error(w, "Invalid ID format", http.StatusBadRequest)
+		return
+	}
+	// Get the user from the database
+	user, err := GetSettingsPageUserById(intID)
+	if err != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	name := r.FormValue("settingsusername")
+	if name == "" {
+		http.Error(w, "Name is required", http.StatusBadRequest)
+		return
+	}
+	user.Name = name
+	user.Save()
+
+	// Set response headers and status
+	w.Header().Set("hx-trigger", "fetchSettingsUsers")
+	w.Header().Set("Content-Type", "text/html")
+	w.WriteHeader(http.StatusOK)
+
+	// Render the user input form
+	component := SettingsPageUserInputFieldUpdate(user)
+	component.Render(r.Context(), w)
+}
+
+func HandleDeleteSettingsUser(w http.ResponseWriter, r *http.Request) {
+	// Implementation of DELETE method
+	fmt.Println("delete")
+	id := r.URL.Query().Get("id")
+	if id == "" {
+		http.Error(w, "ID is required", http.StatusBadRequest)
+		return
+	}
+	intID, err := strconv.Atoi(id)
+	if err != nil {
+		// Respond with error if 'id' is not a valid integer
+		http.Error(w, "Invalid ID format", http.StatusBadRequest)
+		return
+	}
+	// Get the user from the database
+	user, err := GetSettingsPageUserById(intID)
+	if err != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+	user.Delete()
+
+	// Set response headers and status
+	w.Header().Set("Content-Type", "text/html")
+	w.Header().Set("hx-trigger", "fetchSettingsUsers")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(""))
 }
 
 func GetSettingsUser(w http.ResponseWriter, r *http.Request) {
@@ -286,7 +312,11 @@ func GetSettingsUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Get the user from the database
-	users := GetAllSettingsUsers()
+	users, err := GetAllSettingsUsers()
+	if err != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
 
 	// Set response headers and status
 	w.Header().Set("Content-Type", "text/html")
@@ -295,4 +325,10 @@ func GetSettingsUser(w http.ResponseWriter, r *http.Request) {
 	// Marshal the user to JSON and write to the response
 	component := SettingsPageList(users)
 	component.Render(r.Context(), w)
+}
+
+func GetSettingsPage(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("SettingsController.GetSettingsPage(): \t\tGetting Settings Page...")
+	w.Header().Set("Content-Type", "text/html")
+	w.Write([]byte("Settings Page from SettingsController.GetSettingsPage()"))
 }

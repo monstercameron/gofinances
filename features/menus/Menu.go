@@ -247,7 +247,12 @@ func GetTab(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("time tables"))
 		return
 	case 10:
-		component := settings.SettingsPageIndex(settings.GetAllSettingsUsers())
+		users, err := settings.GetAllSettingsUsers()
+		if err != nil {
+			http.Error(w, "Error getting users", http.StatusInternalServerError)
+			return
+		}
+		component := settings.SettingsPageIndex(users)
 		w.Header().Set("Content-Type", "text/plain")
 		component.Render(r.Context(), w)
 		return

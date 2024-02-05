@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/a-h/templ"
-	"github.com/monstercameron/gofinances/features/menus"
 	"github.com/monstercameron/gofinances/features/bills"
+	"github.com/monstercameron/gofinances/features/menus"
 	"github.com/monstercameron/gofinances/features/settings"
 )
 
@@ -43,7 +43,12 @@ func GetStartingPage() templ.Component {
 	case 1:
 		return bills.RecurringBillsIndex()
 	case 10:
-		return settings.SettingsPageIndex(settings.GetAllSettingsUsers())
+		users, err := settings.GetAllSettingsUsers()
+		if err != nil {
+			fmt.Println("home.GetStartingPage(): error getting users")
+			return settings.SettingsPageIndex([]settings.SettingsPageUser{})
+		}
+		return settings.SettingsPageIndex(users)
 	default:
 		fmt.Println("home.GetStartingPage(): id == -1")
 		return bills.RecurringBillsIndex()

@@ -10,6 +10,37 @@ import (
 	"time"
 )
 
+// init is executed when the package is imported.
+// It checks if the 'recurring_bills' table is empty and populates it with initial data if needed.
+func init() {
+	fmt.Println("RecuringBills.init(): \t\tchecking if 'recurring_bills' table is empty...")
+
+	// Create table for recurring bills
+	var err error
+	_, err = database.DB.Exec("CREATE TABLE IF NOT EXISTS recurring_bills (id INTEGER PRIMARY KEY, name TEXT, amount REAL, day_of_month INTEGER, owner TEXT, notes TEXT)")
+	if err != nil {
+		log.Fatalf("Failed to create 'recurring_bills' table: %v", err)
+	} else {
+		fmt.Println("Database.Init(): \t\t'recurring_bills' table created.")
+	}
+
+	// Count the number of records in the 'recurring_bills' table
+	var count int
+	query := `SELECT count(*) FROM recurring_bills;`
+	err = database.DB.QueryRow(query).Scan(&count)
+	if err != nil {
+		fmt.Printf("RecurringBills.init(): \t\tFailed to count records in 'recurring_bills' table: %v", err)
+	}
+
+	// If the table is empty (count = 0), populate it with initial data
+	if count == 0 {
+		fmt.Println("RecurringBills.init(): \t\ttable is empty. Populating with initial data...")
+		InsertRecurringBillSamplesIntoDB()
+	} else {
+		fmt.Println("RecurringBills.init(): \t\ttable is not empty. Skipping population with initial data...")
+	}
+}
+
 // RecurringBill represents a single recurring bill.
 // It is used to store information about a bill that is paid on a regular basis.
 type RecurringBill struct {
@@ -257,37 +288,6 @@ func GetBills() RecurringBillList {
 		return RecurringBillList{}
 	}
 	return bills
-}
-
-// init is executed when the package is imported.
-// It checks if the 'recurring_bills' table is empty and populates it with initial data if needed.
-func init() {
-	fmt.Println("RecuringBills.init(): \t\tchecking if 'recurring_bills' table is empty...")
-
-	// Create table for recurring bills
-	var err error
-    _, err = database.DB.Exec("CREATE TABLE IF NOT EXISTS recurring_bills (id INTEGER PRIMARY KEY, name TEXT, amount REAL, day_of_month INTEGER, owner TEXT, notes TEXT)")
-    if err != nil {
-        log.Fatalf("Failed to create 'recurring_bills' table: %v", err)
-    } else {
-        fmt.Println("Database.Init(): \t\t'recurring_bills' table created.")
-    }
-
-	// Count the number of records in the 'recurring_bills' table
-	var count int
-	query := `SELECT count(*) FROM recurring_bills;`
-	err = database.DB.QueryRow(query).Scan(&count)
-	if err != nil {
-		fmt.Printf("RecurringBills.init(): \t\tFailed to count records in 'recurring_bills' table: %v", err)
-	}
-
-	// If the table is empty (count = 0), populate it with initial data
-	if count == 0 {
-		fmt.Println("RecurringBills.init(): \t\ttable is empty. Populating with initial data...")
-		InsertRecurringBillSamplesIntoDB()
-	} else {
-		fmt.Println("RecurringBills.init(): \t\ttable is not empty. Skipping population with initial data...")
-	}
 }
 
 // GetBills handles the HTTP request to retrieve bill information.

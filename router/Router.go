@@ -33,7 +33,6 @@ func CreateRoutes(server *http.ServeMux) {
 	server.HandleFunc("/debts/total", bills.GetBillsTotalDebts) // Handler for retrieving total debts
 	/////////////////////// SETTINGS ROUTES ///////////////////////
 	server.HandleFunc("/settings", home.GetIndexPage)
-	server.HandleFunc("/settings/test", settings.GetSettingsPage)         // Handler for the '/settings' route
-	server.HandleFunc("/settings/adduser", settings.GetSettingsUserInput) // Handler for the '/settings/save' route
-	server.HandleFunc("/settings/getusers", settings.GetSettingsUser)     // Handler for the '/settings/save' route
+	server.HandleFunc("/settings/user", settings.GetSettingsUserActions) 	// Handler for the '/settings/save' route
+	server.HandleFunc("/settings/users", settings.GetSettingsUser)     		// Handler for the '/settings/save' route
 }
