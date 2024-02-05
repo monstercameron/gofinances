@@ -6,7 +6,7 @@ import (
 
 
 templ MainMenuComponent(menuItems []MenuItem) {
-	<div id="menu" class="w-full grid grid-cols-11">
+	<div id="menu" class="w-full grid grid-cols-10">
 		for _, menuItem := range menuItems {
 			if menuItem.IsActive {
 				<div class="tab text-center capitalize activeTab">

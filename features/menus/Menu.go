@@ -3,8 +3,9 @@ package menus
 import (
 	"database/sql"
 	"fmt"
-	"github.com/monstercameron/gofinances/database"
 	"log"
+
+	"github.com/monstercameron/gofinances/database"
 )
 
 type MenuItem struct {
@@ -83,9 +84,8 @@ func GetActiveMenu() int {
 
 func PopulateMenu() {
 	menus := []MenuItem{}
-	menus = append(menus, MenuItem{Id: 0, Menu: "recurring bills", Url: "/bills", IsActive: true})
-	menus = append(menus, MenuItem{Id: 1, Menu: "short term debts", Url: "/debts", IsActive: false})
-	menus = append(menus, MenuItem{Id: 2, Menu: "long term debts", Url: "/assets", IsActive: false})
+	menus = append(menus, MenuItem{Id: 1, Menu: "recurring bills", Url: "/bills", IsActive: true})
+	menus = append(menus, MenuItem{Id: 2, Menu: "short term debts", Url: "/debts", IsActive: false})
 	menus = append(menus, MenuItem{Id: 3, Menu: "assets", Url: "/assets", IsActive: false})
 	menus = append(menus, MenuItem{Id: 4, Menu: "credit utilization", Url: "/credit", IsActive: false})
 	menus = append(menus, MenuItem{Id: 5, Menu: "goals", Url: "/goals", IsActive: false})
