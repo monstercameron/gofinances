@@ -3,10 +3,40 @@ package menus
 import (
 	"database/sql"
 	"fmt"
-	"log"
-
 	"github.com/monstercameron/gofinances/database"
+	"github.com/monstercameron/gofinances/features/bills"
+	"github.com/monstercameron/gofinances/features/settings"
+	"github.com/monstercameron/gofinances/helpers"
+	"log"
+	"net/http"
+	"strconv"
 )
+
+func init() {
+	fmt.Println("Menu.init(): \t\t\tPopulating Menu...")
+	// Menu = PopulateMenu()
+
+	// Create table for menus
+	var err error
+	_, err = database.DB.Exec("CREATE TABLE IF NOT EXISTS menus (id INTEGER PRIMARY KEY, menu TEXT, url TEXT, is_active INTEGER)")
+	if err != nil {
+		log.Fatalf("Failed to create 'recurring_bills' table: %v", err)
+	} else {
+		fmt.Println("Database.Init(): \t\t'recurring_bills' table created.")
+	}
+
+	// check if menus are empty
+	var count int
+	query := `SELECT count(*) FROM menus;`
+	err = database.DB.QueryRow(query).Scan(&count)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if count == 0 {
+		fmt.Println("Menu.init(): \t\t\tPopulating Menu...")
+		PopulateMenu()
+	}
+}
 
 type MenuItem struct {
 	Id       int
@@ -123,28 +153,108 @@ func GetMenus() []MenuItem {
 	return menus
 }
 
-func init() {
-	fmt.Println("Menu.init(): \t\t\tPopulating Menu...")
-	// Menu = PopulateMenu()
-
-	// Create table for menus
-	var err error
-	_, err = database.DB.Exec("CREATE TABLE IF NOT EXISTS menus (id INTEGER PRIMARY KEY, menu TEXT, url TEXT, is_active INTEGER)")
-	if err != nil {
-		log.Fatalf("Failed to create 'recurring_bills' table: %v", err)
-	} else {
-		fmt.Println("Database.Init(): \t\t'recurring_bills' table created.")
+func MenuPicker(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
 	}
 
-	// check if menus are empty
-	var count int
-	query := `SELECT count(*) FROM menus;`
-	err = database.DB.QueryRow(query).Scan(&count)
+	fmt.Println("MenuPicker.MenuPicker(): r.URL.Path: ", r.URL.Path)
+
+	// example /menu/1
+	urlParam, err := helpers.ExtractSegmentFromPath(r.URL.Path, 2)
 	if err != nil {
-		log.Fatal(err)
+		http.Error(w, "Invalid URL", http.StatusBadRequest)
+		return
 	}
-	if count == 0 {
-		fmt.Println("Menu.init(): \t\t\tPopulating Menu...")
-		PopulateMenu()
+
+	// convert to int
+	id, err := strconv.Atoi(urlParam)
+	if err != nil {
+		http.Error(w, "Invalid URL", http.StatusBadRequest)
+		return
+	}
+
+	SetActiveMenu(id)
+
+	component := MainMenuComponent(GetMenus())
+	// serve text/html
+	w.Header().Set("Content-Type", "text/html")
+	w.Header().Set("HX-Trigger", "menuSwitch")
+	// render the component to the response writer
+	component.Render(r.Context(), w)
+}
+
+func GetTab(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	id := GetActiveMenu()
+	if id == -1 {
+		http.Error(w, "Invalid URL", http.StatusBadRequest)
+		return
+	}
+
+	fmt.Println("MenuPicker.GetTab(): id: ", id)
+
+	switch id {
+	case 1:
+		component := bills.RecurringBillsIndex()
+		// serve text/html
+		w.Header().Set("Content-Type", "text/html")
+		component.Render(r.Context(), w)
+		return
+	case 2:
+		// send string response
+		w.Header().Set("Content-Type", "text/plain")
+		w.Write([]byte("Short term debts"))
+		return
+	case 3:
+		// send string response
+		w.Header().Set("Content-Type", "text/plain")
+		w.Write([]byte("Assets"))
+		return
+	case 4:
+		// send string response
+		w.Header().Set("Content-Type", "text/plain")
+		w.Write([]byte("Credit utilization"))
+		return
+	case 5:
+		// send string response
+		w.Header().Set("Content-Type", "text/plain")
+		w.Write([]byte("Goals"))
+		return
+	case 6:
+		// send string response
+		w.Header().Set("Content-Type", "text/plain")
+		w.Write([]byte("Recommendations"))
+		return
+	case 7:
+		// send string response
+		w.Header().Set("Content-Type", "text/plain")
+		w.Write([]byte("Calendar"))
+		return
+	case 8:
+		// send string response
+		w.Header().Set("Content-Type", "text/plain")
+		w.Write([]byte("Drip calculator"))
+		return
+	case 9:
+		// send string response
+		w.Header().Set("Content-Type", "text/plain")
+		w.Write([]byte("time tables"))
+		return
+	case 10:
+		component := settings.SettingsPageIndex(settings.GetAllSettingsUsers())
+		w.Header().Set("Content-Type", "text/plain")
+		component.Render(r.Context(), w)
+		return
+	default:
+		// send string response
+		w.Header().Set("Content-Type", "text/plain")
+		w.Write([]byte("Default"))
+		return
 	}
 }

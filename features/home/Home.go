@@ -40,7 +40,7 @@ func GetStartingPage() templ.Component {
 	}
 
 	switch id {
-	case 0:
+	case 1:
 		return bills.RecurringBillsIndex()
 	case 10:
 		return settings.SettingsPageIndex(settings.GetAllSettingsUsers())
