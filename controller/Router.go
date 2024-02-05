@@ -31,6 +31,7 @@ func CreateRoutes(server *http.ServeMux) {
 	server.HandleFunc("/debts/delete", monthlydebts.DeleteBills)       // Handler for deleting bills
 	server.HandleFunc("/debts/total", monthlydebts.GetBillsTotalDebts) // Handler for retrieving total debts
 	/////////////////////// SETTINGS ROUTES ///////////////////////
+	server.HandleFunc("/settings", settings.GetSettingsPage)
 	server.HandleFunc("/settings/test", settings.GetSettingsPage) // Handler for the '/settings' route
 	server.HandleFunc("/settings/adduser", settings.GetSettingsUserInput)    // Handler for the '/settings/save' route
 	server.HandleFunc("/settings/getusers", settings.GetSettingsUser)    // Handler for the '/settings/save' route

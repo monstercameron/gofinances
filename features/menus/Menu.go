@@ -83,16 +83,16 @@ func GetActiveMenu() int {
 
 func PopulateMenu() {
 	menus := []MenuItem{}
-	menus = append(menus, MenuItem{Id: 0, Menu: "recurring bills", Url: "/recurring-debts", IsActive: true})
-	menus = append(menus, MenuItem{Id: 1, Menu: "short term debts", Url: "/short-term-debts", IsActive: false})
-	menus = append(menus, MenuItem{Id: 2, Menu: "long term debts", Url: "/long-term-debts", IsActive: false})
+	menus = append(menus, MenuItem{Id: 0, Menu: "recurring bills", Url: "/bills", IsActive: true})
+	menus = append(menus, MenuItem{Id: 1, Menu: "short term debts", Url: "/debts", IsActive: false})
+	menus = append(menus, MenuItem{Id: 2, Menu: "long term debts", Url: "/assets", IsActive: false})
 	menus = append(menus, MenuItem{Id: 3, Menu: "assets", Url: "/assets", IsActive: false})
-	menus = append(menus, MenuItem{Id: 4, Menu: "credit utilization", Url: "/credit-utilization", IsActive: false})
+	menus = append(menus, MenuItem{Id: 4, Menu: "credit utilization", Url: "/credit", IsActive: false})
 	menus = append(menus, MenuItem{Id: 5, Menu: "goals", Url: "/goals", IsActive: false})
 	menus = append(menus, MenuItem{Id: 6, Menu: "recomendations", Url: "/recomendations", IsActive: false})
 	menus = append(menus, MenuItem{Id: 7, Menu: "calendar", Url: "/calendar", IsActive: false})
-	menus = append(menus, MenuItem{Id: 8, Menu: "drip calculator", Url: "/drip-calculator", IsActive: false})
-	menus = append(menus, MenuItem{Id: 9, Menu: "time tables", Url: "/time-tables", IsActive: false})
+	menus = append(menus, MenuItem{Id: 8, Menu: "drip calculator", Url: "/drip", IsActive: false})
+	menus = append(menus, MenuItem{Id: 9, Menu: "time tables", Url: "/timetables", IsActive: false})
 	menus = append(menus, MenuItem{Id: 10, Menu: "Settings", Url: "/settings", IsActive: false})
 
 	// loop and save

@@ -13,7 +13,7 @@ templ MainMenuComponent(menuItems []MenuItem) {
 					{ menuItem.Menu }
 				</div>
 			} else {
-				<div class="tab text-center capitalize" hx-trigger="click"  hx-get={"/menu/" + strconv.Itoa(menuItem.Id)} hx-swap="outerHTML" hx-target="#menu">
+				<div class="tab text-center capitalize" hx-trigger="click"  hx-get={"/menu/" + strconv.Itoa(menuItem.Id)} hx-push-url={menuItem.Url} hx-swap="outerHTML" hx-target="#menu">
 					{ menuItem.Menu }
 				</div>
 			}
