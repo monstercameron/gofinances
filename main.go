@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/monstercameron/gofinances/controller"
+	"github.com/monstercameron/gofinances/router"
 	"github.com/monstercameron/gofinances/database"
 	"github.com/monstercameron/gofinances/helpers"
 	"net/http"
@@ -16,7 +16,7 @@ func main() {
 	server := http.NewServeMux()
 
 	// Set up HTTP routes
-	controller.CreateRoutes(server)
+	router.CreateRoutes(server)
 
 	// Setup signal handling and receive shutdown signal
 	httpServer, done := helpers.SetupSignalHandling(server)
