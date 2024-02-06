@@ -18,7 +18,6 @@ func init() {
 func CreateRoutes(server *http.ServeMux) {
 	// Serve static files from the 'views/static' directory
 	server.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
-
 	// Set up routes and associate them with handler functions
 	/////////////////////// HOME ROUTES ///////////////////////
 	server.HandleFunc("/", home.GetIndexPage) // Handler for the root route
