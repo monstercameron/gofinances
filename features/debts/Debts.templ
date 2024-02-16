@@ -25,48 +25,78 @@ templ DebtsIndex(){
             </div>
             <div id="debtsNotesColumn" class="col-span-3 column column-last">Notes</div>
         </div>
-        <div id="debtsRows" class="grid grid-cols-1" hx-get="/bills/bills" hx-trigger="newBill from:body"
-            hx-target="#debtsRows" hx-swap="innerHTML">
-        @DebtLineItems(GetAllDebtsWithoutError())
-        </div>
-        <div id="debtsFooter" class="grid grid-cols-12 capitalize bg-slate-600  gap-x-1">
-            <div class="col-span-12 text-white text-2xl capitalize p-5">
-                <button class="text-center ml-10 scale-75 hover:scale-105 hover:border rounded-full"
-                    hx-get="/bills/update" hx-target="#debtsRows" hx-swap="afterend"><svg
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        stroke-width="1.5" stroke="currentColor" class="w-10 h-15 text-white inline">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
-                    </svg>
-                </button>
-                add debts | <span class="text-2xl">Total debt: $
-                    <span id="debtsTotal" hx-get="/bills/total" hx-trigger="billsAction from:body"
-                        hx-swap="innerHTML">37689.95
-                    </span>
+            @DebtLineItems(GetAllDebtsWithoutError())
+            @DebtFooter()
+    </div>
+}
+
+templ DebtFooter(){
+    <div id="debtsFooter" class="grid grid-cols-12 capitalize bg-slate-600  gap-x-1">
+        <div class="col-span-12 text-white text-2xl capitalize p-5">
+            <button 
+                class="text-center ml-10 scale-75 hover:scale-105 hover:border rounded-full"
+                hx-get="/bills/update" hx-target="#debtsRows" 
+                hx-swap="afterend"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg" 
+                    fill="none" viewBox="0 0 24 24"
+                    stroke-width="1.5" 
+                    stroke="currentColor" 
+                    class="w-10 h-15 text-white inline"
+                >
+                    <path  
+                        stroke-linecap="round" 
+                        stroke-linejoin="round"
+                        d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                    >
+                    </path>
+                </svg>
+            </button>
+            add debts | 
+            <span 
+                class="text-2xl"
+            >
+                Total debt: $
+                <span id="debtsTotal" hx-get="/bills/total" hx-trigger="billsAction from:body"
+                    hx-swap="innerHTML">37689.95
                 </span>
-            </div>
+            </span>
         </div>
     </div>
 }
 
 templ DebtLineItems(ds []Debt){
-    for _, d := range ds {
-        @DebtLineItem(d)
-    }
+    <div 
+        id="debtsRows" 
+        class="grid grid-cols-1" 
+        hx-get="/bills/bills" 
+        hx-trigger="newBill from:body"
+        hx-target="#debtsRows" 
+        hx-swap="innerHTML"
+    >
+        for _, d := range ds {
+            @DebtLineItem(d)
+        }
+    </div>
 }
 
 templ DebtLineItem(d Debt){
-    <div id="debtsId-1" class="grid grid-cols-12 capitalize py-4 px-1 rowColor">
+    <div id={"debtsId-" + strconv.Itoa(d.Id)}  class="grid grid-cols-12 capitalize py-4 px-1 rowColor">
         <div id="billControls" class="grid grid-cols-2 ">
-            <div class="inline text-center "><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+            <div class="inline text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                     class="w-6 h-6 inline hover:border border-black shadow cursor-pointer"
-                    hx-get="/bills/update?id=1" hx-trigger="click" hx-target="#debtsId-1"
+                    hx-get={"/debts/update?id=" + strconv.Itoa(d.Id)} 
+                    hx-trigger="click" 
+                    hx-target={"#debtsId-" + strconv.Itoa(d.Id)} 
                     hx-swap="outerHTML">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10">
                     </path>
-                </svg></div>
+                </svg>
+            </div>
             <div class="inline text-center"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                     class="w-6 h-6 inline hover:border border-black shadow cursor-pointer"
@@ -102,8 +132,15 @@ templ EditDebts(d Debt){
     <div id="editDebts" class="grid grid-cols-12 capitalize py-4 px-1 bg-slate-400 gap-x-1">
         <div id="debtsControls" class="flex items-center justify-center gap-x-1 px-1">
             <div class="w-1/2">
-                <button class="bg-blue-600 text-white uppercase rounded-lg py-1 px-3 w-full text-xs" hx-post="/debts/create"
-                    hx-include="#editDebts" hx-swap="outerHTML" hx-target="#editDebts">save</button>
+                <button 
+                    class="bg-blue-600 text-white uppercase rounded-lg py-1 px-3 w-full text-xs" 
+                    hx-post={"/debts/update?id=" + strconv.Itoa(d.Id)} 
+                    hx-include="#editDebts" 
+                    hx-swap="outerHTML" 
+                    hx-target="#editDebts"
+                >
+                    save
+                </button>
             </div>
             <div class="w-1/2">
                 <button class="bg-red-700 text-white uppercase rounded-lg py-1 px-3 w-full text-xs" hx-get="/debts/get?id="
@@ -148,12 +185,25 @@ templ AddDebts(){
     <div id="editDebts" class="grid grid-cols-12 capitalize py-4 px-1 bg-slate-400 gap-x-1">
         <div id="debtsControls" class="flex items-center justify-center gap-x-1 px-1">
             <div class="w-1/2">
-                <button class="bg-blue-600 text-white uppercase rounded-lg py-1 px-3 w-full text-xs" hx-post="/debts/create"
-                    hx-include="#editDebts" hx-swap="outerHTML" hx-target="#editDebts">save</button>
+                <button 
+                    class="bg-blue-600 text-white uppercase rounded-lg py-1 px-3 w-full text-xs" 
+                    hx-post="/debts/create"
+                    hx-include="#editDebts" 
+                    hx-swap="outerHTML" 
+                    hx-target="#editDebts"
+                >
+                    save
+                </button>
             </div>
             <div class="w-1/2">
-                <button class="bg-red-700 text-white uppercase rounded-lg py-1 px-3 w-full text-xs" hx-get="/debts/get?id="
-                    hx-swap="delete" hx-target="#debtsRows">cancel</button>
+                <button 
+                    class="bg-red-700 text-white uppercase rounded-lg py-1 px-3 w-full text-xs" 
+                    hx-get="/debts/get?id="
+                    hx-swap="delete" 
+                    hx-target="#debtsRows"
+                >
+                    cancel
+                    </button>
             </div>
         </div>
         <div id="billidColumn" class="col-span-1">

@@ -7,7 +7,7 @@ import (
 	"github.com/monstercameron/gofinances/features/home"
 	"github.com/monstercameron/gofinances/features/menus"
 	"github.com/monstercameron/gofinances/features/settings"
-	// "github.com/monstercameron/gofinances/features/debts"
+	"github.com/monstercameron/gofinances/features/debts"
 )
 
 func init() {
@@ -37,4 +37,10 @@ func CreateRoutes(server *http.ServeMux) {
 	server.HandleFunc("/settings/users", settings.GetSettingsUser)     		// Handler for the '/settings/save' route
 	/////////////////////// Debts ROUTES ///////////////////////
 	server.HandleFunc("/debts", home.GetIndexPage)
+	// server.HandleFunc("/debts/add", debts.GetDebtItems)
+	server.HandleFunc("/debts/update", debts.UpdateDebtItems)
+	// server.HandleFunc("/debts/create", debts.GetDebtItems)
+	// server.HandleFunc("/debts/create", debts.GetDebtItems)
+	// server.HandleFunc("/debts/create", debts.GetDebtItems)
+
 }

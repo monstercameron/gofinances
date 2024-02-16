@@ -74,16 +74,17 @@ func (d *Debt) Delete() {
 	tx.Commit()
 }
 
-func GetDebt(id int) Debt {
+func GetDebt(id int) (Debt, error) {
 	fmt.Println("GetDebt()")
 	var d Debt
 	query := `SELECT id, name, owner, start_date, end_date, initial, current, notes FROM debts WHERE id=?;`
 	err := database.DB.QueryRow(query, id).Scan(&d.Id, &d.Name, &d.Owner, &d.StartDate, &d.EndDate, &d.Initial, &d.Current, &d.Notes)
 	if err != nil {
 		fmt.Println("Error getting debt: ", err)
+		return d, nil
 	}
 	// store the debt in d
-	return d
+	return d, nil
 }
 
 func GetAllDebts() ([]Debt, error) {
@@ -105,6 +106,7 @@ func GetAllDebts() ([]Debt, error) {
 		}
 		debts = append(debts, d)
 	}
+	fmt.Println(debts)
 	return debts, nil
 }
 
@@ -126,13 +128,13 @@ func GetDebtItem(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Getting a debt item")
 	id := r.URL.Query().Get("id")
 	switch {
-		case id == "":
-			// return debt item
-			d := Debt{}
-			component := DebtLineItem(d)
-			w.Header().Set("Content-Type", "text/html")
-			component.Render(r.Context(), w)
-		default:
+	case id == "":
+		// return debt item
+		d := Debt{}
+		component := DebtLineItem(d)
+		w.Header().Set("Content-Type", "text/html")
+		component.Render(r.Context(), w)
+	default:
 		// return debt item
 		intID, err := strconv.Atoi(id)
 		if err != nil {
@@ -141,10 +143,54 @@ func GetDebtItem(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Invalid ID", http.StatusBadRequest)
 			return
 		}
-		d := GetDebt(intID)
+		d, err := GetDebt(intID)
+		if err != nil {
+			http.Error(w, "No Debt Found", http.StatusBadRequest)
+			return
+		}
 		fmt.Println(d)
 		component := DebtLineItem(d)
 		w.Header().Set("Content-Type", "text/html")
 		component.Render(r.Context(), w)
+	}
+}
+
+func UpdateDebtItems(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Getting all debt items")
+	id := r.URL.Query().Get("id")
+	intID, err := strconv.Atoi(id)
+	if err != nil {
+		http.Error(w, "Invalid ID", http.StatusBadRequest)
+		return
+	}
+
+	switch r.Method {
+	case "GET":
+		d, err := GetDebt(intID)
+		if err != nil {
+			http.Error(w, "No Debt Found", http.StatusBadRequest)
+			return
+		}
+		component := EditDebts(d)
+		w.Header().Set("Content-Type", "text/html")
+		w.Header().Set("Content-Type", "text/html")
+		component.Render(r.Context(), w)
+	case "POST":
+		d, err := GetDebt(intID)
+		if err != nil {
+			http.Error(w, "Cant find Debt to Update", http.StatusBadRequest)
+			return
+		}
+
+		dPointer := &d
+		fmt.Println(dPointer)
+
+		component := DebtLineItem(*dPointer)
+		w.Header().Set("Content-Type", "text/html")
+		component.Render(r.Context(), w)
+		// default:
+		// 	component := DebtLineItems(d)
+		// 	w.Header().Set("Content-Type", "text/html")
+		// 	component.Render(r.Context(), w)
 	}
 }
