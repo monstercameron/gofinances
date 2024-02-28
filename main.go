@@ -2,16 +2,16 @@ package main
 
 import (
 	"fmt"
-	"github.com/monstercameron/gofinances/router"
 	"github.com/monstercameron/gofinances/database"
 	"github.com/monstercameron/gofinances/helpers"
+	"github.com/monstercameron/gofinances/router"
 	"net/http"
 )
 
 func main() {
 	// Initialize database
 	database.SimpleTest(database.DB)
-	
+
 	// Create a new HTTP server
 	server := http.NewServeMux()
 

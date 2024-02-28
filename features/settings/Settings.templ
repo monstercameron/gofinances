@@ -1,98 +1,103 @@
 package settings
 
 import (
-    "strconv"
+	"strconv"
 )
 
-templ SettingsPageIndex(users []SettingsPageUser){
-    <div id="settings-users" class="col-span-12 grid grid-cols-12">
-        <div id="settings-users-details" class="ml-10 py-5 mt-5 col-span-4">
-            <h2 class="text-2xl">Users:</h2>
-            <div class="grid grid-cols-12 p-5 pl-10">
-                <ol 
-                    hx-get="/settings/users"
-                    hx-target="this"
-                    hx-swap="innerHTML"
-                    hx-trigger="fetchSettingsUsers from:body"
-                    id="settings-user-list" 
-                    class="col-span-12"
-                >
-                @SettingsPageList(users)
-                </ol>
-            </div>
-            <div id="userlistcontrols" class="grid grid-cols-12 p-5 pl-10">
-                <button
-                    hx-get="/settings/user"
-                    hx-target="#settings-user-list"
-                    hx-swap="beforeend"
-                    class="col-span-12 text-center shadow-lg p-2 text-1xl capitalize bg-blue-500 hover:bg-blue-800 hover:text-white border-2 rounded"
-                >
-                    add person
-                </button>
-            </div>
-        </div>
-    </div>
+templ SettingsPageIndex(users []SettingsPageUser) {
+	<div id="settings-users" class="col-span-12 grid grid-cols-12">
+		<div id="settings-users-details" class="ml-10 py-5 mt-5 col-span-4">
+			<h2 class="text-2xl">Users:</h2>
+			<div class="grid grid-cols-12 p-5 pl-10">
+				<ol
+					hx-get="/settings/users"
+					hx-target="this"
+					hx-swap="innerHTML"
+					hx-trigger="fetchSettingsUsers from:body"
+					id="settings-user-list"
+					class="col-span-12"
+				>
+					@SettingsPageList(users)
+				</ol>
+			</div>
+			<div id="userlistcontrols" class="grid grid-cols-12 p-5 pl-10">
+				<button
+					hx-get="/settings/user"
+					hx-target="#settings-user-list"
+					hx-swap="beforeend"
+					class="col-span-12 text-center shadow-lg p-2 text-1xl capitalize bg-blue-500 hover:bg-blue-800 hover:text-white border-2 rounded"
+				>
+					add person
+				</button>
+			</div>
+		</div>
+	</div>
 }
 
-templ SettingsPageList(users []SettingsPageUser){
-    if len(users) == 0 {
-        <p class="col-span-12 text-center">No users found</p>
-    }
-    else {
-        for _, user := range users {
-            @SettingsPageListItem(&user)
-        }
-    }
+templ SettingsPageList(users []SettingsPageUser) {
+	if len(users) == 0 {
+		<p class="col-span-12 text-center">No users found</p>
+	} else {
+		for _, user := range users {
+			@SettingsPageListItem(&user)
+		}
+	}
 }
 
-templ SettingsPageListItem(user *SettingsPageUser){
-     <li id={"settings-user-" + strconv.Itoa(user.Id)} class="grid grid-cols-12 mt-3 shadow-lg">
-        <div
-            class="col-span-8 border-b-2 border-t-2 border-l-2 text-center text-xl p-1 rounded-tl-lg rounded-bl-lg">
-            {user.Name}</div>
-        <div
-            hx-get={"/settings/user?id=" + strconv.Itoa(user.Id)}
-            hx-target={"#settings-user-" + strconv.Itoa(user.Id)}
-            hx-swap="outerHTML"
-            class="col-span-2 bg-slate-600 hover:bg-slate-800 text-white text-center uppercase p-1 cursor-pointer">
-            edit</div>
-        <div
-            hx-delete={"/settings/user?id=" + strconv.Itoa(user.Id)}
-            hx-target={"#settings-user-" + strconv.Itoa(user.Id)}
-            hx-swap="outerHTML"
-            class="col-span-2 bg-red-600 hover:bg-red-800 text-white text-center uppercase p-1 rounded-tr-lg rounded-br-lg cursor-pointer">
-            delete</div>
-    </li>
+templ SettingsPageListItem(user *SettingsPageUser) {
+	<li id={ "settings-user-" + strconv.Itoa(user.Id) } class="grid grid-cols-12 mt-3 shadow-lg">
+		<div
+			class="col-span-8 border-b-2 border-t-2 border-l-2 text-center text-xl p-1 rounded-tl-lg rounded-bl-lg"
+		>
+			{ user.Name }
+		</div>
+		<div
+			hx-get={ "/settings/user?id=" + strconv.Itoa(user.Id) }
+			hx-target={ "#settings-user-" + strconv.Itoa(user.Id) }
+			hx-swap="outerHTML"
+			class="col-span-2 bg-slate-600 hover:bg-slate-800 text-white text-center uppercase p-1 cursor-pointer"
+		>
+			edit
+		</div>
+		<div
+			hx-delete={ "/settings/user?id=" + strconv.Itoa(user.Id) }
+			hx-target={ "#settings-user-" + strconv.Itoa(user.Id) }
+			hx-swap="outerHTML"
+			class="col-span-2 bg-red-600 hover:bg-red-800 text-white text-center uppercase p-1 rounded-tr-lg rounded-br-lg cursor-pointer"
+		>
+			delete
+		</div>
+	</li>
 }
 
-templ SettingsPageUserInputField(){
-    <div id="userlistinput" class="grid grid-cols-12 p-5 pl-10">
-        <input 
-            name="settingsusername"
-            type="text" 
-            placeholder="new name or edit name"
-            class="col-span-12 text-center p-2 cursor:pointer border-2 rounded-lg"
-            hx-post="/settings/user"
-            hx-target="#userlistinput"
-            hx-swap="delete"
-            hx-trigger="keyup[keyCode==13]"
-            autofocus
-        />
-    </div>
+templ SettingsPageUserInputField() {
+	<div id="userlistinput" class="grid grid-cols-12 p-5 pl-10">
+		<input
+			name="settingsusername"
+			type="text"
+			placeholder="new name or edit name"
+			class="col-span-12 text-center p-2 cursor:pointer border-2 rounded-lg"
+			hx-post="/settings/user"
+			hx-target="#userlistinput"
+			hx-swap="delete"
+			hx-trigger="keyup[keyCode==13]"
+			autofocus
+		/>
+	</div>
 }
 
-templ SettingsPageUserInputFieldUpdate(user *SettingsPageUser){
-    <div id={"userlistinput" + strconv.Itoa(user.Id)} class="grid grid-cols-12 p-2 pl-10">
-        <input 
-            name="settingsusername"
-            type="text" 
-            value={user.Name}
-            class="col-span-12 text-center p-2 cursor:pointer border-2 rounded-lg"
-            hx-put={"/settings/user?id=" + strconv.Itoa(user.Id)}
-            hx-target={"#userlistinput" + strconv.Itoa(user.Id)}
-            hx-swap="outerHTML"
-            hx-trigger="keyup[keyCode==13]"
-            autofocus
-        />
-    </div>
+templ SettingsPageUserInputFieldUpdate(user *SettingsPageUser) {
+	<div id={ "userlistinput" + strconv.Itoa(user.Id) } class="grid grid-cols-12 p-2 pl-10">
+		<input
+			name="settingsusername"
+			type="text"
+			value={ user.Name }
+			class="col-span-12 text-center p-2 cursor:pointer border-2 rounded-lg"
+			hx-put={ "/settings/user?id=" + strconv.Itoa(user.Id) }
+			hx-target={ "#userlistinput" + strconv.Itoa(user.Id) }
+			hx-swap="outerHTML"
+			hx-trigger="keyup[keyCode==13]"
+			autofocus
+		/>
+	</div>
 }

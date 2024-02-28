@@ -119,7 +119,7 @@ func GetAllSettingsUsers() ([]SettingsPageUser, error) {
 	return users, nil
 }
 
-func GetAllSettingsUsersItems() ([]SettingsPageUser){
+func GetAllSettingsUsersItems() []SettingsPageUser {
 	users, err := GetAllSettingsUsers()
 	if err != nil {
 		return []SettingsPageUser{}

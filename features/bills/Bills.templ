@@ -1,152 +1,174 @@
 package bills
 
 import (
-    "strconv"
+	"strconv"
 	"github.com/monstercameron/gofinances/helpers"
 	"github.com/monstercameron/gofinances/features/settings"
 )
 
 templ AddRecurringBillsComponent() {
-    <div id="recurringBillFooter" class="grid grid-cols-12 capitalize bg-slate-600  gap-x-1">
-        <div class="col-span-12 text-white text-2xl capitalize p-5">
-            <button class="text-center ml-10 scale-75 hover:scale-105 hover:border rounded-full"
-                hx-get="/bills/update"
-                hx-target="#recurringBillRows"
-                hx-swap="afterend"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-10 h-15 text-white inline">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z">
-                        </path>
-                    </svg>
-            </button> 
-            add recurring bill | 
-            <span class="text-2xl">Total Recurring Bills: $
-                <span id="recurringBillTotal" hx-get="/bills/total" hx-trigger="billsAction from:body" hx-swap="innerHTML">
-                    {strconv.FormatFloat(GetTotalCost(), 'f', 2, 64)}
-                </span>
-            </span>
-        </div>
-    </div>
+	<div id="recurringBillFooter" class="grid grid-cols-12 capitalize bg-slate-600  gap-x-1">
+		<div class="col-span-12 text-white text-2xl capitalize p-5">
+			<button
+				class="text-center ml-10 scale-75 hover:scale-105 hover:border rounded-full"
+				hx-get="/bills/update"
+				hx-target="#recurringBillRows"
+				hx-swap="afterend"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke-width="1.5"
+					stroke="currentColor"
+					class="w-10 h-15 text-white inline"
+				>
+					<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
+				</svg>
+			</button>
+			add recurring bill | 
+			<span class="text-2xl">
+				Total Recurring Bills: $
+				<span id="recurringBillTotal" hx-get="/bills/total" hx-trigger="billsAction from:body" hx-swap="innerHTML">
+					{ strconv.FormatFloat(GetTotalCost(), 'f', 2, 64) }
+				</span>
+			</span>
+		</div>
+	</div>
 }
 
 templ RecurringBillsComponent(bills RecurringBillList) {
-    for _, bill := range bills.Bills {
-            <div id={"recurringBillId-" + strconv.Itoa(bill.Id)} 
-                class="grid grid-cols-12 capitalize py-4 px-1 rowColor">
-            <div id="billControls" class="grid grid-cols-2 ">
-                <div class="inline text-center ">
-                    <svg xmlns="http://www.w3.org/2000/svg" 
-                    fill="none" 
-                    viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" 
-                    class="w-6 h-6 inline hover:border border-black shadow cursor-pointer"
-                    hx-get={"/bills/update?id=" + strconv.Itoa(bill.Id)}
-                    hx-trigger="click"
-                    hx-target={"#recurringBillId-" + strconv.Itoa(bill.Id)}
-                    hx-swap="outerHTML"
-                    >
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10">
-                        </path>
-                    </svg>
-                </div>
-                <div class="inline text-center" >
-                    <svg xmlns="http://www.w3.org/2000/svg" 
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor" 
-                    class="w-6 h-6 inline hover:border border-black shadow cursor-pointer"
-                    hx-delete={"/bills/delete?id=" + strconv.Itoa(bill.Id)}
-                    hx-trigger="click"
-                    hx-swap="delete"
-                    hx-target={"#recurringBillId-" + strconv.Itoa(bill.Id)}
-                    >
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0">
-                        </path>
-                    </svg>
-                </div>
-            </div>
-            <div id="idColumns" class="pl-5 col-span-1 text-center">{strconv.Itoa(bill.Id)}</div>
-            <div id="billDateColumn" class="pl-5 col-span-1 text-center">{helpers.ThDate(bill.DayOfMonth)}</div>
-            <div id="billNameColumn" class="pl-5 col-span-2">{bill.Name}</div>
-            <div id="billOwnerColumn" class="pl-5 col-span-1">{bill.Owner}</div>
-            <div id="billCostColumn" class="pl-5 col-span-1 text-right grid grid-cols-2">
-                <div class="inline text-left">$</div>
-                <div class="inline text-right">{strconv.FormatFloat(bill.Amount, 'f', 2, 64)}</div>
-            </div>
-            <div id="billNotesColumn" class="pl-5 col-span-5">{bill.Notes}</div>
-        </div>
-    }
+	for _, bill := range bills.Bills {
+		<div
+			id={ "recurringBillId-" + strconv.Itoa(bill.Id) }
+			class="grid grid-cols-12 capitalize py-4 px-1 rowColor"
+		>
+			<div id="billControls" class="grid grid-cols-2 ">
+				<div class="inline text-center ">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke-width="1.5"
+						stroke="currentColor"
+						class="w-6 h-6 inline hover:border border-black shadow cursor-pointer"
+						hx-get={ "/bills/update?id=" + strconv.Itoa(bill.Id) }
+						hx-trigger="click"
+						hx-target={ "#recurringBillId-" + strconv.Itoa(bill.Id) }
+						hx-swap="outerHTML"
+					>
+						<path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"></path>
+					</svg>
+				</div>
+				<div class="inline text-center">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke-width="1.5"
+						stroke="currentColor"
+						class="w-6 h-6 inline hover:border border-black shadow cursor-pointer"
+						hx-delete={ "/bills/delete?id=" + strconv.Itoa(bill.Id) }
+						hx-trigger="click"
+						hx-swap="delete"
+						hx-target={ "#recurringBillId-" + strconv.Itoa(bill.Id) }
+					>
+						<path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"></path>
+					</svg>
+				</div>
+			</div>
+			<div id="idColumns" class="pl-5 col-span-1 text-center">{ strconv.Itoa(bill.Id) }</div>
+			<div id="billDateColumn" class="pl-5 col-span-1 text-center">{ helpers.ThDate(bill.DayOfMonth) }</div>
+			<div id="billNameColumn" class="pl-5 col-span-2">{ bill.Name }</div>
+			<div id="billOwnerColumn" class="pl-5 col-span-1">{ bill.Owner }</div>
+			<div id="billCostColumn" class="pl-5 col-span-1 text-right grid grid-cols-2">
+				<div class="inline text-left">$</div>
+				<div class="inline text-right">{ strconv.FormatFloat(bill.Amount, 'f', 2, 64) }</div>
+			</div>
+			<div id="billNotesColumn" class="pl-5 col-span-5">{ bill.Notes }</div>
+		</div>
+	}
 }
 
 templ EditRecurringBillsComponent(bill RecurringBill, update bool) {
-    <div id={"EditRecurringBill" + strconv.Itoa(bill.Id)}
-        class="grid grid-cols-12 capitalize py-4 px-1 bg-slate-400 gap-x-1">
-        <div id="billControls" class="flex items-center justify-center gap-x-1 px-1">
-            <div class="w-1/2">
-                <button class="bg-blue-600 text-white uppercase rounded-lg py-1 px-3 w-full text-xs"
-                if update == true {
-                    hx-post={"/bills/update?id=" + strconv.Itoa(bill.Id)}
-                }else{
-                    hx-post={"/bills/new"}
-                }
-                    hx-include={"#EditRecurringBill" + strconv.Itoa(bill.Id)}
-                    hx-swap="outerHTML"
-                    hx-target={"#EditRecurringBill" + strconv.Itoa(bill.Id)}
-                >
-                    save
-                </button>
-            </div>
-            <div class="w-1/2">
-                <button class="bg-red-700 text-white uppercase rounded-lg py-1 px-3 w-full text-xs"
-                    if update == true {
-                        hx-get={"/bills?id=" + strconv.Itoa(bill.Id)}
-                        hx-swap="outerHTML"
-                        hx-target={"#EditRecurringBill" + strconv.Itoa(bill.Id)}
-                    }else{
-                        hx-get="/bills?id=0"
-                        hx-swap="delete"
-                        hx-target={"#EditRecurringBill" + strconv.Itoa(bill.Id)}
-                    }
-                >
-                    cancel
-                </button>
-            </div>
-        </div>
-        <div id="billid" class="col-span-1">
-            <input type="text" name="id" id="" value={strconv.Itoa(bill.Id)} disabled class="h-20 w-full text-center" />
-        </div>
-        <div id="billDateColumn" class="col-span-1">
-            <input type="date" name="date" id="" value={"2024-01-" + strconv.Itoa(bill.DayOfMonth)} class="border-2 h-20" />
-        </div>
-        <div id="billNameColumn" class="col-span-2">
-            <input type="text" value={bill.Name} name="name" class="w-full border-2 active:border-4 h-20 pl-2" />
-        </div>
-        <div id="billOwnerColumn" class="col-span-1">
-            if update {
-                <select name="owner" id="" name="owner" class="w-full border-2 active:border-4 h-20 pl-2">
-                    <option value="cam">{bill.Owner}</option>
-                </select>
-            } else {
-                <select name="owner" id="" name="owner" class="w-full border-2 active:border-4 h-20 pl-2">
-                    for _, item := range settings.GetAllSettingsUsersItems(){
-                        <option value={item.Name}>{item.Name}</option>
-                    }
-                </select>
-            }
-        </div>
-        <div id="billCostColumn" class="col-span-1 text-right grid grid-cols-1">
-            <input type="number" name="amount" id="" value={strconv.FormatFloat(bill.Amount, 'f' , 2, 64)}
-                class="w-full border-2 active:border-4 h-20 pl-2" />
-        </div>
-        <div id="billNotesColumn" class="col-span-5 bill-notes-column w-full border-2 active:border-4 h-24"
-            style="height:81px;">
-            <textarea name="notes" id="" cols="90" rows="3" width="100%" class="p-3">
-                {bill.Notes}
-                </textarea>
-        </div>
-    </div>
+	<div
+		id={ "EditRecurringBill" + strconv.Itoa(bill.Id) }
+		class="grid grid-cols-12 capitalize py-4 px-1 bg-slate-400 gap-x-1"
+	>
+		<div id="billControls" class="flex items-center justify-center gap-x-1 px-1">
+			<div class="w-1/2">
+				<button
+					class="bg-blue-600 text-white uppercase rounded-lg py-1 px-3 w-full text-xs"
+					if update == true {
+						hx-post={ "/bills/update?id=" + strconv.Itoa(bill.Id) }
+					} else {
+						hx-post={ "/bills/new" }
+					}
+					hx-include={ "#EditRecurringBill" + strconv.Itoa(bill.Id) }
+					hx-swap="outerHTML"
+					hx-target={ "#EditRecurringBill" + strconv.Itoa(bill.Id) }
+				>
+					save
+				</button>
+			</div>
+			<div class="w-1/2">
+				<button
+					class="bg-red-700 text-white uppercase rounded-lg py-1 px-3 w-full text-xs"
+					if update == true {
+						hx-get={ "/bills?id=" + strconv.Itoa(bill.Id) }
+						hx-swap="outerHTML"
+						hx-target={ "#EditRecurringBill" + strconv.Itoa(bill.Id) }
+					} else {
+						hx-get="/bills?id=0"
+						hx-swap="delete"
+						hx-target={ "#EditRecurringBill" + strconv.Itoa(bill.Id) }
+					}
+				>
+					cancel
+				</button>
+			</div>
+		</div>
+		<div id="billid" class="col-span-1">
+			<input type="text" name="id" id="" value={ strconv.Itoa(bill.Id) } disabled class="h-20 w-full text-center"/>
+		</div>
+		<div id="billDateColumn" class="col-span-1">
+			<input type="date" name="date" id="" value={ "2024-01-" + strconv.Itoa(bill.DayOfMonth) } class="border-2 h-20"/>
+		</div>
+		<div id="billNameColumn" class="col-span-2">
+			<input type="text" value={ bill.Name } name="name" class="w-full border-2 active:border-4 h-20 pl-2"/>
+		</div>
+		<div id="billOwnerColumn" class="col-span-1">
+			if update {
+				<select name="owner" id="" name="owner" class="w-full border-2 active:border-4 h-20 pl-2">
+					<option value="cam">{ bill.Owner }</option>
+				</select>
+			} else {
+				<select name="owner" id="" name="owner" class="w-full border-2 active:border-4 h-20 pl-2">
+					for _, item := range settings.GetAllSettingsUsersItems() {
+						<option value={ item.Name }>{ item.Name }</option>
+					}
+				</select>
+			}
+		</div>
+		<div id="billCostColumn" class="col-span-1 text-right grid grid-cols-1">
+			<input
+				type="number"
+				name="amount"
+				id=""
+				value={ strconv.FormatFloat(bill.Amount, 'f', 2, 64) }
+				class="w-full border-2 active:border-4 h-20 pl-2"
+			/>
+		</div>
+		<div
+			id="billNotesColumn"
+			class="col-span-5 bill-notes-column w-full border-2 active:border-4 h-24"
+			style="height:81px;"
+		>
+			<textarea name="notes" id="" cols="90" rows="3" width="100%" class="p-3">
+				{ bill.Notes }
+			</textarea>
+		</div>
+	</div>
 }
 
 templ RecurringBillsIndex() {
@@ -154,20 +176,50 @@ templ RecurringBillsIndex() {
 		<div id="recurringBillColumns" class="grid grid-cols-12 capitalize">
 			<div id="idColumns" class="col-span-1 column">controls</div>
 			<div id="idColumns" class="col-span-1 column">id</div>
-			<div id="billDateColumn" class="col-span-1 column sortable" hx-trigger="click" hx-swap="innerHTML"
-				hx-target="#recurringBillRows" hx-get="/bills/bills?column=day_of_month">
+			<div
+				id="billDateColumn"
+				class="col-span-1 column sortable"
+				hx-trigger="click"
+				hx-swap="innerHTML"
+				hx-target="#recurringBillRows"
+				hx-get="/bills/bills?column=day_of_month"
+			>
 				Bill Date
 			</div>
-			<div id="billNameColumn" class="col-span-2 column sortable" hx-trigger="click" hx-swap="innerHTML"
-				hx-target="#recurringBillRows" hx-get="/bills/bills?column=name">Bill name</div>
-			<div id="billOwnerColumn" class="col-span-1 column sortable" hx-trigger="click" hx-swap="innerHTML"
-				hx-target="#recurringBillRows" hx-get="/bills/bills?column=owner">Bill Owner</div>
-			<div id="billCostColumn" class="col-span-1 column sortable" hx-trigger="click" hx-swap="innerHTML"
-				hx-target="#recurringBillRows" hx-get="/bills/bills?column=amount">Bill Cost</div>
+			<div
+				id="billNameColumn"
+				class="col-span-2 column sortable"
+				hx-trigger="click"
+				hx-swap="innerHTML"
+				hx-target="#recurringBillRows"
+				hx-get="/bills/bills?column=name"
+			>Bill name</div>
+			<div
+				id="billOwnerColumn"
+				class="col-span-1 column sortable"
+				hx-trigger="click"
+				hx-swap="innerHTML"
+				hx-target="#recurringBillRows"
+				hx-get="/bills/bills?column=owner"
+			>Bill Owner</div>
+			<div
+				id="billCostColumn"
+				class="col-span-1 column sortable"
+				hx-trigger="click"
+				hx-swap="innerHTML"
+				hx-target="#recurringBillRows"
+				hx-get="/bills/bills?column=amount"
+			>Bill Cost</div>
 			<div id="billNotesColumn" class="col-span-5 column column-last">Notes</div>
 		</div>
-		<div id="recurringBillRows" class="grid grid-cols-1" hx-get={"/bills/bills"} hx-trigger="newBill from:body"
-			hx-target="#recurringBillRows" hx-swap="innerHTML">
+		<div
+			id="recurringBillRows"
+			class="grid grid-cols-1"
+			hx-get={ "/bills/bills" }
+			hx-trigger="newBill from:body"
+			hx-target="#recurringBillRows"
+			hx-swap="innerHTML"
+		>
 			@RecurringBillsComponent(GetBills())
 		</div>
 		@AddRecurringBillsComponent()

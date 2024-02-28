@@ -3,7 +3,6 @@ package home
 import (
 	"fmt"
 	"net/http"
-
 	"github.com/a-h/templ"
 	"github.com/monstercameron/gofinances/features/bills"
 	"github.com/monstercameron/gofinances/features/debts"
