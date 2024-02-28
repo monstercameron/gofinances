@@ -1,0 +1,58 @@
+.tab {
+  border-bottom: 1px solid black;
+  padding: 0.25em;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.activeTab {
+  border-top-left-radius: 10px;
+  border-bottom: none;
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  padding: 0.25em;
+  font-weight: 700;
+}
+
+.pane {
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.column {
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+  padding: 0.5em 0.25em;
+  font-size: 14pt;
+  text-align: center;
+}
+
+.column-last {
+  border: 1px solid black;
+}
+
+.sorted {
+  font-weight: bold;
+}
+
+.sortable {
+  cursor: pointer;
+}
+
+.bill-notes-column {
+  overflow: scroll;
+  height: 50px;
+}
+
+/* Selects odd children of elements with the .rowColor class */
+.rowColor:nth-child(odd) {
+  background-color: #f2f2f2; /* Light gray for odd rows */
+}
+
+/* Selects even children of elements with the .rowColor class */
+.rowColor:nth-child(even) {
+  background-color: #ffffff; /* White for even rows */
+}

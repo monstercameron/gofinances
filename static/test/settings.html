@@ -1,0 +1,113 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A simple todo list app written in Go">
+    <link rel="stylesheet" href="/static/style/style.css">
+    <link rel="stylesheet" href="/static/style/custom.css">
+    <link rel="stylesheet" href="/static/style/animations.css">
+    <script rel="script" src="/static/script/script.js"></script>
+    <script rel="script" src="/static/script/htmx.min.js"></script>
+    <title>goFinances</title>
+    <style>
+        .htmx-indicator {
+            opacity: 0
+        }
+
+        .htmx-request .htmx-indicator {
+            opacity: 1;
+            transition: opacity 200ms ease-in;
+        }
+
+        .htmx-request.htmx-indicator {
+            opacity: 1;
+            transition: opacity 200ms ease-in;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container" class="px-10 pt-1">
+        <div class="my-10 pt-10">
+            <h1 class="text-center text-5xl">goFinancial Planner V 0.1</h1>
+        </div>
+        <div id="menu" class="w-full grid grid-cols-11">
+            <div class="tab text-center capitalize" hx-trigger="click" hx-get="/menu/0" hx-swap="outerHTML"
+                hx-target="#menu">recurring bills</div>
+            <div class="tab text-center capitalize" hx-trigger="click" hx-get="/menu/1" hx-swap="outerHTML"
+                hx-target="#menu">short term debts</div>
+            <div class="tab text-center capitalize" hx-trigger="click" hx-get="/menu/2" hx-swap="outerHTML"
+                hx-target="#menu">long term debts</div>
+            <div class="tab text-center capitalize" hx-trigger="click" hx-get="/menu/3" hx-swap="outerHTML"
+                hx-target="#menu">assets</div>
+            <div class="tab text-center capitalize" hx-trigger="click" hx-get="/menu/4" hx-swap="outerHTML"
+                hx-target="#menu">credit utilization</div>
+            <div class="tab text-center capitalize" hx-trigger="click" hx-get="/menu/5" hx-swap="outerHTML"
+                hx-target="#menu">goals</div>
+            <div class="tab text-center capitalize" hx-trigger="click" hx-get="/menu/6" hx-swap="outerHTML"
+                hx-target="#menu">recomendations</div>
+            <div class="tab text-center capitalize" hx-trigger="click" hx-get="/menu/7" hx-swap="outerHTML"
+                hx-target="#menu">calendar</div>
+            <div class="tab text-center capitalize" hx-trigger="click" hx-get="/menu/8" hx-swap="outerHTML"
+                hx-target="#menu">drip calculator</div>
+            <div class="tab text-center capitalize" hx-trigger="click" hx-get="/menu/9" hx-swap="outerHTML"
+                hx-target="#menu">time tables</div>
+            <div class="tab text-center capitalize activeTab">Settings</div>
+        </div>
+        <div class="pane p-5 shadow-lg mb-10" hx-get="/pane" hx-trigger="menuSwitch from:body">
+            <div is="settings" class="my-1 pt-1 divide-y divide-slate-950 grid grid-cols-12">
+                <div id="settingstitle" class="p-5 col-span-12">
+                    <h1 class="text-4xl">Settings</h1>
+                </div>
+                <div id="settings-users" class="col-span-12 grid grid-cols-12">
+                    <div id="settings-users-details" class="ml-10 py-5 mt-5 col-span-4">
+                        <h2 class="text-2xl">Users:</h2>
+                        <div class="grid grid-cols-12 p-5 pl-10">
+                            <ol id="userlist" class="col-span-12 pt-2">
+                                <li id="user-1" class="grid grid-cols-12 mt-5 shadow-lg">
+                                    <div
+                                        class="col-span-8 border-b-2 border-t-2 border-l-2 text-center text-xl p-1 rounded-tl-lg rounded-bl-lg">
+                                        First Lastname</div>
+                                    <div
+                                        class="col-span-2 bg-slate-600 hover:bg-slate-800 text-white text-center uppercase p-1 cursor-pointer">
+                                        edit</div>
+                                    <div
+                                        class="col-span-2 bg-red-600 hover:bg-red-800 text-white text-center uppercase p-1 rounded-tr-lg rounded-br-lg cursor-pointer">
+                                        delete</div>
+                                </li>
+                                <li id="user-1" class="grid grid-cols-12 mt-5 shadow-lg">
+                                    <div
+                                        class="col-span-8 border-b-2 border-t-2 border-l-2 text-center text-xl p-1 rounded-tl-lg rounded-bl-lg">
+                                        First Lastname</div>
+                                    <div
+                                        class="col-span-2 bg-slate-600 hover:bg-slate-800 text-white text-center uppercase p-1 cursor-pointer">
+                                        edit</div>
+                                    <div
+                                        class="col-span-2 bg-red-600 hover:bg-red-800 text-white text-center uppercase p-1 rounded-tr-lg rounded-br-lg cursor-pointer">
+                                        delete</div>
+                                </li>
+                                <li class="grid grid-cols-12 mt-5 shadow-lg border-2 rounded-lg">
+                                    <input type="text" value="new name or edit name"
+                                        class="col-span-12 text-center p-2  cursor:pointer" />
+                                </li>
+                            </ol>
+                        </div>
+                        <div id="userlistinput" class="grid grid-cols-12 p-5 pl-10">
+                            <input type="text" placeholder="new name or edit name"
+                                class="col-span-12 text-center p-2 cursor:pointer border-2 rounded-lg" />
+                        </div>
+                        <div id="userlistcontrols" class="grid grid-cols-12 p-5 pl-10">
+                            <button
+                                class="col-span-12 text-center shadow-lg p-2 text-1xl capitalize bg-blue-500 hover:bg-blue-800 hover:text-white border-2 rounded">
+                                add person
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

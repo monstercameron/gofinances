@@ -1,0 +1,21 @@
+package menus
+
+import (
+	"strconv"
+)
+
+templ MainMenuComponent(menuItems []MenuItem) {
+	<div id="menu" class="w-full grid grid-cols-10">
+		for _, menuItem := range menuItems {
+			if menuItem.IsActive {
+				<div class="tab text-center capitalize activeTab">
+					{ menuItem.Menu }
+				</div>
+			} else {
+				<div class="tab text-center capitalize" hx-trigger="click" hx-get={ "/menu/" + strconv.Itoa(menuItem.Id) } hx-push-url={ menuItem.Url } hx-swap="outerHTML" hx-target="#menu">
+					{ menuItem.Menu }
+				</div>
+			}
+		}
+	</div>
+}

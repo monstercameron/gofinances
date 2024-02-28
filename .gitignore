@@ -1,0 +1,5 @@
+node_modules
+views/**/**/*.go
+.vscode
+package-lock.json
+.DS_Store
