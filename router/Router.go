@@ -30,6 +30,7 @@ func CreateRoutes(server *http.ServeMux) *http.ServeMux {
 	server.HandleFunc("GET /bills/", bills.GetManyBills)                     // Handler for retrieving bills
 	server.HandleFunc("GET /bills/{id}", bills.GetOneBill)                   // Handler for retrieving bills
 	server.HandleFunc("POST /bills/", bills.AddBills)                        // Handler for adding new bills
+	server.HandleFunc("GET /bills/add", bills.GetAddBillingComponent) // Handler for updating bills
 	server.HandleFunc("GET /bills/edit/{id}", bills.GetEditBillingComponent) // Handler for updating bills
 	server.HandleFunc("POST /bills/{id}", bills.UpdateBills)                 // Handler for updating bills
 	server.HandleFunc("DELETE /bills/{id}", bills.DeleteBills)               // Handler for deleting bills

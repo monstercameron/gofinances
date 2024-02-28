@@ -29,7 +29,7 @@ func AddRecurringBillsComponent() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"recurringBillFooter\" class=\"grid grid-cols-12 capitalize bg-slate-600  gap-x-1\"><div class=\"col-span-12 text-white text-2xl capitalize p-5\"><button class=\"text-center ml-10 scale-75 hover:scale-105 hover:border rounded-full\" hx-get=\"/bills/\" hx-target=\"#recurringBillRows\" hx-swap=\"afterend\"><svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-10 h-15 text-white inline\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z\"></path></svg></button> ")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"recurringBillFooter\" class=\"grid grid-cols-12 capitalize bg-slate-600  gap-x-1\"><div class=\"col-span-12 text-white text-2xl capitalize p-5\"><button class=\"text-center ml-10 scale-75 hover:scale-105 hover:border rounded-full\" hx-get=\"/bills/add\" hx-target=\"#recurringBillRows\" hx-swap=\"afterend\"><svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-10 h-15 text-white inline\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z\"></path></svg></button> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -267,7 +267,7 @@ func EditRecurringBillsComponent(bill RecurringBill, update bool) templ.Componen
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/bills/new"))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/bills/"))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

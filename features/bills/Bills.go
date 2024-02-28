@@ -354,7 +354,7 @@ func GetOneBill(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html")
 		// Render the bill information as HTML to the response writer
 		RecurringBillsComponent(bills).Render(r.Context(), w)
-	} 
+	}
 }
 
 func GetEditBillingComponent(w http.ResponseWriter, r *http.Request) {
@@ -379,24 +379,27 @@ func GetEditBillingComponent(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html")
 		EditRecurringBillsComponent(*bill, true).Render(r.Context(), w)
 	} else {
-		// Set up a new bill
-		// Retrieve the bill by its ID
-		bills := RecurringBillList{Bills: []RecurringBill{}}
-		newID := bills.GetLastID() + 1
-		bill := RecurringBill{
-			Id:         newID,
-			Name:       "",
-			Amount:     0,
-			DayOfMonth: 0,
-			Owner:      "",
-			Notes:      "",
-		}
-		// trigger on page updates
-		w.Header().Set("Hx-Trigger", "billsAction")
-		w.Header().Set("Content-Type", "text/html")
-		EditRecurringBillsComponent(bill, false).Render(r.Context(), w)
+		http.Error(w, "No bill ID provided", http.StatusBadRequest)
 	}
-	return
+}
+
+func GetAddBillingComponent(w http.ResponseWriter, r *http.Request) {
+	// Set up a new bill
+	// Retrieve the bill by its ID
+	bills := RecurringBillList{Bills: []RecurringBill{}}
+	newID := bills.GetLastID() + 1
+	bill := RecurringBill{
+		Id:         newID,
+		Name:       "",
+		Amount:     0,
+		DayOfMonth: 0,
+		Owner:      "",
+		Notes:      "",
+	}
+	// trigger on page updates
+	w.Header().Set("Hx-Trigger", "billsAction")
+	w.Header().Set("Content-Type", "text/html")
+	EditRecurringBillsComponent(bill, false).Render(r.Context(), w)
 }
 
 // UpdateBills handles the HTTP request for updating bill information.

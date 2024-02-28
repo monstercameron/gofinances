@@ -11,7 +11,7 @@ templ AddRecurringBillsComponent() {
 		<div class="col-span-12 text-white text-2xl capitalize p-5">
 			<button
 				class="text-center ml-10 scale-75 hover:scale-105 hover:border rounded-full"
-				hx-get="/bills/"
+				hx-get="/bills/add"
 				hx-target="#recurringBillRows"
 				hx-swap="afterend"
 			>
@@ -102,7 +102,7 @@ templ EditRecurringBillsComponent(bill RecurringBill, update bool) {
 					if update == true {
 						hx-post={ "/bills/" + strconv.Itoa(bill.Id) }
 					} else {
-						hx-post={ "/bills/new" }
+						hx-post={ "/bills/" }
 					}
 					hx-include={ "#EditRecurringBill" + strconv.Itoa(bill.Id) }
 					hx-swap="outerHTML"
