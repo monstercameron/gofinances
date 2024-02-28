@@ -136,36 +136,16 @@ func GetSettingsUsers(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Get all users from the database
-	rows, err := database.DB.Query("SELECT id, name FROM users;")
+	users, err := GetAllSettingsUsers()
 	if err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
-	}
-	defer rows.Close()
-
-	// Create a slice to hold the users
-	users := []SettingsPageUser{}
-
-	// Iterate over the rows, adding each user to the slice
-	for rows.Next() {
-		var user SettingsPageUser
-		err := rows.Scan(&user.Id, &user.Name)
-		if err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
-			return
-		}
-		users = append(users, user)
 	}
 
 	// Set response headers and status
 	w.Header().Set("Content-Type", "text/html")
 	w.WriteHeader(http.StatusOK)
 
-	users, err = GetAllSettingsUsers()
-	if err != nil {
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
-		return
-	}
 	// Marshal the users to JSON and write to the response
 	component := SettingsPageIndex(users)
 	component.Render(r.Context(), w)
