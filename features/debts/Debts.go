@@ -12,52 +12,77 @@ func init() {
 	// Register the debts feature
 	fmt.Println("Registering the debts feature")
 	// create debt table if it doesn't exist
-	_, err := database.DB.Exec("CREATE TABLE IF NOT EXISTS debts (id INTEGER PRIMARY KEY, name TEXT, owner TEXT, start_date TEXT, end_date TEXT, initial REAL, current REAL, notes TEXT)")
+	_, err := database.DB.Exec(`CREATE TABLE IF NOT EXISTS debts (
+		id INTEGER PRIMARY KEY,
+		debt_name TEXT,
+		debt_owner TEXT,
+		start_date TEXT,
+		end_date TEXT,
+		initial_amount REAL,
+		current_amount REAL,
+		interest_rate REAL,
+		credit_limit REAL,
+		notes TEXT \
+	);`)
 	if err != nil {
 		fmt.Println("Failed to create 'debts' table: ", err)
 	}
 }
 
 type Debt struct {
-	Id        int
-	Name      string
-	Owner     string
-	StartDate string
-	EndDate   string
-	Initial   float64
-	Current   float64
-	Notes     string
+	ID            int     `json:"id"`
+	DebtName      string  `json:"debtName"`
+	DebtOwner     string  `json:"debtOwner"`
+	StartDate     string  `json:"startDate"`
+	EndDate       string  `json:"endDate"`
+	InitialAmount float64 `json:"initialAmount"`
+	CurrentAmount float64 `json:"currentAmount"`
+	InterestRate  float64 `json:"interestRate"` // Added to reflect the structure from SQL
+	CreditLimit   float64 `json:"creditLimit"`  // Added to reflect the structure from SQL
+	Notes         string  `json:"notes"`
 }
 
-func (d *Debt) Save() {
+func (d *Debt) Save() error {
 	fmt.Println("Debt.Save()")
 	tx, err := database.DB.Begin()
 	if err != nil {
-		fmt.Println("Error starting transaction: ", err)
+		fmt.Printf("Error starting transaction: %v\n", err)
+		return err
 	}
+	defer tx.Rollback() // Safely handle rollback if an error occurs
+
 	var id int
 	query := `SELECT id FROM debts WHERE id=?;`
-	err = tx.QueryRow(query, d.Id).Scan(&id)
+	err = tx.QueryRow(query, d.ID).Scan(&id)
 	if err != nil && err != sql.ErrNoRows {
-		tx.Rollback()
+		fmt.Printf("Error querying debt: %v\n", err)
+		return err
 	}
+
 	if id == 0 {
-		query := `INSERT INTO debts (name, owner, start_date, end_date, initial, current, notes) VALUES (?, ?, ?, ?, ?, ?, ?);`
-		_, err = tx.Exec(query, d.Name, d.Owner, d.StartDate, d.EndDate, d.Initial, d.Current, d.Notes)
+		query := `INSERT INTO debts (debt_name, debt_owner, start_date, end_date, initial_amount, current_amount, interest_rate, credit_limit, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`
+		_, err = tx.Exec(query, d.DebtName, d.DebtOwner, d.StartDate, d.EndDate, d.InitialAmount, d.CurrentAmount, d.InterestRate, d.CreditLimit, d.Notes)
 		if err != nil {
-			tx.Rollback()
-			fmt.Println("Error inserting debt: ", err)
+			fmt.Printf("Error inserting debt: %v\n", err)
+			return err
 		}
 	} else {
-		query := `UPDATE debts SET name=?, owner=?, start_date=?, end_date=?, initial=?, current=?, notes=? WHERE id=?;`
-		_, err = tx.Exec(query, d.Name, d.Owner, d.StartDate, d.EndDate, d.Initial, d.Current, d.Notes, d.Id)
+		query := `UPDATE debts SET debt_name=?, debt_owner=?, start_date=?, end_date=?, initial_amount=?, current_amount=?, interest_rate=?, credit_limit=?, notes=? WHERE id=?;`
+		_, err = tx.Exec(query, d.DebtName, d.DebtOwner, d.StartDate, d.EndDate, d.InitialAmount, d.CurrentAmount, d.InterestRate, d.CreditLimit, d.Notes, d.ID)
 		if err != nil {
-			tx.Rollback()
-			fmt.Println("Error updating debt: ", err)
+			fmt.Printf("Error updating debt: %v\n", err)
+			return err
 		}
 	}
-	tx.Commit()
+
+	err = tx.Commit()
+	if err != nil {
+		fmt.Printf("Error committing transaction: %v\n", err)
+		return err
+	}
+	return nil // Successful execution
 }
+
 
 func (d *Debt) Delete() {
 	fmt.Println("Debt.Delete()")
@@ -66,7 +91,7 @@ func (d *Debt) Delete() {
 		fmt.Println("Error starting transaction: ", err)
 	}
 	query := `DELETE FROM debts WHERE id=?;`
-	_, err = tx.Exec(query, d.Id)
+	_, err = tx.Exec(query, d.ID)
 	if err != nil {
 		tx.Rollback()
 		fmt.Println("Error deleting debt: ", err)
@@ -77,38 +102,45 @@ func (d *Debt) Delete() {
 func GetDebt(id int) (Debt, error) {
 	fmt.Println("GetDebt()")
 	var d Debt
-	query := `SELECT id, name, owner, start_date, end_date, initial, current, notes FROM debts WHERE id=?;`
-	err := database.DB.QueryRow(query, id).Scan(&d.Id, &d.Name, &d.Owner, &d.StartDate, &d.EndDate, &d.Initial, &d.Current, &d.Notes)
+	query := `SELECT id, debt_name, debt_owner, start_date, end_date, initial_amount, current_amount, interest_rate, credit_limit, notes FROM debts WHERE id=?;`
+	err := database.DB.QueryRow(query, id).Scan(&d.ID, &d.DebtName, &d.DebtOwner, &d.StartDate, &d.EndDate, &d.InitialAmount, &d.CurrentAmount, &d.InterestRate, &d.CreditLimit, &d.Notes)
 	if err != nil {
-		fmt.Println("Error getting debt: ", err)
-		return d, nil
+		fmt.Printf("Error getting debt: %v\n", err)
+		return Debt{}, err // Return zero value of Debt and the error
 	}
-	// store the debt in d
+	// Successfully retrieved and stored the debt in d
 	return d, nil
 }
 
 func GetAllDebts() ([]Debt, error) {
 	fmt.Println("GetAllDebts()")
 	var debts []Debt
-	query := `SELECT id, name, owner, start_date, end_date, initial, current, notes FROM debts;`
+	query := `SELECT id, debt_name, debt_owner, start_date, end_date, initial_amount, current_amount, interest_rate, credit_limit, notes FROM debts;`
 	rows, err := database.DB.Query(query)
 	if err != nil {
-		fmt.Println("Error getting debts: ", err)
-		return debts, err
+		fmt.Printf("Error getting debts: %v\n", err)
+		return nil, err
 	}
 	defer rows.Close()
+
 	for rows.Next() {
 		var d Debt
-		err = rows.Scan(&d.Id, &d.Name, &d.Owner, &d.StartDate, &d.EndDate, &d.Initial, &d.Current, &d.Notes)
+		err = rows.Scan(&d.ID, &d.DebtName, &d.DebtOwner, &d.StartDate, &d.EndDate, &d.InitialAmount, &d.CurrentAmount, &d.InterestRate, &d.CreditLimit, &d.Notes)
 		if err != nil {
-			fmt.Println("Error scanning debt: ", err)
-			return debts, err
+			fmt.Printf("Error scanning debt: %v\n", err)
+			return nil, err // Return immediately on error, providing what's been accumulated so far could be misleading
 		}
 		debts = append(debts, d)
 	}
-	fmt.Println(debts)
+	if err = rows.Err(); err != nil { // Check for errors encountered during iteration
+		fmt.Printf("Error iterating through debts: %v\n", err)
+		return nil, err
+	}
+
+	fmt.Println(debts) // This might be a lot of output if there are many debts; consider removing or modifying this line.
 	return debts, nil
 }
+
 
 func GetAllDebtsWithoutError() []Debt {
 	fmt.Println("GetAllDebtsWithoutError()")

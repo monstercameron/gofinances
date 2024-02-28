@@ -20,12 +20,12 @@ func CreateRoutes(server *http.ServeMux) *http.ServeMux {
 	// Serve static files from the 'views/static' directory
 	server.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	// Set up routes and associate them with handler functions
-	/////////////////////// HOME ROUTES ///////////////////////
+	/////////////////////// HOME ROUTES /////////////////////////////////////////////////////////////////////////////
 	server.HandleFunc("GET /", home.GetIndexPage) // Handler for the root route
-	/////////////////////// MENU ROUTES ///////////////////////
+	/////////////////////// MENU ROUTES /////////////////////////////////////////////////////////////////////////////
 	server.HandleFunc("GET /menu/", menus.GetMenu) // Handler for the '/menu/' route
 	server.HandleFunc("GET /tab", menus.GetTab)    // Handler for the '/tab' route
-	/////////////////////// Bills ROUTES ///////////////////////
+	/////////////////////// Bills ROUTES ////////////////////////////////////////////////////////////////////////////
 	server.HandleFunc("GET /bills", home.GetIndexPage)
 	server.HandleFunc("GET /bills/", bills.GetManyBills)                     // Handler for retrieving bills
 	server.HandleFunc("GET /bills/{id}", bills.GetOneBill)                   // Handler for retrieving bills

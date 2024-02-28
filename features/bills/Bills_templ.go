@@ -54,7 +54,7 @@ func AddRecurringBillsComponent() templ.Component {
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatFloat(GetTotalCost(), 'f', 2, 64))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/bills/Bills.templ`, Line: 32, Col: 54}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `Bills.templ`, Line: 32, Col: 54}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -132,7 +132,7 @@ func RecurringBillsComponent(bills RecurringBillList) templ.Component {
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(bill.Id))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/bills/Bills.templ`, Line: 79, Col: 82}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Bills.templ`, Line: 79, Col: 82}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -145,7 +145,7 @@ func RecurringBillsComponent(bills RecurringBillList) templ.Component {
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(helpers.ThDate(bill.DayOfMonth))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/bills/Bills.templ`, Line: 80, Col: 97}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Bills.templ`, Line: 80, Col: 97}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -158,7 +158,7 @@ func RecurringBillsComponent(bills RecurringBillList) templ.Component {
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(bill.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/bills/Bills.templ`, Line: 81, Col: 63}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Bills.templ`, Line: 81, Col: 63}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {
@@ -171,7 +171,7 @@ func RecurringBillsComponent(bills RecurringBillList) templ.Component {
 			var templ_7745c5c3_Var9 string
 			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(bill.Owner)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/bills/Bills.templ`, Line: 82, Col: 65}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Bills.templ`, Line: 82, Col: 65}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 			if templ_7745c5c3_Err != nil {
@@ -193,7 +193,7 @@ func RecurringBillsComponent(bills RecurringBillList) templ.Component {
 			var templ_7745c5c3_Var11 string
 			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatFloat(bill.Amount, 'f', 2, 64))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/bills/Bills.templ`, Line: 85, Col: 81}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Bills.templ`, Line: 85, Col: 81}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 			if templ_7745c5c3_Err != nil {
@@ -206,7 +206,7 @@ func RecurringBillsComponent(bills RecurringBillList) templ.Component {
 			var templ_7745c5c3_Var12 string
 			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(bill.Notes)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/bills/Bills.templ`, Line: 87, Col: 65}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Bills.templ`, Line: 87, Col: 65}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 			if templ_7745c5c3_Err != nil {
@@ -385,7 +385,7 @@ func EditRecurringBillsComponent(bill RecurringBill, update bool) templ.Componen
 			var templ_7745c5c3_Var16 string
 			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(bill.Owner)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/bills/Bills.templ`, Line: 142, Col: 37}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Bills.templ`, Line: 142, Col: 37}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 			if templ_7745c5c3_Err != nil {
@@ -416,7 +416,7 @@ func EditRecurringBillsComponent(bill RecurringBill, update bool) templ.Componen
 				var templ_7745c5c3_Var17 string
 				templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(item.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/bills/Bills.templ`, Line: 147, Col: 45}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `Bills.templ`, Line: 147, Col: 45}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 				if templ_7745c5c3_Err != nil {
@@ -447,7 +447,7 @@ func EditRecurringBillsComponent(bill RecurringBill, update bool) templ.Componen
 		var templ_7745c5c3_Var18 string
 		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(bill.Notes)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/bills/Bills.templ`, Line: 167, Col: 16}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `Bills.templ`, Line: 167, Col: 16}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 		if templ_7745c5c3_Err != nil {
