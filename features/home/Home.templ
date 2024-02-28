@@ -26,7 +26,7 @@ templ IndexPage(title string) {
 					</h1>
 				</div>
 				@menus.MainMenuComponent(menus.GetMenus())
-				<div class="pane p-5 shadow-lg mb-10" hx-get={"/pane"} hx-trigger="menuSwitch from:body">
+				<div class="pane p-5 shadow-lg mb-10" hx-get={"/tab"} hx-trigger="menuSwitch from:body">
 					@GetStartingPage()
 				</div>
 			</div>

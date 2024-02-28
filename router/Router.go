@@ -2,12 +2,12 @@ package router
 
 import (
 	"fmt"
-	"net/http"
 	"github.com/monstercameron/gofinances/features/bills"
+	"github.com/monstercameron/gofinances/features/debts"
 	"github.com/monstercameron/gofinances/features/home"
 	"github.com/monstercameron/gofinances/features/menus"
 	"github.com/monstercameron/gofinances/features/settings"
-	"github.com/monstercameron/gofinances/features/debts"
+	"net/http"
 )
 
 func init() {
@@ -15,32 +15,32 @@ func init() {
 }
 
 // CreateRoutes sets up the routes for the HTTP server.
-func CreateRoutes(server *http.ServeMux) {
+func CreateRoutes(server *http.ServeMux) *http.ServeMux {
 	// Serve static files from the 'views/static' directory
-	server.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	server.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	// Set up routes and associate them with handler functions
 	/////////////////////// HOME ROUTES ///////////////////////
-	server.HandleFunc("/", home.GetIndexPage) // Handler for the root route
+	server.HandleFunc("GET /", home.GetIndexPage) // Handler for the root route
 	/////////////////////// MENU ROUTES ///////////////////////
-	server.HandleFunc("/menu/", menus.MenuPicker) // Handler for the '/menu/' route
-	server.HandleFunc("/pane", menus.GetTab)      // Handler for the '/pane' route
+	server.HandleFunc("GET /menu/", menus.GetMenu) // Handler for the '/menu/' route
+	server.HandleFunc("GET /tab", menus.GetTab)      // Handler for the '/tab' route
 	/////////////////////// DEBT ROUTES ///////////////////////
-	server.HandleFunc("/bills", home.GetIndexPage) 		
-	server.HandleFunc("/bills/bills", bills.GetBillList)              // Handler for retrieving bills
-	server.HandleFunc("/bills/new", bills.AddBills)             // Handler for adding new bills
-	server.HandleFunc("/bills/update", bills.UpdateBills)       // Handler for updating bills
-	server.HandleFunc("/bills/delete", bills.DeleteBills)       // Handler for deleting bills
-	server.HandleFunc("/bills/total", bills.GetBillsTotalDebts) // Handler for retrieving total debts
+	server.HandleFunc("GET /bills", home.GetIndexPage)
+	server.HandleFunc("GET /bills/bills", bills.GetBillList)        // Handler for retrieving bills
+	server.HandleFunc("GET /bills/new", bills.AddBills)             // Handler for adding new bills
+	server.HandleFunc("GET /bills/update", bills.UpdateBills)       // Handler for updating bills
+	server.HandleFunc("GET /bills/delete", bills.DeleteBills)       // Handler for deleting bills
+	server.HandleFunc("GET /bills/total", bills.GetBillsTotalDebts) // Handler for retrieving total debts
 	/////////////////////// SETTINGS ROUTES ///////////////////////
-	server.HandleFunc("/settings", home.GetIndexPage)
-	server.HandleFunc("/settings/user", settings.GetSettingsUserActions) 	// Handler for the '/settings/save' route
-	server.HandleFunc("/settings/users", settings.GetSettingsUser)     		// Handler for the '/settings/save' route
+	server.HandleFunc("GET /settings", home.GetIndexPage)
+	server.HandleFunc("GET /settings/user", settings.GetSettingsUserActions) // Handler for the '/settings/save' route
+	server.HandleFunc("GET /settings/users", settings.GetSettingsUser)       // Handler for the '/settings/save' route
 	/////////////////////// Debts ROUTES ///////////////////////
-	server.HandleFunc("/debts", home.GetIndexPage)
+	server.HandleFunc("GET /debts", home.GetIndexPage)
 	// server.HandleFunc("/debts/add", debts.GetDebtItems)
-	server.HandleFunc("/debts/update", debts.UpdateDebtItems)
+	server.HandleFunc("GET /debts/update", debts.UpdateDebtItems)
 	// server.HandleFunc("/debts/create", debts.GetDebtItems)
 	// server.HandleFunc("/debts/create", debts.GetDebtItems)
 	// server.HandleFunc("/debts/create", debts.GetDebtItems)
-
+	return server
 }

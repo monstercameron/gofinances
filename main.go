@@ -16,7 +16,7 @@ func main() {
 	server := http.NewServeMux()
 
 	// Set up HTTP routes
-	router.CreateRoutes(server)
+	server = router.CreateRoutes(server)
 
 	// Setup signal handling and receive shutdown signal
 	httpServer, done := helpers.SetupSignalHandling(server)

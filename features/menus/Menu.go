@@ -99,7 +99,11 @@ func SetActiveMenu(id int) int {
 	return id
 }
 
-// return the id number of the first active menu item
+// GetActiveMenu retrieves the ID of the active menu from the database.
+// It executes a SQL query to select the ID of the menu where is_active is set to 1.
+// If no active menu is found, it returns -1.
+// If an error occurs during the query execution, it logs the error and terminates the program.
+// The retrieved ID is returned as an integer.
 func GetActiveMenu() int {
 	var id int
 	query := `SELECT id FROM menus WHERE is_active=1 limit 1;`
@@ -113,6 +117,9 @@ func GetActiveMenu() int {
 	return id
 }
 
+// PopulateMenu populates the menu with predefined menu items.
+// It creates a slice of MenuItem structs and appends each item to the slice.
+// Then, it loops through the slice and saves each menu item.
 func PopulateMenu() {
 	menus := []MenuItem{}
 	menus = append(menus, MenuItem{Id: 1, Menu: "recurring bills", Url: "/bills", IsActive: true})
@@ -132,6 +139,9 @@ func PopulateMenu() {
 	}
 }
 
+// GetMenus retrieves a list of menus from the database.
+// It executes a SQL query to fetch the menus and their details,
+// and returns a slice of MenuItem structs representing the menus.
 func GetMenus() []MenuItem {
 	fmt.Println("Menu.GetMenus()")
 	menus := []MenuItem{}
@@ -154,12 +164,12 @@ func GetMenus() []MenuItem {
 	return menus
 }
 
-func MenuPicker(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
+// MenuPicker handles the HTTP request for menu selection.
+// It extracts the menu ID from the URL path, sets it as the active menu,
+// and renders the main menu component to the response writer.
+// The menu ID should be provided as a URL parameter in the format "/menu/{id}".
+// If the URL parameter is invalid or cannot be converted to an integer, it returns a bad request error.
+func GetMenu(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("MenuPicker.MenuPicker(): r.URL.Path: ", r.URL.Path)
 
 	// example /menu/1
@@ -186,12 +196,12 @@ func MenuPicker(w http.ResponseWriter, r *http.Request) {
 	component.Render(r.Context(), w)
 }
 
+// GetTab is a function that handles the logic for serving different tabs in a menu.
+// It takes in an http.ResponseWriter and an http.Request as parameters.
+// It retrieves the active menu ID and based on the ID, it renders the corresponding component.
+// The rendered component is then served as a response with the appropriate Content-Type header.
+// If the active menu ID is invalid, it returns a Bad Request error.
 func GetTab(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
 	id := GetActiveMenu()
 	if id == -1 {
 		http.Error(w, "Invalid URL", http.StatusBadRequest)
