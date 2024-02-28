@@ -11,7 +11,7 @@ templ AddRecurringBillsComponent() {
 		<div class="col-span-12 text-white text-2xl capitalize p-5">
 			<button
 				class="text-center ml-10 scale-75 hover:scale-105 hover:border rounded-full"
-				hx-get="/bills/update"
+				hx-get="/bills/"
 				hx-target="#recurringBillRows"
 				hx-swap="afterend"
 			>
@@ -52,7 +52,7 @@ templ RecurringBillsComponent(bills RecurringBillList) {
 						stroke-width="1.5"
 						stroke="currentColor"
 						class="w-6 h-6 inline hover:border border-black shadow cursor-pointer"
-						hx-get={ "/bills/update?id=" + strconv.Itoa(bill.Id) }
+						hx-get={ "/bills/edit/" + strconv.Itoa(bill.Id) }
 						hx-trigger="click"
 						hx-target={ "#recurringBillId-" + strconv.Itoa(bill.Id) }
 						hx-swap="outerHTML"
@@ -68,7 +68,7 @@ templ RecurringBillsComponent(bills RecurringBillList) {
 						stroke-width="1.5"
 						stroke="currentColor"
 						class="w-6 h-6 inline hover:border border-black shadow cursor-pointer"
-						hx-delete={ "/bills/delete?id=" + strconv.Itoa(bill.Id) }
+						hx-delete={ "/bills/" + strconv.Itoa(bill.Id) }
 						hx-trigger="click"
 						hx-swap="delete"
 						hx-target={ "#recurringBillId-" + strconv.Itoa(bill.Id) }
@@ -100,7 +100,7 @@ templ EditRecurringBillsComponent(bill RecurringBill, update bool) {
 				<button
 					class="bg-blue-600 text-white uppercase rounded-lg py-1 px-3 w-full text-xs"
 					if update == true {
-						hx-post={ "/bills/update?id=" + strconv.Itoa(bill.Id) }
+						hx-post={ "/bills/" + strconv.Itoa(bill.Id) }
 					} else {
 						hx-post={ "/bills/new" }
 					}
@@ -115,11 +115,11 @@ templ EditRecurringBillsComponent(bill RecurringBill, update bool) {
 				<button
 					class="bg-red-700 text-white uppercase rounded-lg py-1 px-3 w-full text-xs"
 					if update == true {
-						hx-get={ "/bills?id=" + strconv.Itoa(bill.Id) }
+						hx-get={ "/bills/" + strconv.Itoa(bill.Id) }
 						hx-swap="outerHTML"
 						hx-target={ "#EditRecurringBill" + strconv.Itoa(bill.Id) }
 					} else {
-						hx-get="/bills?id=0"
+						hx-get="/bills/0"
 						hx-swap="delete"
 						hx-target={ "#EditRecurringBill" + strconv.Itoa(bill.Id) }
 					}
@@ -182,7 +182,7 @@ templ RecurringBillsIndex() {
 				hx-trigger="click"
 				hx-swap="innerHTML"
 				hx-target="#recurringBillRows"
-				hx-get="/bills/bills?column=day_of_month"
+				hx-get="/bills/?column=day_of_month"
 			>
 				Bill Date
 			</div>
@@ -192,7 +192,7 @@ templ RecurringBillsIndex() {
 				hx-trigger="click"
 				hx-swap="innerHTML"
 				hx-target="#recurringBillRows"
-				hx-get="/bills/bills?column=name"
+				hx-get="/bills/?column=name"
 			>Bill name</div>
 			<div
 				id="billOwnerColumn"
@@ -200,7 +200,7 @@ templ RecurringBillsIndex() {
 				hx-trigger="click"
 				hx-swap="innerHTML"
 				hx-target="#recurringBillRows"
-				hx-get="/bills/bills?column=owner"
+				hx-get="/bills/?column=owner"
 			>Bill Owner</div>
 			<div
 				id="billCostColumn"
@@ -208,14 +208,14 @@ templ RecurringBillsIndex() {
 				hx-trigger="click"
 				hx-swap="innerHTML"
 				hx-target="#recurringBillRows"
-				hx-get="/bills/bills?column=amount"
+				hx-get="/bills/?column=amount"
 			>Bill Cost</div>
 			<div id="billNotesColumn" class="col-span-5 column column-last">Notes</div>
 		</div>
 		<div
 			id="recurringBillRows"
 			class="grid grid-cols-1"
-			hx-get={ "/bills/bills" }
+			hx-get={ "/bills/" }
 			hx-trigger="newBill from:body"
 			hx-target="#recurringBillRows"
 			hx-swap="innerHTML"

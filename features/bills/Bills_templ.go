@@ -29,7 +29,7 @@ func AddRecurringBillsComponent() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"recurringBillFooter\" class=\"grid grid-cols-12 capitalize bg-slate-600  gap-x-1\"><div class=\"col-span-12 text-white text-2xl capitalize p-5\"><button class=\"text-center ml-10 scale-75 hover:scale-105 hover:border rounded-full\" hx-get=\"/bills/update\" hx-target=\"#recurringBillRows\" hx-swap=\"afterend\"><svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-10 h-15 text-white inline\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z\"></path></svg></button> ")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"recurringBillFooter\" class=\"grid grid-cols-12 capitalize bg-slate-600  gap-x-1\"><div class=\"col-span-12 text-white text-2xl capitalize p-5\"><button class=\"text-center ml-10 scale-75 hover:scale-105 hover:border rounded-full\" hx-get=\"/bills/\" hx-target=\"#recurringBillRows\" hx-swap=\"afterend\"><svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-10 h-15 text-white inline\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z\"></path></svg></button> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -54,7 +54,7 @@ func AddRecurringBillsComponent() templ.Component {
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatFloat(GetTotalCost(), 'f', 2, 64))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `Bills.templ`, Line: 25, Col: 68}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/bills/Bills.templ`, Line: 32, Col: 54}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -97,7 +97,7 @@ func RecurringBillsComponent(bills RecurringBillList) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/bills/update?id=" + strconv.Itoa(bill.Id)))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/bills/edit/" + strconv.Itoa(bill.Id)))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -113,7 +113,7 @@ func RecurringBillsComponent(bills RecurringBillList) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/bills/delete?id=" + strconv.Itoa(bill.Id)))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/bills/" + strconv.Itoa(bill.Id)))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -132,7 +132,7 @@ func RecurringBillsComponent(bills RecurringBillList) templ.Component {
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(bill.Id))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Bills.templ`, Line: 69, Col: 90}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/bills/Bills.templ`, Line: 79, Col: 82}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -145,7 +145,7 @@ func RecurringBillsComponent(bills RecurringBillList) templ.Component {
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(helpers.ThDate(bill.DayOfMonth))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Bills.templ`, Line: 70, Col: 105}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/bills/Bills.templ`, Line: 80, Col: 97}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -158,7 +158,7 @@ func RecurringBillsComponent(bills RecurringBillList) templ.Component {
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(bill.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Bills.templ`, Line: 71, Col: 71}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/bills/Bills.templ`, Line: 81, Col: 63}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {
@@ -171,7 +171,7 @@ func RecurringBillsComponent(bills RecurringBillList) templ.Component {
 			var templ_7745c5c3_Var9 string
 			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(bill.Owner)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Bills.templ`, Line: 72, Col: 73}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/bills/Bills.templ`, Line: 82, Col: 65}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 			if templ_7745c5c3_Err != nil {
@@ -193,7 +193,7 @@ func RecurringBillsComponent(bills RecurringBillList) templ.Component {
 			var templ_7745c5c3_Var11 string
 			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatFloat(bill.Amount, 'f', 2, 64))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Bills.templ`, Line: 75, Col: 92}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/bills/Bills.templ`, Line: 85, Col: 81}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 			if templ_7745c5c3_Err != nil {
@@ -206,7 +206,7 @@ func RecurringBillsComponent(bills RecurringBillList) templ.Component {
 			var templ_7745c5c3_Var12 string
 			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(bill.Notes)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Bills.templ`, Line: 77, Col: 73}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/bills/Bills.templ`, Line: 87, Col: 65}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 			if templ_7745c5c3_Err != nil {
@@ -254,7 +254,7 @@ func EditRecurringBillsComponent(bill RecurringBill, update bool) templ.Componen
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/bills/update?id=" + strconv.Itoa(bill.Id)))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/bills/" + strconv.Itoa(bill.Id)))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -310,7 +310,7 @@ func EditRecurringBillsComponent(bill RecurringBill, update bool) templ.Componen
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/bills?id=" + strconv.Itoa(bill.Id)))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/bills/" + strconv.Itoa(bill.Id)))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -327,7 +327,7 @@ func EditRecurringBillsComponent(bill RecurringBill, update bool) templ.Componen
 				return templ_7745c5c3_Err
 			}
 		} else {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" hx-get=\"/bills?id=0\" hx-swap=\"delete\" hx-target=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" hx-get=\"/bills/0\" hx-swap=\"delete\" hx-target=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -385,7 +385,7 @@ func EditRecurringBillsComponent(bill RecurringBill, update bool) templ.Componen
 			var templ_7745c5c3_Var16 string
 			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(bill.Owner)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Bills.templ`, Line: 128, Col: 51}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/bills/Bills.templ`, Line: 142, Col: 37}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 			if templ_7745c5c3_Err != nil {
@@ -416,7 +416,7 @@ func EditRecurringBillsComponent(bill RecurringBill, update bool) templ.Componen
 				var templ_7745c5c3_Var17 string
 				templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(item.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `Bills.templ`, Line: 133, Col: 60}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/bills/Bills.templ`, Line: 147, Col: 45}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 				if templ_7745c5c3_Err != nil {
@@ -447,7 +447,7 @@ func EditRecurringBillsComponent(bill RecurringBill, update bool) templ.Componen
 		var templ_7745c5c3_Var18 string
 		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(bill.Notes)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `Bills.templ`, Line: 145, Col: 27}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/bills/Bills.templ`, Line: 167, Col: 16}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 		if templ_7745c5c3_Err != nil {
@@ -495,7 +495,7 @@ func RecurringBillsIndex() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div id=\"billDateColumn\" class=\"col-span-1 column sortable\" hx-trigger=\"click\" hx-swap=\"innerHTML\" hx-target=\"#recurringBillRows\" hx-get=\"/bills/bills?column=day_of_month\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div id=\"billDateColumn\" class=\"col-span-1 column sortable\" hx-trigger=\"click\" hx-swap=\"innerHTML\" hx-target=\"#recurringBillRows\" hx-get=\"/bills/?column=day_of_month\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -504,7 +504,7 @@ func RecurringBillsIndex() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div id=\"billNameColumn\" class=\"col-span-2 column sortable\" hx-trigger=\"click\" hx-swap=\"innerHTML\" hx-target=\"#recurringBillRows\" hx-get=\"/bills/bills?column=name\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div id=\"billNameColumn\" class=\"col-span-2 column sortable\" hx-trigger=\"click\" hx-swap=\"innerHTML\" hx-target=\"#recurringBillRows\" hx-get=\"/bills/?column=name\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -513,7 +513,7 @@ func RecurringBillsIndex() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div id=\"billOwnerColumn\" class=\"col-span-1 column sortable\" hx-trigger=\"click\" hx-swap=\"innerHTML\" hx-target=\"#recurringBillRows\" hx-get=\"/bills/bills?column=owner\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div id=\"billOwnerColumn\" class=\"col-span-1 column sortable\" hx-trigger=\"click\" hx-swap=\"innerHTML\" hx-target=\"#recurringBillRows\" hx-get=\"/bills/?column=owner\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -522,7 +522,7 @@ func RecurringBillsIndex() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div id=\"billCostColumn\" class=\"col-span-1 column sortable\" hx-trigger=\"click\" hx-swap=\"innerHTML\" hx-target=\"#recurringBillRows\" hx-get=\"/bills/bills?column=amount\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div id=\"billCostColumn\" class=\"col-span-1 column sortable\" hx-trigger=\"click\" hx-swap=\"innerHTML\" hx-target=\"#recurringBillRows\" hx-get=\"/bills/?column=amount\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -544,7 +544,7 @@ func RecurringBillsIndex() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/bills/bills"))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/bills/"))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
