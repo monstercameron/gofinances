@@ -1,5 +1,4 @@
-package debts
-
+package debt
 
 import (
 	"database/sql"

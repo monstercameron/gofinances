@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/monstercameron/gofinances/features/bills"
-	"github.com/monstercameron/gofinances/features/debts"
+	"github.com/monstercameron/gofinances/features/debt"
 	"github.com/monstercameron/gofinances/features/home"
 	"github.com/monstercameron/gofinances/features/menus"
 	"github.com/monstercameron/gofinances/features/settings"
@@ -30,7 +30,7 @@ func CreateRoutes(server *http.ServeMux) *http.ServeMux {
 	server.HandleFunc("GET /bills/", bills.GetManyBills)                     // Handler for retrieving bills
 	server.HandleFunc("GET /bills/{id}", bills.GetOneBill)                   // Handler for retrieving bills
 	server.HandleFunc("POST /bills/", bills.AddBills)                        // Handler for adding new bills
-	server.HandleFunc("GET /bills/add", bills.GetAddBillingComponent) // Handler for updating bills
+	server.HandleFunc("GET /bills/add", bills.GetAddBillingComponent)        // Handler for updating bills
 	server.HandleFunc("GET /bills/edit/{id}", bills.GetEditBillingComponent) // Handler for updating bills
 	server.HandleFunc("POST /bills/{id}", bills.UpdateBills)                 // Handler for updating bills
 	server.HandleFunc("DELETE /bills/{id}", bills.DeleteBills)               // Handler for deleting bills
@@ -41,10 +41,10 @@ func CreateRoutes(server *http.ServeMux) *http.ServeMux {
 	server.HandleFunc("GET /settings/users", settings.GetSettingsUser)       // Handler for the '/settings/save' route
 	/////////////////////// Debts ROUTES /////////////////////////////////////////////////////////////////////////////
 	server.HandleFunc("GET /debts", home.GetIndexPage)
-	// server.HandleFunc("/debts/add", debts.GetDebtItems)
-	server.HandleFunc("GET /debts/update", debts.UpdateDebtItems)
-	// server.HandleFunc("/debts/create", debts.GetDebtItems)
-	// server.HandleFunc("/debts/create", debts.GetDebtItems)
-	// server.HandleFunc("/debts/create", debts.GetDebtItems)
+	// server.HandleFunc("/debts/add", debt.GetDebtItems)
+	server.HandleFunc("GET /debts/update", debt.UpdateDebtItems)
+	// server.HandleFunc("/debts/create", debt.GetDebtItems)
+	// server.HandleFunc("/debts/create", debt.GetDebtItems)
+	// server.HandleFunc("/debts/create", debt.GetDebtItems)
 	return server
 }

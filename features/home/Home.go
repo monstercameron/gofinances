@@ -3,9 +3,10 @@ package home
 import (
 	"fmt"
 	"net/http"
+
 	"github.com/a-h/templ"
 	"github.com/monstercameron/gofinances/features/bills"
-	"github.com/monstercameron/gofinances/features/debts"
+	"github.com/monstercameron/gofinances/features/debt"
 	"github.com/monstercameron/gofinances/features/menus"
 	"github.com/monstercameron/gofinances/features/settings"
 )
@@ -43,7 +44,7 @@ func GetStartingPage() templ.Component {
 	case 1:
 		return bills.RecurringBillsIndex()
 	case 2:
-		return debts.DebtsIndex()
+		return debt.DebtsIndex()
 	case 10:
 		users, err := settings.GetAllSettingsUsers()
 		if err != nil {
