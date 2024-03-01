@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "setup": "bash ./shell/templeGenerateOnStart.sh",
     "tailwinds": "npx tailwindcss -i ./static/style/template.css -o ./static/style/style.css --watch",
     "dev": "nodemon -e go --signal SIGTERM --exec go run .",
     "templ": "nodemon --verbose --watch 'features/**/*.templ' -e templ --exec 'bash ./shell/templgenerate.sh'"

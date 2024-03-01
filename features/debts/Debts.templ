@@ -206,7 +206,7 @@ templ EditDebts(d Debt) {
 			<div class="w-1/2">
 				<button
 					class="bg-blue-600 text-white uppercase rounded-lg py-1 px-3 w-full text-xs"
-					hx-post={ "/debts/update?id=" + strconv.Itoa(D) }
+					hx-post={ "/debts/update?id=" + strconv.Itoa(d.ID) }
 					hx-include="#editDebts"
 					hx-swap="outerHTML"
 					hx-target="#editDebts"
