@@ -83,7 +83,6 @@ func (d *Debt) Save() error {
 	return nil // Successful execution
 }
 
-
 func (d *Debt) Delete() {
 	fmt.Println("Debt.Delete()")
 	tx, err := database.DB.Begin()
@@ -140,7 +139,6 @@ func GetAllDebts() ([]Debt, error) {
 	fmt.Println(debts) // This might be a lot of output if there are many debts; consider removing or modifying this line.
 	return debts, nil
 }
-
 
 func GetAllDebtsWithoutError() []Debt {
 	fmt.Println("GetAllDebtsWithoutError()")
